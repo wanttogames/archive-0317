@@ -16,6 +16,8 @@ namespace Archive0317
         [SerializeField] private Button nextPageButton;
         [SerializeField] private Button compareButton;
         [SerializeField] private Text toast;
+        [SerializeField] private RawImage cctvFrame;
+        [SerializeField] private Text cctvTimestamp;
         private float toastUntil;
         private InspectableDocument activeDocument;
         private int documentPage;
@@ -26,6 +28,14 @@ namespace Archive0317
         { casePanel = panel; crosshair = aim; prompt = interaction; title = heading; body = description; cursorHint = hint; player = controller; }
         public void ConfigureCaseUI(Button start, Button next, Button compare, Text notification)
         { startFieldButton = start; nextPageButton = next; compareButton = compare; toast = notification; }
+        public void ConfigureCCTV(RawImage frame,Text timestamp){cctvFrame=frame;cctvTimestamp=timestamp;}
+        public void ShowCCTV(InspectableCCTV recording)
+        {
+            ResetActions();title.text=recording.Title;body.text="";
+            cctvFrame.texture=recording.Frame;cctvFrame.gameObject.SetActive(true);
+            cctvTimestamp.text=recording.Timestamp;cctvTimestamp.gameObject.SetActive(true);
+            casePanel.SetActive(true);SetPrompt(false);
+        }
         private void Awake()
         {
             if (startFieldButton != null) startFieldButton.onClick.AddListener(StartField);
@@ -85,6 +95,8 @@ namespace Archive0317
         private void ResetActions()
         {
             activeDocument = null;
+            if(cctvFrame!=null){cctvFrame.gameObject.SetActive(false);cctvFrame.texture=null;}
+            if(cctvTimestamp!=null)cctvTimestamp.gameObject.SetActive(false);
             if (startFieldButton != null) { startFieldButton.gameObject.SetActive(false); startFieldButton.interactable = true; }
             if (nextPageButton != null) nextPageButton.gameObject.SetActive(false);
             if (compareButton != null) compareButton.gameObject.SetActive(false);

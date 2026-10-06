@@ -7,6 +7,8 @@ PASS: Fade transition starts through UI listener
 PASS: ArchiveRoom to motel scene load and fade complete
 PASS: One shared player, AudioListener and EventSystem
 PASS: CaseStarted stored
+PASS: 403 initially absent and its wall solid
+PASS: Initial actual corridor numbers: 401 / 402 / 404 / 405
 PASS: Motel floor grounding
 PASS: WASD movement / Shift speed
 PASS: Lobby wall collision
@@ -16,9 +18,10 @@ PASS: Ledger first page does not reveal room number
 PASS: Evidence requires detail page
 PASS: Ledger detail UI records 403
 PASS: No premature mismatch completion
-PASS: CCTV investigation and one timestamp hint
+PASS: Initial CCTV entry recording remains available
 PASS: CCTVInspected stored
-PASS: 03:17 appears once in motel evidence
+PASS: CCTV contradiction not unlocked prematurely
+PASS: Timestamp occurs once on CCTV display, no repeated document timestamp
 PASS: 404 remains locked without key
 PASS: Front key cabinet investigation
 PASS: Stair flight 1 ascent: (-0.77, 1.53, 13.68)
@@ -29,6 +32,9 @@ PASS: Stair flight 5 ascent: (-0.77, 7.53, 13.68)
 PASS: Stair flight 6 ascent: (1.01, 9.03, 10.00)
 PASS: Single quiet landing cue trigger
 PASS: Fourth-floor corridor reachable from stairs
+PASS: 402 numberplate Raycast observation
+PASS: 404 numberplate Raycast observation
+PASS: Both plates and ledger permit only a short observation
 PASS: 404 door Raycast with key
 PASS: 404 entry trigger through opened doorway
 PASS: 404 paper Raycast / document UI
@@ -38,7 +44,29 @@ PASS: Notebook shows official and field records
 PASS: Compare button requires investigation
 PASS: Slice endpoint short notification
 PASS: Per-case JSON progress survives cache reload
+PASS: Corridor stays unchanged while player is inside 404
+PASS: Exiting investigated 404 changes corridor out of sight
+PASS: Observed spatial mismatch progresses even without formal notebook comparison
+PASS: One fourth-floor fluorescent now off
+PASS: Corridor alteration does not prematurely reveal 403
+PASS: Repeat CCTV inspection opens recorded corridor view
+PASS: RenderTexture and single CCTV timestamp in existing document UI
+PASS: Recorded 403 exists only in isolated CCTV layer
+PASS: CCTVContradictionFound stored after footage inspection
+PASS: CCTV image is nonblank and monochrome
+PASS: Telephone lead waits until returning upstairs
+PASS: Spatial telephone lead plays on corridor return
+PASS: 403 cannot appear while its wall is being watched
+PASS: 403 quietly replaces wall only after looking away
+PASS: Revealed 403 uses shared E investigation prompt
+PASS: Locked 403 investigation ends mid-case progression
+PASS: 403 response remains minimal
+PASS: Delayed faint receiver sound after door inspection
+PASS: 403 leaf/backing collision prevents interior access
+PASS: Anomaly flags persist across progress-cache reload
 PASS: Exploration continues after endpoint
 PASS: Cursor unlock after documents
-Physical keyboard/mouse, monitor brightness, sound balance and 5–10 minute pacing require human playthrough. Input bindings verified by component runtime path.
+PASS: Saved spatial state restored on scene reload
+PASS: One-shot lead does not replay when saved scene is reloaded
+Physical keyboard/mouse, pointer clicks, monitor brightness, sound balance and investigation pacing require human playthrough. Automated checks invoke component runtime paths and real UI listeners.
 PASS
