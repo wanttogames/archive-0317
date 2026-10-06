@@ -154,7 +154,9 @@ public static class Case001MotelBuilder
                 Box("StairReturn_"+level+"_"+i,new Vector3(.88f,y+1.5f+(i+1)*.15f-.12f,12.97f-i*.28f),new Vector3(1.62f,.24f,.28f),tile);
             }
             Label("LandingLevel",(level+1)+"F",new Vector3(-1.68f,y+1.75f,9.9f),new Vector3(0,-90,0),.04f);
-            LightAt("StairFluorescent",new Vector3(0,y+2.8f,13.8f),new Color(.72f,.82f,.76f),3.3f,5,false);
+            // Mount below the next half-landing slab, or the roof on the top flight.
+            float fixtureHeight=level<2?y+4.23f:11.33f;
+            LightAt("StairFluorescent",new Vector3(0,fixtureHeight,13.8f),new Color(.72f,.82f,.76f),3.3f,5,false);
         }
         Box("FourthLanding",new Vector3(0,8.9f,9.9f),new Vector3(3.4f,.2f,.8f),tile);
         // Prevent walking into the stairwell void from the sides of landings.

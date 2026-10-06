@@ -13,3 +13,9 @@ Verified in Unity 6000.3.25f1 / URP through Unity MCP on 2026-10-06.
 Still requires a human Game View playthrough: physical WASD/mouse/Shift/E/TAB/ESC and button pointer clicks, target-monitor brightness, the quiet latch's audible level, route/signposting and approximately 5–10 minute pacing. Automated tests invoke gameplay component methods, real UI listeners and physics; they do not represent a timed human playthrough or a standalone build test.
 
 Reports: `PlayModeSmokeTest.txt`, `Case001SmokeTest.txt`. No other Unity test assembly was present in Assets.
+
+## Stair lighting correction
+
+All three half-landing fixtures previously sat only 1.26m above the landing surface. Housing, tube and spotlight were moved together to the underside of the next landing slab, or the stairwell roof for the top fixture. Housing world Y positions are now 4.23m, 7.23m and 11.33m. Minimum clearance below the tubes is 2.673m, 2.673m and 3.773m respectively, with a 0.035m gap between each housing and the overhead surface. The builder uses the same placement. Light colour, intensity and range are retained.
+
+The existing ArchiveRoom and CASE 001 Play Mode smoke tests were rerun and passed, including all six stair flights and the investigation endpoint. Gameplay Console: 0 errors/exceptions and 0 warnings. The corrected fixture was visually inspected from the player camera and Game View. Final target-monitor brightness remains a manual check.
