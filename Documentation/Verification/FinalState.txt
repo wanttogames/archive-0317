@@ -10,5 +10,5 @@ CaseFiles=1
 TestCubeInArchive=False
 Stable Play Mode smoke tests passed; native Console errors/exceptions=0, warnings=0.
 MCP cache reset hit a file lock and its cached log output was incomplete; actual native Unity Console used for final validation. MCP reconnection warnings during domain reload were outside the stable gameplay check.
-Native Game View capture unavailable; player-camera/HUD and Scene View captures inspected.
+Native Game View capture completed after a delay and was inspected; player-camera/HUD and Scene View captures also inspected.
 Physical keyboard/mouse and target-display brightness require manual checking.
