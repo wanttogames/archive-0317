@@ -1,0 +1,44 @@
+CASE 001 Play Mode smoke test
+PASS: Existing ArchiveRoom runtime smoke test
+PASS: Official CASE file Raycast opens UI
+PASS: Official record says 404
+PASS: Start field button visible
+PASS: Fade transition starts through UI listener
+PASS: ArchiveRoom to motel scene load and fade complete
+PASS: One shared player, AudioListener and EventSystem
+PASS: CaseStarted stored
+PASS: Motel floor grounding
+PASS: WASD movement / Shift speed
+PASS: Lobby wall collision
+PASS: Mouse look pitch clamp
+PASS: Ledger Raycast / E prompt
+PASS: Ledger first page does not reveal room number
+PASS: Evidence requires detail page
+PASS: Ledger detail UI records 403
+PASS: No premature mismatch completion
+PASS: CCTV investigation and one timestamp hint
+PASS: CCTVInspected stored
+PASS: 03:17 appears once in motel evidence
+PASS: 404 remains locked without key
+PASS: Front key cabinet investigation
+PASS: Stair flight 1 ascent: (-0.77, 1.53, 13.68)
+PASS: Stair flight 2 ascent: (1.01, 3.03, 10.00)
+PASS: Stair flight 3 ascent: (-0.77, 4.53, 13.68)
+PASS: Stair flight 4 ascent: (1.01, 6.03, 10.00)
+PASS: Stair flight 5 ascent: (-0.77, 7.53, 13.68)
+PASS: Stair flight 6 ascent: (1.01, 9.03, 10.00)
+PASS: Single quiet landing cue trigger
+PASS: Fourth-floor corridor reachable from stairs
+PASS: 404 door Raycast with key
+PASS: 404 entry trigger through opened doorway
+PASS: 404 paper Raycast / document UI
+PASS: 404 paper evidence stored
+PASS: Player chooses to compare evidence
+PASS: Notebook shows official and field records
+PASS: Compare button requires investigation
+PASS: Slice endpoint short notification
+PASS: Per-case JSON progress survives cache reload
+PASS: Exploration continues after endpoint
+PASS: Cursor unlock after documents
+Physical keyboard/mouse, monitor brightness, sound balance and 5–10 minute pacing require human playthrough. Input bindings verified by component runtime path.
+PASS

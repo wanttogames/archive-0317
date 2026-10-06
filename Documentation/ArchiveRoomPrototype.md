@@ -10,6 +10,7 @@ Open `Assets/Scenes/ArchiveRoom.unity` and press Play. Click the Game View if Un
 | Mouse | Look, with vertical angle limited to ±80° |
 | Left / right Shift | Run |
 | E | Inspect CASE 001 within 2.5 metres; close the description |
+| TAB | Open collected case records in the motel; compare records after investigating 404 |
 | ESC | Toggle cursor lock; close an open description and return to play |
 | Left click while unlocked | Return to captured gameplay |
 
@@ -32,7 +33,21 @@ The small centre crosshair and `E 조사` prompt appear during captured gameplay
 - `Assets/Textures/ArchiveRoom`: 128px point-filtered, mipmapped, original procedural textures.
 - `Assets/Prefabs/Environment/Institutional`: CRT, telephone, office chair, notice board and wall clock.
 
-Runtime scripts have no UnityEditor dependency. Existing URP assets, packages, input backend and tutorial assets are retained. The room uses static cold fluorescent fixtures, concrete walls/floor/ceiling, archive shelves and a desk. There are no scripted horror events or motel map.
+Runtime scripts have no UnityEditor dependency. Existing URP assets, packages, input backend and tutorial assets are retained. The archive room uses static cold fluorescent fixtures, concrete walls/floor/ceiling, archive shelves and a desk. Its environment remains unchanged by the CASE 001 field slice.
+
+## CASE 001 — 404호 field slice
+
+Start Play Mode in `ArchiveRoom`, inspect CASE 001 with E, and select `현장 조사 시작`. A brief fade loads `Assets/Scenes/Cases/Case001_Motel.unity`. Both enabled build scenes use the same FirstPersonPlayer prefab, including the Korean document viewer, cursor control and a single EventSystem. Read documents using the mouse buttons; E or ESC closes the viewer and resumes movement. Brief observations stay at the bottom of the screen instead of opening a document.
+
+The fictional case concerns 최민수, registered on 2002-10-11. The official archive record lists room 404. At the motel, inspect the reception ledger and select `세부 기록 확인` to read its room 403 entry. Collect the 404 spare key from the cabinet behind reception. The small office beside the counter contains the CCTV record; its document has the only `03:17` timestamp hint in the motel. The entrance, telephone, clock, extinguisher, numbered doors and exit can also be inspected.
+
+Walk through the first-floor corridor and climb six physical stair flights, with landings, to the fourth floor. Doors 401–403 are locked. Open 404 with its key and inspect the bed, nightstand, telephone, bathroom door, personal bag and paper on the small desk. After reading the paper, press TAB to revisit the official record and collected field notes, then choose `객실 기록 대조`. The slice concludes with `기록이 일치하지 않는다.`; exploration remains available. There is no case resolution, return transition, monster or chase. One quiet distant latch is heard on the first upper landing, once per case progress record.
+
+The motel has low ceilings, 128px wallpaper/carpet textures, mixed warm and cool fixtures, matte furnishings, plastic keyholders, a CRT, damp wall strips and exposed cable ducts. The existing archive atmosphere profile and institutional prop prefabs are reused. Motel world labels use a small URP depth-tested font shader, with font-atlas updates handled by `WorldTextDepth`, so room numbers do not appear through walls. The overlay document UI retains its original font material. This is a compact investigation slice intended for approximately 5–10 minutes of exploration and reading; its duration is not enforced and needs a human pacing review.
+
+`CaseDefinition` holds the case ID, scene, official record, comparison prerequisites and flag-driven notebook entries. Additional cases can supply their own collected-note text without editing the HUD. `InspectableDocument`, `InspectableNote` and `InspectableDoor` use the shared Raycast through `Inspectable`. `CaseSceneContext` assigns a case to the existing HUD. `SceneTransitionManager` persists only the fade canvas, while each scene creates its own shared player instance. `CaseProgressStore` writes small JSON records to PlayerPrefs under `Archive0317.Case.<caseId>`; flags and evidence facts survive restarting Play Mode. This does not restore position, open-door animation or the current scene. For a fresh CASE 001 developer run, delete only `Archive0317.Case.case001` in PlayerPrefs and clear the progress cache. No complex save-slot system is introduced.
+
+Editor menu `Archive 03:17/Run CASE 001 Play Mode Smoke Test` runs from ArchiveRoom Play Mode. It executes the previous archive smoke test, invokes the real start button, waits for the fade/load, exercises collision and all six stair flights, investigates documents through Raycasts, opens 404, waits for physics triggers, compares records and reloads saved progress. It restores the pre-test case save and writes `Documentation/Verification/Case001SmokeTest.txt`. `Case001MotelBuilder` creates a missing scene without overwriting an existing one; the details menu also refuses duplication. Serialized scenes/prefabs/materials are authored through Editor APIs, not manual YAML edits.
 
 ## Visual direction
 

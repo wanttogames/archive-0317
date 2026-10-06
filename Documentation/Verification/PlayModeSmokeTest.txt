@@ -14,5 +14,3 @@ PASS: No prompt outside interaction distance
 PASS: Cursor unlock
 Cursor lock requested: Locked
 PASS: all component runtime checks. Physical keyboard/mouse and Game View focus require manual verification.
-
-Native Unity Console after stable Play Mode test: errors/exceptions=0, warnings=0

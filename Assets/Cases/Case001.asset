@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4dfb05a106addd4f857ae39f7efc34e, type: 3}
+  m_Name: Case001
+  m_EditorClassIdentifier: Assembly-CSharp::Archive0317.CaseDefinition
+  caseId: case001
+  title: "CASE 001 \u2014 404\uD638"
+  fieldScene: Case001_Motel
+  officialRecord: "\uACF5\uC2DD \uC0AC\uAC74 \uAE30\uB85D / 2002. 10. 11.\n\uC2E4\uC885\uC790:
+    \uCD5C\uBBFC\uC218 (\uB0A8\uC131, \uAC00\uBA85)\n\uD22C\uC219 \uAC1D\uC2E4: 404\uD638\n\nCCTV\uC5D0\uB294
+    \uBAA8\uD154\uB85C \uB4E4\uC5B4\uAC00\uB294 \uBAA8\uC2B5\uC774 \uB0A8\uC544 \uC788\uB2E4.
+    \uC678\uBD80\uB85C \uB098\uAC00\uB294 \uBAA8\uC2B5\uC740 \uD655\uC778\uB418\uC9C0
+    \uC54A\uC558\uB2E4.\n\n\uD604\uC7A5: \uC9C0\uBC29 \uC18C\uD615 \uBAA8\uD154.
+    \uD504\uB7F0\uD2B8 \uAE30\uB85D\uACFC \uD22C\uC219 \uAC1D\uC2E4\uC744 \uD655\uC778\uD55C\uB2E4."
+  officialRoom: 404
+  comparisonRequirements:
+  - LedgerInspected
+  - Room404Entered
+  - Room404PaperInspected
+  notebookEntries:
+  - progressFlag: LedgerInspected
+    text: "\uC219\uBC15 \uC7A5\uBD80 \uC138\uBD80 \uAE30\uB85D: \uAC1D\uC2E4 {value}\uD638"
+    factKey: LedgerRoom
+  - progressFlag: CCTVInspected
+    text: "\uCD9C\uC785 \uC601\uC0C1 \uD655\uC778"
+    factKey: 
+  - progressFlag: Room404PaperInspected
+    text: "\uAC1D\uC2E4\uC5D0\uC11C \uD68C\uC218\uD55C \uC885\uC774 \uAE30\uB85D
+      \uD655\uC778"
+    factKey: 

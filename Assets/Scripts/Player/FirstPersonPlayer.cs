@@ -16,8 +16,9 @@ namespace Archive0317
         private float verticalSpeed;
         private float pitch;
         private bool captureRequested;
-        public CaseFile CurrentTarget { get; private set; }
+        public Inspectable CurrentTarget { get; private set; }
         public Camera ViewCamera => viewCamera;
+        public ArchiveHUD HUD => hud;
         public bool IsCaptured => captureRequested && Cursor.lockState == CursorLockMode.Locked;
 
         public void Configure(Camera camera, ArchiveHUD display) { viewCamera = camera; hud = display; }
@@ -33,8 +34,11 @@ namespace Archive0317
         }
         private void Update()
         {
+            if (SceneTransitionManager.IsTransitioning) return;
             var keyboard = Keyboard.current;
             var mouse = Mouse.current;
+            if (keyboard != null && keyboard.tabKey.wasPressedThisFrame && !hud.IsCaseOpen && hud.ActiveDefinition != null)
+            { hud.ShowNotebook(); SetCapture(false); }
             if (keyboard != null && keyboard.escapeKey.wasPressedThisFrame)
             {
                 if (hud.IsCaseOpen) CloseCase();
@@ -86,16 +90,16 @@ namespace Archive0317
             CurrentTarget = null;
             if (!hud.IsCaseOpen && Physics.Raycast(viewCamera.transform.position, viewCamera.transform.forward,
                 out RaycastHit hit, interactionDistance, ~0, QueryTriggerInteraction.Ignore))
-                CurrentTarget = hit.collider.GetComponentInParent<CaseFile>();
-            hud.SetPrompt(CurrentTarget != null);
+                CurrentTarget = hit.collider.GetComponentInParent<Inspectable>();
+            hud.SetPrompt(CurrentTarget != null, CurrentTarget != null ? CurrentTarget.Prompt : "E 조사");
         }
         public bool TryInteract()
         {
             UpdateTarget();
             if (CurrentTarget == null || hud.IsCaseOpen) return false;
-            hud.ShowCase(CurrentTarget);
+            CurrentTarget.Inspect(this);
             CurrentTarget = null;
-            SetCapture(false);
+            if (hud.IsCaseOpen) SetCapture(false);
             return true;
         }
         public void CloseCase() { hud.CloseCase(); SetCapture(true); }
