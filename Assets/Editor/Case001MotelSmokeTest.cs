@@ -29,7 +29,7 @@ public static class Case001MotelSmokeTest
         var key = CaseProgressStore.StorageKey(definition); hadSave = PlayerPrefs.HasKey(key); saved = PlayerPrefs.GetString(key);
         PlayerPrefs.DeleteKey(key); CaseProgressStore.ClearCache();
         previousBackground=Application.runInBackground; Application.runInBackground=true;
-        report = new StringBuilder("CASE 001 Play Mode smoke test\n"); Status = "Running"; deadline = EditorApplication.timeSinceStartup + 90;
+        report = new StringBuilder("CASE 001 Play Mode smoke test\n"); Status = "Running"; deadline = EditorApplication.timeSinceStartup + 180;
         sequence = Run(); EditorApplication.update += Tick;
     }
     private static void Tick()
@@ -159,11 +159,11 @@ public static class Case001MotelSmokeTest
         Check(!door403.activeSelf,"403 cannot appear while its wall is being watched");
         player.ViewCamera.transform.LookAt(new Vector3(0,10.6f,12));environment.Evaluate();
         Check(door403.activeSelf && !missingWall.activeSelf && CaseProgressStore.Get(definition).Has("Room403Revealed"),"403 quietly replaces wall only after looking away");
-        Target(player,new Vector3(0,9.05f,4.5f),new Vector3(-1.13f,10.05f,4.5f));Check(player.CurrentTarget is InspectableSoundNote && player.HUD.IsPromptVisible,"Revealed 403 uses shared E investigation prompt");
+        Target(player,new Vector3(0,9.05f,4.5f),new Vector3(-1.13f,10.05f,4.5f));Check(player.CurrentTarget is InspectableCaseDoor && player.HUD.IsPromptVisible,"Revealed 403 uses shared E investigation prompt");
         Check(player.TryInteract() && CaseProgressStore.Get(definition).Has("Room403DoorInspected"),"Locked 403 investigation ends mid-case progression");
         Check(player.HUD.GetComponentsInChildren<Text>(true).Any(t=>t.name=="Observation" && t.text=="문이 잠겨 있다."),"403 response remains minimal");
         float heard=Time.time+1.7f;while(Time.time<heard)yield return null;
-        Check(door403.GetComponent<InspectableSoundNote>().CuePlayed,"Delayed faint receiver sound after door inspection");
+        Check(door403.GetComponent<InspectableCaseDoor>().CuePlayed,"Delayed faint receiver sound after door inspection");
         player.transform.rotation=Quaternion.identity;Steps(player,Vector2.left,120);Check(player.transform.position.x>-.9f,"403 leaf/backing collision prevents interior access");
         CaseProgressStore.ClearCache();Check(CaseProgressStore.Get(definition).Has("Room403Revealed"),"Anomaly flags persist across progress-cache reload");
         player.CloseCase(); player.transform.rotation=Quaternion.identity; initial=player.transform.position; Steps(player,Vector2.up,10); Check(Vector3.Distance(initial,player.transform.position)>.2f,"Exploration continues after endpoint");
@@ -171,7 +171,63 @@ public static class Case001MotelSmokeTest
         var reload=SceneManager.LoadSceneAsync("Case001_Motel");while(!reload.isDone)yield return null;yield return null;
         Check(GameObject.Find("RoomDoor403")!=null && GameObject.Find("MissingRoom403Wall")==null,"Saved spatial state restored on scene reload");
         Check(!GameObject.Find("Missing403Telephone").GetComponent<AudioSource>().isPlaying,"One-shot lead does not replay when saved scene is reloaded");
+        var interior=RunInterior();while(interior.MoveNext())yield return null;
         report.AppendLine("Physical keyboard/mouse, pointer clicks, monitor brightness, sound balance and investigation pacing require human playthrough. Automated checks invoke component runtime paths and real UI listeners.");
+    }
+    private static IEnumerator RunInterior()
+    {
+        var player=UnityEngine.Object.FindFirstObjectByType<FirstPersonPlayer>();player.enabled=false;
+        var progress=CaseProgressStore.Get(definition);var entrance=GameObject.Find("RoomDoor403").GetComponent<InspectableCaseDoor>();
+        Target(player,new Vector3(0,9.05f,4.5f),new Vector3(-1.13f,10.05f,4.5f));
+        progress.flags.Remove("CCTVContradictionFound");player.TryInteract();Check(!entrance.IsOpen,"403 unlock rejects incomplete evidence conditions");CaseProgressStore.Mark(definition,"CCTVContradictionFound");
+        Check(player.TryInteract(),"Second investigation begins quiet delayed opening");
+        float stop=Time.time+.7f;while(Time.time<stop)yield return null;Check(!entrance.IsOpen,"Handle remains locked during initial one-second pause");
+        stop=Time.time+3;while(Time.time<stop)yield return null;Check(entrance.IsOpen && progress.Has("Room403Opened"),"403 slowly opens after latch cue");
+        player.transform.rotation=Quaternion.identity;Steps(player,Vector2.left,45);yield return null;
+        Check(player.transform.position.x<-18 && progress.Has("Room403Entered"),"Walking across threshold enters isolated 403 without changing player/camera");
+        var environment=GameObject.Find("Room403Interior").GetComponent<CaseEnvironmentState>();environment.Evaluate();
+        Check(GameObject.Find("Room403ExitDoor").GetComponent<InspectableCaseDoor>().IsOpen,"Inner doorway starts open");
+        player.transform.rotation=Quaternion.identity;Steps(player,Vector2.right,20);stop=Time.time+.25f;while(Time.time<stop)yield return null;Check(player.transform.position.x>-.9f && !progress.Has("Room403Completed"),"Leaving before evidence safely returns to corridor without completing case");
+        stop=Time.time+1.1f;while(Time.time<stop)yield return null;player.transform.rotation=Quaternion.identity;Steps(player,Vector2.left,30);yield return null;Check(player.transform.position.x<-18,"Unfinished 403 can be re-entered without a duplicate player");
+        Target(player,new Vector3(-19.05f,9.05f,3.15f),GameObject.Find("Room403BathDoor").transform.position);Check(player.TryInteract(),"First bathroom door inspection opens normally");stop=Time.time+.6f;while(Time.time<stop)yield return null;player.transform.rotation=Quaternion.identity;Steps(player,Vector2.down,40);stop=Time.time+.25f;while(Time.time<stop)yield return null;
+        Check(progress.Has("BathroomVisited") && !progress.Has("RoomAltered") && !progress.Has("BathroomReturned"),"First bathroom visit is quiet and unchanged");
+        Target(player,new Vector3(-19.05f,9.05f,1.85f),GameObject.Find("BathroomWashbasin").transform.position);Check(player.TryInteract() && progress.Has("BathroomInspected"),"Bathroom basin is inspectable without a strong event");
+        Teleport(player,new Vector3(-19.05f,9.05f,3.15f));stop=Time.time+.25f;while(Time.time<stop)yield return null;
+        var phone=GameObject.Find("Room403Telephone").GetComponent<InspectableEchoPhone>();
+        Target(player,new Vector3(-20.65f,9.05f,3.3f),phone.transform.position);Check(player.TryInteract() && progress.Has("PhoneInspected") && !phone.Ringing,"Initial phone inspection hears silence");
+        Target(player,new Vector3(-20.5f,9.05f,3.7f),GameObject.Find("Room403GuestBag").transform.position);Check(player.TryInteract() && progress.Has("BagInspected"),"Guest bag Raycast and possessions inspection");
+        Target(player,new Vector3(-19.5f,9.05f,5.15f),GameObject.Find("Room403Receipt").transform.position);Check(player.TryInteract() && player.HUD.IsCaseOpen && Body(player).Contains("객실: 404") && progress.Has("ReceiptInspected"),"Receipt initially records 404 in existing document UI");player.CloseCase();
+        Target(player,new Vector3(-19.7f,9.05f,5.15f),GameObject.Find("Room403PersonalNote").transform.position);Check(player.TryInteract() && progress.Has("PersonalNoteInspected"),"Personal notebook is reachable via shared Raycast");player.CloseCase();
+        yield return null;yield return null;stop=Time.time+.4f;while(Time.time<stop)yield return null;
+        Check(phone.Ringing && progress.Has("PhoneEventTriggered"),"Three quiet telephone rings after core clues");
+        Target(player,new Vector3(-20.65f,9.05f,3.3f),phone.transform.position);Check(player.TryInteract() && phone.Answering,"Player answers using E interaction");
+        stop=Time.time+2.2f;while(Time.time<stop)yield return null;Check(phone.EchoPlayed && GameObject.Find("Room403HandsetAudio").GetComponent<AudioSource>().isPlaying,"Receiver reproduces configured room ambience after static");
+        stop=Time.time+4.1f;while(Time.time<stop)yield return null;Check(!phone.Answering && progress.Has("PhoneEventAnswered"),"Six-second call ends automatically without voice");
+        Target(player,new Vector3(-19.05f,9.05f,3.15f),new Vector3(-19.05f,10,1.55f));Check(GameObject.Find("BathHinge").GetComponent<InspectableDoor>().IsOpen,"Bathroom door remains open for revisit");
+        player.transform.rotation=Quaternion.identity;Steps(player,Vector2.down,40);stop=Time.time+.25f;while(Time.time<stop)yield return null;environment.Evaluate();
+        Check(progress.Has("BathroomReturned") && progress.Has("RoomAltered"),"Entering bathroom after phone changes chair and closes door out of view");
+        Check(!GameObject.Find("Room403ExitDoor").GetComponent<InspectableCaseDoor>().IsOpen,"Exit closed while evidence remains unfound");
+        Check(GameObject.Find("BathroomSingleDrip").GetComponent<AudioSource>().isPlaying,"Bathroom emits small drip on return");
+        Teleport(player,new Vector3(-19.05f,9.05f,3.2f));player.ViewCamera.transform.LookAt(new Vector3(-22,10,3.2f));environment.Evaluate();yield return null;
+        Check(progress.Has("TelevisionPowerOn"),"TV powers on outside bathroom only when out of view");
+        stop=Time.time+2.4f;while(Time.time<stop)yield return null;var television=GameObject.Find("Room403CRTTV").GetComponent<InspectableCaseTelevision>();
+        Check(television.FootageVisible && progress.Has("TelevisionEventTriggered") && GameObject.Find("Room403TVTimestamp").GetComponent<TextMesh>().text=="03:17","CRT static resolves into present corridor image with 03:17");
+        var rt=(RenderTexture)television.Frame;var prior=RenderTexture.active;RenderTexture.active=rt;var image=new Texture2D(rt.width,rt.height,TextureFormat.RGB24,false);image.ReadPixels(new Rect(0,0,rt.width,rt.height),0,0);image.Apply();RenderTexture.active=prior;var values=image.GetPixels();Check(values.Max(c=>c.r)-values.Min(c=>c.r)>.08f,"Room TV RenderTexture contains actual nonblank corridor imagery");UnityEngine.Object.DestroyImmediate(image);
+        Target(player,new Vector3(-19.5f,9.05f,5.8f),television.transform.position);Check(player.TryInteract() && progress.Has("TelevisionInspected"),"TV inspection uses original interaction UI");environment.Evaluate();
+        Check(GameObject.Find("Room403KeyEvidence")!=null,"Key tag becomes discoverable beside bed after TV");
+        Target(player,new Vector3(-19.3f,9.05f,4.03f),GameObject.Find("Room403KeyEvidence").transform.position);Check(player.TryInteract() && Body(player).Contains("403") && !progress.Has("KeyEvidenceFound"),"Key tag front inspected without prematurely recording reverse evidence");player.HUD.NextPage();Check(Body(player).Contains("404") && progress.Has("KeyEvidenceFound"),"Reverse side 404 sets KeyEvidenceFound");player.CloseCase();environment.Evaluate();
+        Target(player,new Vector3(-19.5f,9.05f,5.15f),GameObject.Find("Room403Receipt").transform.position);Check(player.TryInteract() && Body(player).Contains("객실: 403") && progress.Has("ReceiptChangedSeen") && progress.Fact("ReceiptRoom")=="403","Reinspection silently changes receipt to 403");player.CloseCase();
+        var inner=GameObject.Find("Room403ExitDoor").GetComponent<InspectableCaseDoor>();Target(player,new Vector3(-18.8f,9.05f,4.5f),new Vector3(-18,10.05f,4.5f));Check(player.TryInteract(),"Evidence permits reopening the exit");player.ViewCamera.transform.LookAt(new Vector3(-22,10,4.5f));stop=Time.time+3.5f;while(Time.time<stop)yield return null;Check(inner.IsOpen,"Exit slowly reopens after evidence");
+        Target(player,new Vector3(-18.7f,9.05f,4.5f),GameObject.Find("ExitPreviewWallpaper").GetComponent<Renderer>().bounds.center);environment.Evaluate();
+        Check(progress.Has("ArchiveThresholdGlimpse") && GameObject.Find("ArchiveShelfGlimpse")!=null,"One quiet archive shelf glimpse through doorway");stop=Time.time+.95f;while(Time.time<stop)yield return null;Check(GameObject.Find("ArchiveShelfGlimpse")==null,"Archive glimpse restores motel within one second");
+        player.transform.rotation=Quaternion.identity;Steps(player,Vector2.right,28);yield return null;
+        Check(player.transform.position.x>-.9f && progress.Has("Room403Completed"),"Walking out returns to real corridor and completes interior segment");environment.Evaluate();
+        Check(GameObject.Find("RoomDoor403")==null && GameObject.Find("MissingRoom403Wall")!=null,"403 vanishes after safe corridor exit");
+        Check(GameObject.Find("Room403Interior")==null,"Interior and its audiovisual sources disabled after exit");
+        player.transform.rotation=Quaternion.identity;Steps(player,Vector2.left,60);Check(player.transform.position.x>-.9f,"Restored wall prevents re-entry without trapping player");
+        CaseProgressStore.ClearCache();Check(CaseProgressStore.Get(definition).Has("Room403Completed"),"Interior endpoint survives cache reload");
+        var reload=SceneManager.LoadSceneAsync("Case001_Motel");while(!reload.isDone)yield return null;yield return null;
+        Check(GameObject.Find("RoomDoor403")==null && GameObject.Find("MissingRoom403Wall")!=null && GameObject.Find("Room403Interior")==null,"Completed scene reload retains original 401/402/404/405 layout without replaying room");
     }
     private static void Check(bool condition,string label){if(!condition)throw new InvalidOperationException(label);report.AppendLine("PASS: "+label);}
     private static void Teleport(FirstPersonPlayer player,Vector3 position){var cc=player.GetComponent<CharacterController>();cc.enabled=false;player.transform.position=position;cc.enabled=true;Physics.SyncTransforms();}

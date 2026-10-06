@@ -68,5 +68,46 @@ PASS: Exploration continues after endpoint
 PASS: Cursor unlock after documents
 PASS: Saved spatial state restored on scene reload
 PASS: One-shot lead does not replay when saved scene is reloaded
+PASS: 403 unlock rejects incomplete evidence conditions
+PASS: Second investigation begins quiet delayed opening
+PASS: Handle remains locked during initial one-second pause
+PASS: 403 slowly opens after latch cue
+PASS: Walking across threshold enters isolated 403 without changing player/camera
+PASS: Inner doorway starts open
+PASS: Leaving before evidence safely returns to corridor without completing case
+PASS: Unfinished 403 can be re-entered without a duplicate player
+PASS: First bathroom door inspection opens normally
+PASS: First bathroom visit is quiet and unchanged
+PASS: Bathroom basin is inspectable without a strong event
+PASS: Initial phone inspection hears silence
+PASS: Guest bag Raycast and possessions inspection
+PASS: Receipt initially records 404 in existing document UI
+PASS: Personal notebook is reachable via shared Raycast
+PASS: Three quiet telephone rings after core clues
+PASS: Player answers using E interaction
+PASS: Receiver reproduces configured room ambience after static
+PASS: Six-second call ends automatically without voice
+PASS: Bathroom door remains open for revisit
+PASS: Entering bathroom after phone changes chair and closes door out of view
+PASS: Exit closed while evidence remains unfound
+PASS: Bathroom emits small drip on return
+PASS: TV powers on outside bathroom only when out of view
+PASS: CRT static resolves into present corridor image with 03:17
+PASS: Room TV RenderTexture contains actual nonblank corridor imagery
+PASS: TV inspection uses original interaction UI
+PASS: Key tag becomes discoverable beside bed after TV
+PASS: Key tag front inspected without prematurely recording reverse evidence
+PASS: Reverse side 404 sets KeyEvidenceFound
+PASS: Reinspection silently changes receipt to 403
+PASS: Evidence permits reopening the exit
+PASS: Exit slowly reopens after evidence
+PASS: One quiet archive shelf glimpse through doorway
+PASS: Archive glimpse restores motel within one second
+PASS: Walking out returns to real corridor and completes interior segment
+PASS: 403 vanishes after safe corridor exit
+PASS: Interior and its audiovisual sources disabled after exit
+PASS: Restored wall prevents re-entry without trapping player
+PASS: Interior endpoint survives cache reload
+PASS: Completed scene reload retains original 401/402/404/405 layout without replaying room
 Physical keyboard/mouse, pointer clicks, monitor brightness, sound balance and investigation pacing require human playthrough. Automated checks invoke component runtime paths and real UI listeners.
 PASS

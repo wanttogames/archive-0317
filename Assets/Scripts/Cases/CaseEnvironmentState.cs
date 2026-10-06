@@ -11,25 +11,33 @@ namespace Archive0317
         public bool changeRotation; public Vector3 localEulerAngles;
         public Light light; public bool lightEnabled;
         public TextMesh label; public string text;
+        public Renderer surface; public Material material;
+        public InspectableCaseDoor door; public bool doorOpen;
         public void Apply()
         {
             if(target!=null){if(changePosition)target.transform.localPosition=localPosition;if(changeRotation)target.transform.localEulerAngles=localEulerAngles;if(changeActive)target.SetActive(active);}
             if(light!=null)light.enabled=lightEnabled;
             if(label!=null)label.text=text;
+            if(surface!=null && material!=null)surface.sharedMaterial=material;
+            if(door!=null)door.SetOpen(doorOpen);
         }
     }
     [Serializable] public sealed class EnvironmentRule
     {
         public string[] requirements;
+        public string[] excludedFlags;
         public string completionFlag;
         public string[] flagsToMark;
         public Collider insideArea;
         public Collider outsideArea;
         public Renderer hiddenFromView;
+        public Renderer visibleFromView;
         public EnvironmentChange[] changes;
         public AudioSource cue;
         public string observation;
         public float delayAfterReady;
+        public float restoreAfter;
+        public EnvironmentChange[] restoreChanges;
     }
     public sealed class CaseEnvironmentState : MonoBehaviour
     {
@@ -42,7 +50,7 @@ namespace Archive0317
         private void Start()
         {
             if(definition==null)return;
-            foreach(var rule in rules??Array.Empty<EnvironmentRule>())if(rule!=null && CaseProgressStore.Get(definition).Has(rule.completionFlag))Apply(rule,false);
+            foreach(var rule in rules??Array.Empty<EnvironmentRule>())if(rule!=null && rule.restoreAfter<=0 && CaseProgressStore.Get(definition).Has(rule.completionFlag) && !Excluded(rule))Apply(rule,false);
         }
         private void Update()
         {
@@ -58,6 +66,7 @@ namespace Archive0317
             {
                 if(rule==null || string.IsNullOrEmpty(rule.completionFlag))continue;
                 if(progress.Has(rule.completionFlag))continue;
+                if(Excluded(rule))continue;
                 bool ready=true;foreach(var flag in rule.requirements??Array.Empty<string>())if(!progress.Has(flag))ready=false;
                 if(!ready){readySince.Remove(rule);continue;}
                 if(rule.delayAfterReady>0)
@@ -68,11 +77,13 @@ namespace Archive0317
                 if(rule.insideArea!=null && !rule.insideArea.bounds.Contains(player.transform.position+Vector3.up*.8f))continue;
                 if(rule.outsideArea!=null && rule.outsideArea.bounds.Contains(player.transform.position+Vector3.up*.8f))continue;
                 if(rule.hiddenFromView!=null && IsVisible(rule.hiddenFromView))continue;
+                if(rule.visibleFromView!=null && !IsVisible(rule.visibleFromView))continue;
                 Apply(rule,true);
                 foreach(var flag in rule.flagsToMark??Array.Empty<string>())CaseProgressStore.Mark(definition,flag);
                 CaseProgressStore.Mark(definition,rule.completionFlag);
             }
         }
+        private bool Excluded(EnvironmentRule rule){foreach(var flag in rule.excludedFlags??Array.Empty<string>())if(CaseProgressStore.Get(definition).Has(flag))return true;return false;}
         private bool IsVisible(Renderer target)
         {
             var camera=player.ViewCamera;
@@ -87,6 +98,8 @@ namespace Archive0317
             foreach(var change in rule.changes??Array.Empty<EnvironmentChange>())change?.Apply();
             if(playCue && rule.cue!=null)rule.cue.Play();
             if(playCue && !string.IsNullOrEmpty(rule.observation))player.HUD.ShowToast(rule.observation,3);
+            if(playCue && rule.restoreAfter>0)StartCoroutine(Restore(rule));
         }
+        private System.Collections.IEnumerator Restore(EnvironmentRule rule){yield return new WaitForSeconds(rule.restoreAfter);foreach(var change in rule.restoreChanges??Array.Empty<EnvironmentChange>())change?.Apply();}
     }
 }

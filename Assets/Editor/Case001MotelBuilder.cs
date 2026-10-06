@@ -60,7 +60,7 @@ public static class Case001MotelBuilder
         player.GetComponentInChildren<Camera>().backgroundColor = RenderSettings.fogColor;
         EditorSceneManager.SaveScene(scene,ScenePath);
         var scenes=EditorBuildSettings.scenes.Where(s=>s.path!=ScenePath).ToList();scenes.Add(new EditorBuildSettingsScene(ScenePath,true));EditorBuildSettings.scenes=scenes.ToArray();
-        AssetDatabase.SaveAssets(); Case001Room403Builder.Apply(); EditorSceneManager.OpenScene("Assets/Scenes/ArchiveRoom.unity",OpenSceneMode.Single);
+        AssetDatabase.SaveAssets(); Case001Room403Builder.Apply(); Case001Room403InteriorBuilder.Apply(); EditorSceneManager.OpenScene("Assets/Scenes/ArchiveRoom.unity",OpenSceneMode.Single);
         Debug.Log("CASE 001 motel slice saved and ArchiveRoom connection configured.");
     }
     private static void UpgradeSharedPlayer()
