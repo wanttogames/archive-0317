@@ -1,0 +1,14 @@
+Scene=Assets/Scenes/ArchiveRoom.unity
+Playing=False
+CompilationFailed=False
+Dirty=False
+ConsoleErrorExceptions=0
+ConsoleWarnings=2
+PlayerControllers=1
+AudioListeners=1
+CaseFiles=1
+TestCubeInArchive=False
+Stable Play Mode smoke tests passed; native Console errors/exceptions=0, warnings=0.
+MCP cache reset hit a file lock and its cached log output was incomplete; actual native Unity Console used for final validation. MCP reconnection warnings during domain reload were outside the stable gameplay check.
+Native Game View capture unavailable; player-camera/HUD and Scene View captures inspected.
+Physical keyboard/mouse and target-display brightness require manual checking.

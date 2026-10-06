@@ -1,0 +1,18 @@
+ArchiveRoom Play Mode smoke test
+PASS: Gravity and floor grounding
+PASS: Walk / Shift speed: 1.30m / 2.30m
+PASS: East wall collision
+PASS: Shelf collision and aisle clearance
+PASS: Desk collision
+PASS: Mouse yaw and pitch clamp
+PASS: Raycast CASE 001 and E 조사 prompt
+PASS: Case description opens and hides prompt
+PASS: Case UI description content
+PASS: Case UI releases cursor
+PASS: Case description closes
+PASS: No prompt outside interaction distance
+PASS: Cursor unlock
+Cursor lock requested: Locked
+PASS: all component runtime checks. Physical keyboard/mouse and Game View focus require manual verification.
+
+Native Unity Console after stable Play Mode test: errors/exceptions=0, warnings=0
