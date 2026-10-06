@@ -109,5 +109,44 @@ PASS: Interior and its audiovisual sources disabled after exit
 PASS: Restored wall prevents re-entry without trapping player
 PASS: Interior endpoint survives cache reload
 PASS: Completed scene reload retains original 401/402/404/405 layout without replaying room
+PASS: Final 404 keyholder and subtle plate scratch appear after 403 completion
+PASS: 404 can be reopened for final investigation
+PASS: Supporting 403 key in 404 reachable with original document UI
+PASS: Final ledger investigation through shared Raycast
+PASS: Final ledger silently rewrites 403 to 404
+PASS: Old CCTV footage becomes inaccessible rather than replaying
+PASS: Exit rejects missing key evidence
+PASS: Exit offers return or continue in existing document card
+PASS: Continue leaves player free in motel
+PASS: Return uses shared fade transition
+PASS: Archive return reflects completed field investigation
+PASS: Return has one player and one AudioListener
+PASS: Returned case file opens report with actual evidence and no field replay
+PASS: Seven genuinely found key evidence IDs are collected and saved
+PASS: Every discovered evidence line fits the editable report without clipping
+PASS: Evidence filtering excludes undiscovered objects
+PASS: Verdict requires explicit selection before confirmation
+PASS: Selecting classification does not prematurely complete case
+PASS: All four verdicts accepted and saved: HumanCause
+PASS: Verdict requires explicit selection before confirmation
+PASS: Selecting classification does not prematurely complete case
+PASS: All four verdicts accepted and saved: RecordErrorOrTampering
+PASS: Verdict requires explicit selection before confirmation
+PASS: Selecting classification does not prematurely complete case
+PASS: All four verdicts accepted and saved: Unexplained
+PASS: Verdict requires explicit selection before confirmation
+PASS: Selecting classification does not prematurely complete case
+PASS: All four verdicts accepted and saved: Deferred
+PASS: CASE 00 does not appear while its empty slot is being watched
+PASS: CASE 00 appears silently outside view after leaving report area
+PASS: CASE 00 discovered by Raycast with fictional investigator code
+PASS: CASE 00 archival photograph appears in reused document viewer
+PASS: CASE 00 ends at later record absent and no further progression
+PASS: Completion, verdict, evidence and CASE 00 survive cache reset from PlayerPrefs JSON
+PASS: Reload restores archive file state without replaying delayed appearance
+PASS: Completed report remains readable with stored verdict and no new classification/replay
+PASS: Completed case cannot accidentally restart through shared start function
+PASS: Launching completed motel save redirects safely to ArchiveRoom
+PASS: Player continues moving after episode completion
 Physical keyboard/mouse, pointer clicks, monitor brightness, sound balance and investigation pacing require human playthrough. Automated checks invoke component runtime paths and real UI listeners.
 PASS

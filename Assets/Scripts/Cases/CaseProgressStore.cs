@@ -9,6 +9,8 @@ namespace Archive0317
     {
         public List<string> flags = new List<string>();
         public List<CaseFact> facts = new List<CaseFact>();
+        public List<string> evidenceIds = new List<string>();
+        public string verdict;
         public bool Has(string flag) => flags.Contains(flag);
         public string Fact(string key) => facts.Find(f => f.key == key)?.value;
     }
@@ -26,6 +28,7 @@ namespace Archive0317
             try { progress = JsonUtility.FromJson<CaseProgress>(PlayerPrefs.GetString(StorageKey(definition), "")); }
             catch (ArgumentException) { progress = null; }
             if (progress == null || progress.flags == null || progress.facts == null) progress = new CaseProgress();
+            if(progress.evidenceIds==null)progress.evidenceIds=new List<string>();
             cache[definition.Id] = progress;
             return progress;
         }
@@ -44,6 +47,10 @@ namespace Archive0317
             else fact.value = value;
             Save(definition);
         }
+        public static void AddEvidence(CaseDefinition definition,string id)
+        {var progress=Get(definition);if(!progress.evidenceIds.Contains(id)){progress.evidenceIds.Add(id);Save(definition);}}
+        public static void SaveVerdict(CaseDefinition definition,string value,string factKey,string completedFlag)
+        {var progress=Get(definition);progress.verdict=value;RecordFact(definition,factKey,value);Mark(definition,completedFlag);Mark(definition,"CaseCompleted");}
         public static bool CompareRooms(CaseDefinition definition)
         {
             if (definition == null) return false;

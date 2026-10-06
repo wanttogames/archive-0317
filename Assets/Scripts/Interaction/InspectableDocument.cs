@@ -15,6 +15,12 @@ namespace Archive0317
         [SerializeField, TextArea(4, 14)] private string[] alternatePages;
         [SerializeField] private string alternateViewedFlag;
         [SerializeField] private string alternateFactValue;
+        [SerializeField] private Texture pageImage;
+        [SerializeField] private int imagePage=-1;
+        [SerializeField] private string imageCaption;
+        public Texture Image(int index)=>index==imagePage?pageImage:null;
+        public string ImageCaption=>imageCaption;
+        public void ConfigureImage(int page,Texture image,string caption){imagePage=page;pageImage=image;imageCaption=caption;}
         public string Title => heading;
         public int PageCount => pages?.Length ?? 0;
         private bool Alternate => definition != null && !string.IsNullOrEmpty(alternateCondition) && CaseProgressStore.Get(definition).Has(alternateCondition);

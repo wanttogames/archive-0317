@@ -37,3 +37,33 @@ MonoBehaviour:
     text: "\uAC1D\uC2E4\uC5D0\uC11C \uD68C\uC218\uD55C \uC885\uC774 \uAE30\uB85D
       \uD655\uC778"
     factKey: 
+  evidence:
+  - id: ledger
+    title: "\uC219\uBC15 \uC7A5\uBD80 \u2014 \uCD5C\uCD08 \uAC1D\uC2E4 403"
+    requirements:
+    - LedgerInspected
+  - id: cctv
+    title: "4\uCE35 CCTV \u2014 \uC2E4\uC81C \uBCF5\uB3C4\uC640 \uB2E4\uB978 \uAC1D\uC2E4
+      \uBC30\uC5F4"
+    requirements:
+    - CCTVContradictionFound
+  - id: bag
+    title: "\uCD5C\uBBFC\uC218\uC758 \uAC00\uBC29\uACFC \uAC1C\uC778 \uBB3C\uD488"
+    requirements:
+    - BagInspected
+  - id: receipt
+    title: "\uC219\uBC15 \uC601\uC218\uC99D \u2014 \uCD5C\uCD08 \uAC1D\uC2E4 404"
+    requirements:
+    - ReceiptInspected
+  - id: double_key
+    title: "403 / 404 \uC591\uBA74 \uD0A4 \uD0DC\uADF8"
+    requirements:
+    - KeyEvidenceFound
+  - id: vanished_room
+    title: "\uCD9C\uC785 \uD6C4 \uC0AC\uB77C\uC9C4 403\uD638"
+    requirements:
+    - Room403Completed
+  - id: supporting_key
+    title: "404\uD638 \uD611\uD0C1\uC758 403 \uD0A4\uD640\uB354"
+    requirements:
+    - FinalKeyInspected

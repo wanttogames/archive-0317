@@ -47,6 +47,7 @@ public static class Case001MotelSmokeTest
         EditorApplication.update -= Tick; sequence = null;
         Status = success ? "PASS" : "FAIL: " + failure; report.AppendLine(Status);
         var key = CaseProgressStore.StorageKey(definition);
+        if(success && CaseProgressStore.Get(definition).Has("Case001Completed"))File.WriteAllText("Temp/Case001CompletedTestSave.json",PlayerPrefs.GetString(key));
         if (hadSave) PlayerPrefs.SetString(key, saved); else PlayerPrefs.DeleteKey(key);
         PlayerPrefs.Save(); CaseProgressStore.ClearCache();
         Application.runInBackground=previousBackground;
@@ -70,7 +71,7 @@ public static class Case001MotelSmokeTest
         player = UnityEngine.Object.FindFirstObjectByType<FirstPersonPlayer>(); player.enabled = false;
         Check(UnityEngine.Object.FindObjectsByType<FirstPersonPlayer>(FindObjectsSortMode.None).Length==1 && UnityEngine.Object.FindObjectsByType<AudioListener>(FindObjectsSortMode.None).Length==1 && UnityEngine.Object.FindObjectsByType<EventSystem>(FindObjectsSortMode.None).Length==1, "One shared player, AudioListener and EventSystem");
         Check(CaseProgressStore.Get(definition).Has("CaseStarted"), "CaseStarted stored");
-        var environment=UnityEngine.Object.FindFirstObjectByType<CaseEnvironmentState>();
+        var environment=GameObject.Find("Room403Anomaly").GetComponent<CaseEnvironmentState>();
         var anomaly=GameObject.Find("Room403Anomaly");
         var door403=anomaly.GetComponentsInChildren<Transform>(true).First(t=>t.name=="RoomDoor403").gameObject;
         var missingWall=GameObject.Find("MissingRoom403Wall");
@@ -172,6 +173,7 @@ public static class Case001MotelSmokeTest
         Check(GameObject.Find("RoomDoor403")!=null && GameObject.Find("MissingRoom403Wall")==null,"Saved spatial state restored on scene reload");
         Check(!GameObject.Find("Missing403Telephone").GetComponent<AudioSource>().isPlaying,"One-shot lead does not replay when saved scene is reloaded");
         var interior=RunInterior();while(interior.MoveNext())yield return null;
+        var finale=RunFinale();while(finale.MoveNext())yield return null;
         report.AppendLine("Physical keyboard/mouse, pointer clicks, monitor brightness, sound balance and investigation pacing require human playthrough. Automated checks invoke component runtime paths and real UI listeners.");
     }
     private static IEnumerator RunInterior()
@@ -230,6 +232,50 @@ public static class Case001MotelSmokeTest
         Check(GameObject.Find("RoomDoor403")==null && GameObject.Find("MissingRoom403Wall")!=null && GameObject.Find("Room403Interior")==null,"Completed scene reload retains original 401/402/404/405 layout without replaying room");
     }
     private static void Check(bool condition,string label){if(!condition)throw new InvalidOperationException(label);report.AppendLine("PASS: "+label);}
+    private static IEnumerator RunFinale()
+    {
+        var player=UnityEngine.Object.FindFirstObjectByType<FirstPersonPlayer>();player.enabled=false;var progress=CaseProgressStore.Get(definition);
+        var environment=GameObject.Find("MotelClosure").GetComponent<CaseEnvironmentState>();environment.Evaluate();
+        Check(GameObject.Find("Final404KeyHolder")!=null && GameObject.Find("Plate404Scratch")!=null,"Final 404 keyholder and subtle plate scratch appear after 403 completion");
+        var door=GameObject.Find("RoomDoor404").GetComponent<InspectableDoor>();Target(player,new Vector3(0,9.05f,3.4f),new Vector3(-1.13f,10.05f,3.4f));Check(player.TryInteract(),"404 can be reopened for final investigation");float until=Time.time+.5f;while(Time.time<until)yield return null;
+        Target(player,new Vector3(-2,9.05f,4.1f),GameObject.Find("Final404KeyHolder").transform.position);Check(player.TryInteract() && player.HUD.IsCaseOpen && Body(player).Contains("403") && progress.Has("FinalKeyInspected"),"Supporting 403 key in 404 reachable with original document UI");player.CloseCase();
+        var ledger=GameObject.Find("GuestLedger").GetComponent<InspectableDocument>();Target(player,new Vector3(-1.6f,.05f,-1.85f),ledger.transform.position);Check(player.TryInteract(),"Final ledger investigation through shared Raycast");player.HUD.NextPage();Check(Body(player).Contains("객실: 404") && progress.Fact("LedgerRoom")=="404" && progress.Has("FinalLedgerInspected"),"Final ledger silently rewrites 403 to 404");player.CloseCase();
+        var cctv=GameObject.Find("CRTMonitor").GetComponent<InspectableCCTV>();Target(player,new Vector3(-4.55f,.05f,1.45f),new Vector3(-4.8f,1.4f,2.75f));Check(player.TryInteract() && cctv.Unavailable && Body(player).Contains("DATA ERROR") && !player.HUD.GetComponentsInChildren<RawImage>(true).First(t=>t.name=="CCTVFrame").gameObject.activeSelf,"Old CCTV footage becomes inaccessible rather than replaying");player.CloseCase();
+        var exit=GameObject.Find("EntranceGlassDoor").GetComponent<InspectableCaseExit>();progress.flags.Remove("KeyEvidenceFound");Check(!exit.Ready && !exit.ReturnToArchive(),"Exit rejects missing key evidence");CaseProgressStore.Mark(definition,"KeyEvidenceFound");
+        Target(player,new Vector3(0,.05f,-3.65f),exit.transform.position);Check(player.TryInteract() && player.HUD.IsCaseOpen && Button(player,"ReturnToArchive").gameObject.activeInHierarchy && Button(player,"ContinueInvestigation").gameObject.activeInHierarchy,"Exit offers return or continue in existing document card");
+        Button(player,"ContinueInvestigation").onClick.Invoke();Check(!player.HUD.IsCaseOpen && SceneManager.GetActiveScene().name=="Case001_Motel","Continue leaves player free in motel");
+        player.TryInteract();Button(player,"ReturnToArchive").onClick.Invoke();Check(SceneTransitionManager.IsTransitioning,"Return uses shared fade transition");while(SceneTransitionManager.IsTransitioning || SceneManager.GetActiveScene().name!="ArchiveRoom")yield return null;yield return null;
+        player=UnityEngine.Object.FindFirstObjectByType<FirstPersonPlayer>();player.enabled=false;progress=CaseProgressStore.Get(definition);
+        Check(progress.Has("ReturnedToArchive") && GameObject.Find("FieldInvestigationMemo")!=null,"Archive return reflects completed field investigation");
+        Check(UnityEngine.Object.FindObjectsByType<FirstPersonPlayer>(FindObjectsSortMode.None).Length==1 && UnityEngine.Object.FindObjectsByType<AudioListener>(FindObjectsSortMode.None).Length==1,"Return has one player and one AudioListener");
+        var file=UnityEngine.Object.FindFirstObjectByType<CaseFile>();var resolution=file.GetComponent<CaseReport>();Target(player,new Vector3(.45f,.05f,-.55f),file.transform.position);Check(player.TryInteract() && Body(player).Contains("수집 증거") && Body(player).Contains("양면 키") && !Button(player,"StartField").gameObject.activeInHierarchy,"Returned case file opens report with actual evidence and no field replay");
+        var evidence=EvidenceCollection.Collect(definition);Check(evidence.Count==7 && progress.evidenceIds.Count==7,"Seven genuinely found key evidence IDs are collected and saved");
+        var reportBody=player.HUD.GetComponentsInChildren<Text>(true).First(t=>t.name=="Description");Canvas.ForceUpdateCanvases();Check(reportBody.preferredHeight<=reportBody.rectTransform.rect.height,"Every discovered evidence line fits the editable report without clipping");
+        // A report for a case with only one observed flag must not list other evidence.
+        var partial=ScriptableObject.CreateInstance<CaseDefinition>();partial.Configure("smoke_evidence_partial","Test","","","",new string[0]);partial.ConfigureEvidence(definition.Evidence);var partialKey=CaseProgressStore.StorageKey(partial);bool hadPartial=PlayerPrefs.HasKey(partialKey);string oldPartial=PlayerPrefs.GetString(partialKey);
+        try{PlayerPrefs.DeleteKey(partialKey);CaseProgressStore.ClearCache();CaseProgressStore.Mark(partial,"LedgerInspected");Check(EvidenceCollection.Collect(partial).Count==1,"Evidence filtering excludes undiscovered objects");}finally{if(hadPartial)PlayerPrefs.SetString(partialKey,oldPartial);else PlayerPrefs.DeleteKey(partialKey);PlayerPrefs.Save();UnityEngine.Object.DestroyImmediate(partial);CaseProgressStore.ClearCache();}
+        progress=CaseProgressStore.Get(definition);string beforeVerdict=JsonUtility.ToJson(progress);var storageKey=CaseProgressStore.StorageKey(definition);
+        var choiceNames=new[]{"VerdictHuman","VerdictRecord","VerdictUnexplained","VerdictDeferred"};
+        for(int choice=0;choice<4;choice++)
+        {
+            PlayerPrefs.SetString(storageKey,beforeVerdict);CaseProgressStore.ClearCache();player.HUD.ShowReport(resolution);Check(!Button(player,"ConfirmVerdict").gameObject.activeSelf,"Verdict requires explicit selection before confirmation");
+            Button(player,choiceNames[choice]).onClick.Invoke();Check(Button(player,"ConfirmVerdict").gameObject.activeInHierarchy && !CaseProgressStore.Get(definition).Has("Case001Completed"),"Selecting classification does not prematurely complete case");
+            Button(player,"ConfirmVerdict").onClick.Invoke();progress=CaseProgressStore.Get(definition);
+            Check(!player.HUD.IsCaseOpen && progress.Has("Case001Completed") && progress.verdict==((CaseVerdict)choice).ToString() && progress.Fact("Case001Verdict")==progress.verdict,"All four verdicts accepted and saved: "+((CaseVerdict)choice));
+        }
+        var archiveEnvironment=GameObject.Find("ArchiveClosure").GetComponent<CaseEnvironmentState>();var unknown=UnityEngine.Object.FindObjectsByType<InspectableDocument>(FindObjectsInactive.Include,FindObjectsSortMode.None).First(d=>d.name=="CASE 00");
+        Target(player,new Vector3(2.62f,.05f,2.5f),unknown.transform.position);archiveEnvironment.Evaluate();until=Time.time+4.3f;while(Time.time<until)yield return null;Check(!unknown.gameObject.activeSelf,"CASE 00 does not appear while its empty slot is being watched");
+        player.ViewCamera.transform.LookAt(new Vector3(0,1.4f,-3));archiveEnvironment.Evaluate();Check(unknown.gameObject.activeSelf && progress.Has("Case00Activated"),"CASE 00 appears silently outside view after leaving report area");
+        Target(player,new Vector3(2.62f,.05f,2.5f),unknown.transform.position);Check(player.TryInteract() && Body(player).Contains("기록 담당자 0317") && progress.Has("Case00Inspected"),"CASE 00 discovered by Raycast with fictional investigator code");player.HUD.NextPage();var image=player.HUD.GetComponentsInChildren<RawImage>(true).First(t=>t.name=="CCTVFrame");Check(image.gameObject.activeInHierarchy && image.texture!=null,"CASE 00 archival photograph appears in reused document viewer");player.HUD.NextPage();Check(Body(player)=="이후 기록 없음" && !image.gameObject.activeSelf,"CASE 00 ends at later record absent and no further progression");player.CloseCase();
+        CaseProgressStore.ClearCache();progress=CaseProgressStore.Get(definition);Check(progress.Has("Case001Completed") && progress.Has("Case00Activated") && progress.evidenceIds.Count==7 && progress.verdict=="Deferred","Completion, verdict, evidence and CASE 00 survive cache reset from PlayerPrefs JSON");
+        var reload=SceneManager.LoadSceneAsync("ArchiveRoom");while(!reload.isDone)yield return null;yield return null;player=UnityEngine.Object.FindFirstObjectByType<FirstPersonPlayer>();player.enabled=false;
+        Check(GameObject.Find("CASE 00")!=null && GameObject.Find("FieldInvestigationMemo")!=null,"Reload restores archive file state without replaying delayed appearance");
+        file=UnityEngine.Object.FindFirstObjectByType<CaseFile>();Target(player,new Vector3(.45f,.05f,-.55f),file.transform.position);Check(player.TryInteract() && Body(player).Contains("판단 보류") && !Button(player,"VerdictDeferred").gameObject.activeInHierarchy && !Button(player,"StartField").gameObject.activeInHierarchy,"Completed report remains readable with stored verdict and no new classification/replay");player.CloseCase();
+        Check(!SceneTransitionManager.Begin(definition),"Completed case cannot accidentally restart through shared start function");
+        var motel=SceneManager.LoadSceneAsync("Case001_Motel");while(!motel.isDone)yield return null;while(SceneManager.GetActiveScene().name!="ArchiveRoom" || SceneTransitionManager.IsTransitioning)yield return null;yield return null;
+        Check(SceneManager.GetActiveScene().name=="ArchiveRoom" && GameObject.Find("CASE 00")!=null,"Launching completed motel save redirects safely to ArchiveRoom");
+        player=UnityEngine.Object.FindFirstObjectByType<FirstPersonPlayer>();player.enabled=false;Teleport(player,new Vector3(2,.05f,-3));player.transform.rotation=Quaternion.identity;var start=player.transform.position;Steps(player,Vector2.up,20);Check(Vector3.Distance(start,player.transform.position)>.5f,"Player continues moving after episode completion");
+    }
     private static void Teleport(FirstPersonPlayer player,Vector3 position){var cc=player.GetComponent<CharacterController>();cc.enabled=false;player.transform.position=position;cc.enabled=true;Physics.SyncTransforms();}
     private static void Steps(FirstPersonPlayer player,Vector2 input,int count,bool run=false){for(int i=0;i<count;i++)player.Move(input,run,1f/60);}
     private static void Target(FirstPersonPlayer player,Vector3 position,Vector3 look){player.HUD.CloseCase();Teleport(player,position);player.transform.rotation=Quaternion.identity;player.ViewCamera.transform.LookAt(look);Physics.SyncTransforms();player.UpdateTarget();}

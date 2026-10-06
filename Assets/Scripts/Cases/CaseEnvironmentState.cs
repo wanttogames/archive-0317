@@ -26,6 +26,7 @@ namespace Archive0317
     {
         public string[] requirements;
         public string[] excludedFlags;
+        public string[] restoreRequirements;
         public string completionFlag;
         public string[] flagsToMark;
         public Collider insideArea;
@@ -50,7 +51,15 @@ namespace Archive0317
         private void Start()
         {
             if(definition==null)return;
-            foreach(var rule in rules??Array.Empty<EnvironmentRule>())if(rule!=null && rule.restoreAfter<=0 && CaseProgressStore.Get(definition).Has(rule.completionFlag) && !Excluded(rule))Apply(rule,false);
+            var progress=CaseProgressStore.Get(definition);
+            foreach(var rule in rules??Array.Empty<EnvironmentRule>())
+            {
+                if(rule==null || rule.restoreAfter>0 || Excluded(rule))continue;
+                bool restore=progress.Has(rule.completionFlag);
+                if(!restore && rule.restoreRequirements!=null && rule.restoreRequirements.Length>0)
+                {restore=true;foreach(var flag in rule.restoreRequirements)if(!progress.Has(flag))restore=false;if(restore)CaseProgressStore.Mark(definition,rule.completionFlag);}
+                if(restore)Apply(rule,false);
+            }
         }
         private void Update()
         {

@@ -1,0 +1,9 @@
+CASE 001 separate Play Mode session save check
+PASS: Completed flags survive a real Editor stop/start
+PASS: Verdict loaded from persisted JSON
+PASS: Actually acquired evidence IDs retained
+PASS: CASE 00 restored even if quitting before initial appearance
+PASS: Resumed completed file reachable via Raycast
+PASS: Read-only report shows the saved classification
+PASS: Completed save does not restart the motel
+PASS

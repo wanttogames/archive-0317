@@ -18,6 +18,9 @@ namespace Archive0317
         [SerializeField] private string officialRoom;
         [SerializeField] private string[] comparisonRequirements;
         [SerializeField] private CaseNotebookEntry[] notebookEntries;
+        [SerializeField] private EvidenceDefinition[] evidence;
+        public EvidenceDefinition[] Evidence=>evidence;
+        public void ConfigureEvidence(EvidenceDefinition[] entries){evidence=entries;}
         public string Id => caseId;
         public string Title => title;
         public string FieldScene => fieldScene;

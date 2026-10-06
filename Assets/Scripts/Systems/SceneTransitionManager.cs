@@ -14,8 +14,10 @@ namespace Archive0317
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
         private static void ResetStatics() { instance = null; }
         public static bool Begin(CaseDefinition definition)
+        {return definition!=null && !CaseProgressStore.Get(definition).Has("CaseCompleted") && TravelTo(definition,definition.FieldScene,"CaseStarted");}
+        public static bool TravelTo(CaseDefinition definition,string destination,string progressFlag)
         {
-            if (definition == null || !Application.CanStreamedLevelBeLoaded(definition.FieldScene) || IsTransitioning) return false;
+            if (definition == null || string.IsNullOrEmpty(destination) || !Application.CanStreamedLevelBeLoaded(destination) || IsTransitioning) return false;
             if (instance == null)
             {
                 var root = new GameObject("SceneTransitionManager");
@@ -23,7 +25,7 @@ namespace Archive0317
                 instance = root.AddComponent<SceneTransitionManager>();
                 instance.CreateFade();
             }
-            instance.StartCoroutine(instance.Travel(definition));
+            instance.StartCoroutine(instance.Travel(definition,destination,progressFlag));
             return true;
         }
         private void CreateFade()
@@ -36,12 +38,12 @@ namespace Archive0317
             var rect = imageGO.GetComponent<RectTransform>(); rect.anchorMin = Vector2.zero; rect.anchorMax = Vector2.one; rect.offsetMin = rect.offsetMax = Vector2.zero;
             imageGO.GetComponent<Image>().color = Color.black;
         }
-        private IEnumerator Travel(CaseDefinition definition)
+        private IEnumerator Travel(CaseDefinition definition,string destination,string progressFlag)
         {
             busy = true; fade.blocksRaycasts = true;
-            CaseProgressStore.Mark(definition, "CaseStarted");
+            CaseProgressStore.Mark(definition, progressFlag);
             yield return Fade(0, 1);
-            var operation = SceneManager.LoadSceneAsync(definition.FieldScene, LoadSceneMode.Single);
+            var operation = SceneManager.LoadSceneAsync(destination, LoadSceneMode.Single);
             while (operation != null && !operation.isDone) yield return null;
             yield return null;
             yield return Fade(1, 0);

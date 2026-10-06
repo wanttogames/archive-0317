@@ -15,6 +15,11 @@ namespace Archive0317
         [SerializeField] private Shader imageShader;
         [SerializeField] private string timestamp;
         [SerializeField] private string heading="CCTV";
+        [SerializeField] private string unavailableCondition;
+        [SerializeField] private InspectableDocument unavailableRecord;
+        [SerializeField] private Texture unavailableImage;
+        public void ConfigureUnavailable(string condition,InspectableDocument record,Texture image){unavailableCondition=condition;unavailableRecord=record;unavailableImage=image;}
+        public bool Unavailable=>definition!=null && !string.IsNullOrEmpty(unavailableCondition) && CaseProgressStore.Get(definition).Has(unavailableCondition);
         private RenderTexture source,output;
         private Material effect,screenMaterial;
         private Material originalScreen;
@@ -38,6 +43,7 @@ namespace Archive0317
         }
         public void RenderFrame()
         {
+            if(Unavailable){Graphics.Blit(unavailableImage,output);return;}
             recordingCamera.targetTexture=source;recordingCamera.Render();Graphics.Blit(source,output,effect);
         }
         private void LateUpdate()
@@ -49,6 +55,7 @@ namespace Archive0317
         }
         public override void Inspect(FirstPersonPlayer player)
         {
+            if(Unavailable){unavailableRecord.Inspect(player);return;}
             if(!IsReady){entryRecord.Inspect(player);return;}
             RenderFrame();player.HUD.ShowCCTV(this);
             CaseProgressStore.Mark(definition,"CCTVInspected");CaseProgressStore.Mark(definition,evidenceFlag);
