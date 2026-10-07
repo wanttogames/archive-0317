@@ -11,6 +11,7 @@ namespace Archive0317
         public List<CaseFact> facts = new List<CaseFact>();
         public List<string> evidenceIds = new List<string>();
         public string verdict;
+        public string lastSavedLocal;
         public bool Has(string flag) => flags.Contains(flag);
         public string Fact(string key) => facts.Find(f => f.key == key)?.value;
     }
@@ -64,6 +65,11 @@ namespace Archive0317
             return true;
         }
         private static void Save(CaseDefinition definition)
-        { PlayerPrefs.SetString(StorageKey(definition), JsonUtility.ToJson(Get(definition))); PlayerPrefs.Save(); }
+        {
+            var progress = Get(definition);
+            progress.lastSavedLocal = DateTime.Now.ToString("yyyy-MM-dd HH:mm");
+            PlayerPrefs.SetString(StorageKey(definition), JsonUtility.ToJson(progress));
+            PlayerPrefs.Save();
+        }
     }
 }
