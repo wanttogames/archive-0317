@@ -19,11 +19,43 @@ namespace Archive0317
         {definition=data;returnedFlag=returned;completedFlag=completed;verdictKey=verdict;requirements=conditions;}
         public string Summary()
         {
+            if(Completed)return CompletionSummary();
             var progress=CaseProgressStore.Get(definition);var text=new StringBuilder("확인된 주요 사실\n");
             foreach(var fact in confirmedFacts??Array.Empty<CaseNotebookEntry>())if(fact!=null && progress.Has(fact.progressFlag))text.AppendLine("· "+fact.text);
             text.AppendLine("\n수집 증거");foreach(var evidence in EvidenceCollection.Collect(definition))text.AppendLine("· "+evidence.title);
-            if(Completed){text.AppendLine("\n보관 판정: "+VerdictLabel(progress.verdict));text.Append("사건 자료 보관 완료 / 원본 열람");}
             return text.ToString().TrimEnd();
+        }
+
+        public string CompletionSummary()
+        {
+            var progress=CaseProgressStore.Get(definition);
+            var collected=EvidenceCollection.Collect(definition);
+            int totalEvidence=(definition.Evidence??Array.Empty<EvidenceDefinition>()).Length;
+            int missing=Mathf.Max(0,totalEvidence-collected.Count);
+            int contradictionCount=0;
+            foreach(var entry in definition.ContradictionEntries??Array.Empty<CaseContradictionEntry>())
+                if(entry!=null && progress.Has(entry.progressFlag))contradictionCount++;
+
+            var text=new StringBuilder();
+            text.AppendLine("보관 판정");
+            text.AppendLine("  "+VerdictLabel(progress.verdict));
+            text.AppendLine();
+            text.AppendLine("조사 결과");
+            text.AppendLine("  확보 증거     "+collected.Count+" / "+totalEvidence);
+            text.AppendLine("  놓친 증거     "+missing);
+            text.AppendLine("  확인한 모순   "+contradictionCount+" / "+(definition.ContradictionEntries??Array.Empty<CaseContradictionEntry>()).Length);
+            text.AppendLine("  현장 조사     "+FormatDuration(progress.investigationSeconds));
+            text.AppendLine();
+            text.Append("사건 자료 보관 완료 / 원본 열람 가능");
+            return text.ToString();
+        }
+
+        private static string FormatDuration(float seconds)
+        {
+            int total=Mathf.Max(0,Mathf.RoundToInt(seconds));
+            int minutes=total/60;
+            int remain=total%60;
+            return minutes.ToString("00")+":"+remain.ToString("00");
         }
         public bool Confirm(CaseVerdict verdict)
         {
