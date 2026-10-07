@@ -16,6 +16,7 @@ namespace Archive0317
 
         private DoorState state = DoorState.Closed;
         private Coroutine transitionRoutine;
+        private Quaternion closedRotation;
         private float nextLockedFeedbackAt;
 
         public bool IsOpen => state == DoorState.Open;
@@ -31,6 +32,11 @@ namespace Archive0317
             requiredFlag = requirement;
             lockedMessage = message;
             permanentlyLocked = locked;
+        }
+
+        private void Awake()
+        {
+            if (leaf != null) closedRotation = leaf.localRotation;
         }
 
         public override void Inspect(FirstPersonPlayer player)
@@ -68,7 +74,7 @@ namespace Archive0317
                 collider.enabled = false;
 
             var start = leaf.localRotation;
-            var end = start * Quaternion.Euler(0, openAngle, 0);
+            var end = closedRotation * Quaternion.Euler(0, openAngle, 0);
             InteractionSoundscape.PlayDoorCreak(leaf.position);
 
             const float duration = .4f;
@@ -91,7 +97,15 @@ namespace Archive0317
                 transitionRoutine = null;
             }
             if (state == DoorState.Opening)
+            {
+                if (leaf != null)
+                {
+                    leaf.localRotation = closedRotation;
+                    foreach (var collider in leaf.GetComponentsInChildren<Collider>())
+                        collider.enabled = true;
+                }
                 state = DoorState.Closed;
+            }
         }
     }
 }
