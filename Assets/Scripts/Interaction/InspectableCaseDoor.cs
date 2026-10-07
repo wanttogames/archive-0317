@@ -24,9 +24,10 @@ namespace Archive0317
             if(moving || IsOpen)return;
             var progress=CaseProgressStore.Get(definition);
             if(!progress.Has(firstFlag))
-            {player.HUD.ShowToast("문이 잠겨 있다.");CaseProgressStore.Mark(definition,firstFlag);StartCoroutine(Receiver());return;}
-            foreach(var flag in requirements)if(!progress.Has(flag)){player.HUD.ShowToast("문이 잠겨 있다.");return;}
-            if(progress.Has(enteredFlag) && !progress.Has(exitFlag)){player.HUD.ShowToast("손잡이가 움직이지 않는다.");return;}
+            {InteractionSoundscape.PlayLockedDoor(transform.position);player.HUD.ShowToast("문이 잠겨 있다.");CaseProgressStore.Mark(definition,firstFlag);StartCoroutine(Receiver());return;}
+            foreach(var flag in requirements)if(!progress.Has(flag)){InteractionSoundscape.PlayLockedDoor(transform.position);player.HUD.ShowToast("문이 잠겨 있다.");return;}
+            if(progress.Has(enteredFlag) && !progress.Has(exitFlag)){InteractionSoundscape.PlayLockedDoor(transform.position);player.HUD.ShowToast("손잡이가 움직이지 않는다.");return;}
+            InteractionSoundscape.PlayDoorLatch(transform.position);
             StartCoroutine(Open());
         }
         private IEnumerator Receiver(){yield return new WaitForSeconds(1.4f);if(receiver!=null)receiver.Play();CuePlayed=true;}
@@ -34,7 +35,7 @@ namespace Archive0317
         {
             moving=true;yield return new WaitForSeconds(1);if(latch!=null)latch.Play();
             foreach(var c in leaf.GetComponentsInChildren<Collider>())c.enabled=false;
-            var start=leaf.localRotation;var end=closed*Quaternion.Euler(0,-95,0);
+            var start=leaf.localRotation;var end=closed*Quaternion.Euler(0,-95,0);InteractionSoundscape.PlayDoorCreak(leaf.position);
             for(float t=0;t<2.4f;t+=Time.deltaTime){leaf.localRotation=Quaternion.Slerp(start,end,t/2.4f);yield return null;}
             SetOpen(true);CaseProgressStore.Mark(definition,openFlag);moving=false;
         }
