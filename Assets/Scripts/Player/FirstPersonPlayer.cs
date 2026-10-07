@@ -22,7 +22,13 @@ namespace Archive0317
         public bool IsCaptured => captureRequested && Cursor.lockState == CursorLockMode.Locked;
 
         public void Configure(Camera camera, ArchiveHUD display) { viewCamera = camera; hud = display; }
-        private void Awake() { controller = GetComponent<CharacterController>(); }
+        public void ApplyPreferences()
+        {
+            mouseSensitivity = PlayerPrefs.GetFloat(MainMenuController.SensitivityKey, mouseSensitivity);
+            AudioListener.volume = PlayerPrefs.GetFloat(MainMenuController.VolumeKey, 1f);
+        }
+        private void Awake() { controller = GetComponent<CharacterController>(); ApplyPreferences(); }
+        private void OnEnable() { ApplyPreferences(); }
         private void Start() { SetCapture(true); }
         private void OnDisable() { SetCapture(false); }
         private void OnApplicationFocus(bool focused) { if (!focused) SetCapture(false); }
