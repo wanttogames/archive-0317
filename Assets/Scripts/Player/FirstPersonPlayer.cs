@@ -17,6 +17,7 @@ namespace Archive0317
         private float pitch;
         private bool captureRequested;
         private float footstepDistance;
+        private float nextInteractionAt;
         public Inspectable CurrentTarget { get; private set; }
         public Camera ViewCamera => viewCamera;
         public ArchiveHUD HUD => hud;
@@ -138,10 +139,15 @@ namespace Archive0317
         }
         public bool TryInteract()
         {
+            if (Time.unscaledTime < nextInteractionAt) return false;
             UpdateTarget();
-            if (CurrentTarget == null || hud.IsCaseOpen) return false;
-            InteractionSoundscape.PlayInspect(CurrentTarget.transform.position);
-            CurrentTarget.Inspect(this);
+            if (CurrentTarget == null || hud.IsCaseOpen || !CurrentTarget.IsInteractionAvailable) return false;
+
+            var target = CurrentTarget;
+            nextInteractionAt = Time.unscaledTime + Mathf.Max(.05f, target.InteractionCooldown);
+            if (target.PlayInspectSound) InteractionSoundscape.PlayInspect(target.transform.position);
+
+            target.Inspect(this);
             CurrentTarget = null;
             if (hud.IsCaseOpen) SetCapture(false);
             return true;
