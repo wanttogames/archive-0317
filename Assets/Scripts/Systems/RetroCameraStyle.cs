@@ -16,9 +16,12 @@ namespace Archive0317
             if(material==null)material=new Material(profile.shader){hideFlags=HideFlags.HideAndDontSave};
             int height=Mathf.Min(profile.pixelHeight,camera.pixelHeight);
             float intensity=Mathf.Clamp01(PlayerPrefs.GetFloat(MainMenuController.VisualIntensityKey,.65f));
-            material.SetVector("_PixelGrid",new Vector4(Mathf.Max(1,Mathf.RoundToInt(height*camera.aspect)),Mathf.Max(1,height),profile.pixelStrength,profile.ditherStrength*intensity));
-            material.SetVector("_RetroTone",new Vector4(profile.grain*intensity,profile.saturation,0,0));
-            material.SetColor("_RetroTint",profile.tint);return material;
+            float pixelStrength = profile.pixelStrength * intensity;
+            float saturation = Mathf.Lerp(1f, profile.saturation, intensity);
+            Color tint = Color.Lerp(Color.white, profile.tint, intensity);
+            material.SetVector("_PixelGrid",new Vector4(Mathf.Max(1,Mathf.RoundToInt(height*camera.aspect)),Mathf.Max(1,height),pixelStrength,profile.ditherStrength*intensity));
+            material.SetVector("_RetroTone",new Vector4(profile.grain*intensity,saturation,0,0));
+            material.SetColor("_RetroTint",tint);return material;
         }
         private void OnDisable(){Release();}
         private void Release(){if(material==null)return;if(Application.isPlaying)Destroy(material);else DestroyImmediate(material);material=null;}
