@@ -126,7 +126,7 @@ namespace Archive0317
                 {
                     string n = child.name.ToLowerInvariant();
                     if (n.Contains("minute") && n.Contains("hand")) child.localRotation = Quaternion.Euler(0f, 0f, -102f);
-                    else if (n.Contains("hour") && n.Contains("hand")) child.localRotation = Quaternion.Euler(0f, 0f, -98.5f);
+                    else if (n.Contains("hour") && n.Contains("hand")) child.localRotation = Quaternion.Euler(0f, 0f, -8.5f);
                 }
             }
 
