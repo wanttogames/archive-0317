@@ -21,10 +21,12 @@ namespace Archive0317
 
         public bool IsOpen => state == DoorState.Open;
         public bool CuePlayed { get; private set; }
-        public override bool IsInteractionAvailable => state == DoorState.Closed && isActiveAndEnabled;
+        public override bool IsInteractionAvailable => state == DoorState.Closed && receiverRoutine == null && isActiveAndEnabled;
         public override float InteractionCooldown => .3f;
         public override bool PlayInspectSound => false;
-        public override string Prompt => state == DoorState.Open ? "열림" : state == DoorState.Opening ? "여는 중…" : "E 열기";
+        public override string Prompt => state == DoorState.Open ? "열림" :
+            state == DoorState.Opening ? "여는 중…" :
+            receiverRoutine != null ? "듣는 중…" : "E 열기";
 
         public void Configure(CaseDefinition data,Transform panel,string[] conditions,string first,string opened,string entered,string exit,AudioSource sound,AudioSource click)
         {
