@@ -200,7 +200,14 @@ namespace Archive0317
                 var label=nextPageButton.GetComponentInChildren<Text>();
                 if(label!=null)label.text="다음 페이지  E";
             }
-            if(closeHintLabel!=null)closeHintLabel.text=activeDocument.PageCount>1?"Q 이전 · E 다음 · ESC 닫기":"E 또는 ESC — 파일 닫기";
+            if(closeHintLabel!=null)
+            {
+                bool scrollable=documentScroll!=null && documentScroll.enabled;
+                if(activeDocument.PageCount>1)
+                    closeHintLabel.text="Q 이전 · E 다음"+(scrollable?" · 휠 스크롤":"")+" · ESC 닫기";
+                else
+                    closeHintLabel.text=(scrollable?"휠 스크롤 · ":"")+"E 또는 ESC — 파일 닫기";
+            }
         }
         public void NextPage()
         {
