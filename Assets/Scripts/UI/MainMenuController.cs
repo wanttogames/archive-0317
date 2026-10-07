@@ -28,6 +28,16 @@ namespace Archive0317
         private FirstPersonPlayer player;
         private Canvas gameplayCanvas;
         private Font font;
+        private Camera menuCamera;
+        private Vector3 menuCameraBasePosition;
+        private Quaternion menuCameraBaseRotation;
+        private Text titleLabel;
+        private Vector2 titleBasePosition;
+        private Image accessStripeImage;
+        private RectTransform accessStripeRect;
+        private Vector2 stripeBasePosition;
+        private Selectable lastSelected;
+        private float selectionGlitchUntil;
         private float priorTimeScale = 1f;
         private bool busy;
 
@@ -51,6 +61,12 @@ namespace Archive0317
             if (player != null)
             {
                 gameplayCanvas = player.GetComponentInChildren<Canvas>(true);
+                menuCamera = player.ViewCamera;
+                if (menuCamera != null)
+                {
+                    menuCameraBasePosition = menuCamera.transform.localPosition;
+                    menuCameraBaseRotation = menuCamera.transform.localRotation;
+                }
                 player.enabled = false;
             }
             if (gameplayCanvas != null) gameplayCanvas.enabled = false;
@@ -107,6 +123,9 @@ namespace Archive0317
             accentRect.pivot = new Vector2(0, .5f);
             accentRect.sizeDelta = new Vector2(5, 650);
             accentRect.anchoredPosition = new Vector2(92, 5);
+            accessStripeImage = accent.GetComponent<Image>();
+            accessStripeRect = accentRect;
+            stripeBasePosition = accentRect.anchoredPosition;
 
             var terminal = Label("Terminal", canvasObject.transform, "RECORDS DIVISION // ACCESS TERMINAL", 17, new Color(.55f, .65f, .61f, 1), TextAnchor.MiddleLeft);
             Place(terminal.rectTransform, new Vector2(480, 32), new Vector2(-504, 300));
@@ -115,6 +134,8 @@ namespace Archive0317
             var title = Label("Title", canvasObject.transform, "ARCHIVE 03:17", 54, new Color(.91f, .93f, .87f, 1), TextAnchor.MiddleLeft);
             Place(title.rectTransform, new Vector2(520, 70), new Vector2(-484, 235));
             title.fontStyle = FontStyle.Bold;
+            titleLabel = title;
+            titleBasePosition = title.rectTransform.anchoredPosition;
 
             var korean = Label("KoreanTitle", canvasObject.transform, "기록보관실", 27, new Color(.72f, .76f, .7f, 1), TextAnchor.MiddleLeft);
             Place(korean.rectTransform, new Vector2(420, 42), new Vector2(-484, 184));
@@ -133,6 +154,7 @@ namespace Archive0317
             quit.onClick.AddListener(QuitGame);
 
             bool hasSave = PlayerPrefs.HasKey(SaveKey);
+            var savedProgress = ReadSavedProgress();
             continueButton.interactable = hasSave;
             if (!hasSave)
             {
@@ -141,9 +163,11 @@ namespace Archive0317
             }
 
             var note = Label("Hint", canvasObject.transform,
-                hasSave ? "저장된 기록을 발견했습니다." : "보관된 조사 기록이 없습니다.",
+                hasSave ? DescribeProgress(savedProgress) : "보관된 조사 기록이 없습니다.",
                 16, new Color(.5f, .58f, .54f, 1), TextAnchor.MiddleLeft);
             Place(note.rectTransform, new Vector2(440, 28), new Vector2(-476, -181));
+
+            BuildCaseStatus(canvasObject.transform, savedProgress, hasSave);
 
             var warning = Label("Warning", canvasObject.transform,
                 "본 게임은 저조도 화면과 순간적인 시각·청각 연출을 포함합니다.",
@@ -159,6 +183,116 @@ namespace Archive0317
 
             (continueButton.interactable ? continueButton : newGameButton).Select();
             StartCoroutine(FadeMenu(0f, 1f, .3f));
+        }
+
+        private void Update()
+        {
+            if (!IsMenuOpen || busy) return;
+
+            if (menuCamera != null)
+            {
+                float t = Time.unscaledTime;
+                menuCamera.transform.localPosition = menuCameraBasePosition + new Vector3(
+                    Mathf.Sin(t * .19f) * .012f,
+                    Mathf.Sin(t * .13f + 1.1f) * .006f,
+                    0f);
+                menuCamera.transform.localRotation = menuCameraBaseRotation * Quaternion.Euler(
+                    Mathf.Sin(t * .17f) * .12f,
+                    Mathf.Sin(t * .11f + .7f) * .22f,
+                    0f);
+            }
+
+            var selected = EventSystem.current != null && EventSystem.current.currentSelectedGameObject != null
+                ? EventSystem.current.currentSelectedGameObject.GetComponent<Selectable>() : null;
+            if (selected != null && selected != lastSelected)
+            {
+                lastSelected = selected;
+                selectionGlitchUntil = Time.unscaledTime + .08f;
+            }
+
+            if (titleLabel != null)
+            {
+                bool glitching = Time.unscaledTime < selectionGlitchUntil;
+                float offset = glitching ? Mathf.Sin(Time.unscaledTime * 210f) * 2.1f : 0f;
+                titleLabel.rectTransform.anchoredPosition = titleBasePosition + new Vector2(offset, 0f);
+                if (accessStripeRect != null) accessStripeRect.anchoredPosition = stripeBasePosition + new Vector2(glitching ? -offset * .6f : 0f, 0f);
+                if (accessStripeImage != null)
+                {
+                    var color = accessStripeImage.color;
+                    color.a = glitching ? .98f : .82f;
+                    accessStripeImage.color = color;
+                }
+            }
+        }
+
+        private void BuildCaseStatus(Transform parent, CaseProgress progress, bool hasSave)
+        {
+            var card = Panel("CaseStatusCard", parent, new Color(.025f, .033f, .031f, .84f));
+            Place(card.GetComponent<RectTransform>(), new Vector2(430, 220), new Vector2(430, -205));
+
+            var overline = Label("StatusOverline", card.transform, "CURRENT RECORD", 13, new Color(.48f, .57f, .52f, 1), TextAnchor.MiddleLeft);
+            Place(overline.rectTransform, new Vector2(350, 24), new Vector2(0, 76));
+            overline.fontStyle = FontStyle.Bold;
+
+            var caseName = Label("CaseName", card.transform, hasSave ? "CASE 001" : "NO ACTIVE CASE", 25,
+                new Color(.88f, .9f, .84f, 1), TextAnchor.MiddleLeft);
+            Place(caseName.rectTransform, new Vector2(350, 38), new Vector2(0, 42));
+            caseName.fontStyle = FontStyle.Bold;
+
+            var status = Label("CaseStatus", card.transform,
+                hasSave ? DescribeProgress(progress) : "새 기록을 시작할 수 있습니다.",
+                16, new Color(.66f, .72f, .67f, 1), TextAnchor.MiddleLeft);
+            Place(status.rectTransform, new Vector2(350, 32), new Vector2(0, 6));
+
+            int evidenceCount = progress != null && progress.evidenceIds != null ? progress.evidenceIds.Count : 0;
+            var evidence = Label("EvidenceStatus", card.transform,
+                hasSave ? "증거 기록  " + evidenceCount + "개" : "증거 기록  —",
+                14, new Color(.48f, .54f, .5f, 1), TextAnchor.MiddleLeft);
+            Place(evidence.rectTransform, new Vector2(350, 26), new Vector2(0, -33));
+
+            string saveStamp = progress != null && !string.IsNullOrEmpty(progress.lastSavedLocal)
+                ? progress.lastSavedLocal : (hasSave ? "이전 버전 기록" : "—");
+            var saved = Label("SavedAt", card.transform, "LAST SAVE  " + saveStamp, 13,
+                new Color(.4f, .46f, .42f, 1), TextAnchor.MiddleLeft);
+            Place(saved.rectTransform, new Vector2(350, 24), new Vector2(0, -69));
+
+            var corner = Panel("StatusAccent", card.transform, new Color(.5f, .14f, .11f, .9f));
+            var cornerRect = corner.GetComponent<RectTransform>();
+            cornerRect.anchorMin = cornerRect.anchorMax = new Vector2(0, 1);
+            cornerRect.pivot = new Vector2(0, 1);
+            cornerRect.sizeDelta = new Vector2(58, 3);
+            cornerRect.anchoredPosition = new Vector2(0, 0);
+        }
+
+        private static CaseProgress ReadSavedProgress()
+        {
+            if (!PlayerPrefs.HasKey(SaveKey)) return null;
+            try
+            {
+                var progress = JsonUtility.FromJson<CaseProgress>(PlayerPrefs.GetString(SaveKey, ""));
+                if (progress != null)
+                {
+                    if (progress.flags == null) progress.flags = new System.Collections.Generic.List<string>();
+                    if (progress.evidenceIds == null) progress.evidenceIds = new System.Collections.Generic.List<string>();
+                }
+                return progress;
+            }
+            catch (System.ArgumentException)
+            {
+                return null;
+            }
+        }
+
+        private static string DescribeProgress(CaseProgress progress)
+        {
+            if (progress == null || progress.flags == null) return "조사 기록을 확인할 수 없습니다.";
+            if (progress.flags.Contains("CaseCompleted")) return "CASE 001 / 보관 완료";
+            if (progress.flags.Contains("Room403Completed")) return "CASE 001 / 403호 조사 완료";
+            if (progress.flags.Contains("Room403Entered")) return "CASE 001 / 403호 조사 중";
+            if (progress.flags.Contains("RoomNumberMismatchFound")) return "CASE 001 / 기록 불일치 확인";
+            if (progress.flags.Contains("CaseStarted")) return "CASE 001 / 현장 조사 중";
+            if (progress.flags.Contains("OfficialRecordSeen")) return "CASE 001 / 사건 파일 열람";
+            return "CASE 001 / 조사 기록";
         }
 
         private void BuildSettings(Transform parent)
@@ -246,16 +380,12 @@ namespace Archive0317
         {
             if (busy || !PlayerPrefs.HasKey(SaveKey)) return;
             string destination = "ArchiveRoom";
-            try
+            var progress = ReadSavedProgress();
+            if (progress != null && progress.flags != null)
             {
-                var progress = JsonUtility.FromJson<CaseProgress>(PlayerPrefs.GetString(SaveKey, ""));
-                if (progress != null && progress.flags != null)
-                {
-                    bool completed = progress.flags.Contains("Case001Completed") || progress.flags.Contains("ReturnedToArchive") || progress.flags.Contains("CaseCompleted");
-                    if (!completed && progress.flags.Contains("CaseStarted")) destination = "Case001_Motel";
-                }
+                bool completed = progress.flags.Contains("Case001Completed") || progress.flags.Contains("ReturnedToArchive") || progress.flags.Contains("CaseCompleted");
+                if (!completed && progress.flags.Contains("CaseStarted")) destination = "Case001_Motel";
             }
-            catch (System.ArgumentException) { destination = "ArchiveRoom"; }
 
             if (SceneManager.GetActiveScene().name == destination) StartCoroutine(CloseMenu());
             else StartCoroutine(LoadFromMenu(destination));
@@ -312,6 +442,11 @@ namespace Archive0317
 
         private void OnDestroy()
         {
+            if (menuCamera != null)
+            {
+                menuCamera.transform.localPosition = menuCameraBasePosition;
+                menuCamera.transform.localRotation = menuCameraBaseRotation;
+            }
             IsMenuOpen = false;
         }
 
