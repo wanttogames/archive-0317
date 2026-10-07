@@ -57,3 +57,28 @@ Final validation (2026-10-07): the complete extended `Case001MotelSmokeTest` pas
 Screens inspected: native `Case001_FinalGameView.png` and 1280×720 camera/HUD captures `Case001_VerdictUI.png`, `Case001_FinalReport.png`, `Case001_Case00Shelf.png`, `Case001_Case00Document.png`, and `Case001_Case00PhotoPage.png`. These confirm Korean glyphs, all evidence lines, four classifications plus confirmation, shelf-file visibility and the actual archive photograph. Aisle capture positions were chosen to avoid furniture occluding the temporary camera-space screenshot canvas; gameplay UI uses the original overlay canvas.
 
 Both scenes were saved through Unity Editor APIs, with no missing scripts or asset dependencies. Final Editor is outside Play Mode with ArchiveRoom open. Final native Console: 0 errors/exceptions and 2 existing MCP lifecycle warnings (disposed log flush and connection unavailable). Plugin/package settings remain unchanged by this feature and unrelated existing modifications are excluded from Git staging.
+# PS1 / VHS visual patch verification
+
+Actual restart verification (2026-10-07): the previous project Editor process was already closed when checked; Hub's service was preserved. `git pull origin main` fast-forwarded 4c5fa40 to 72caf45 without conflicts. Uncommitted user files were preserved, so the working tree was not clean. Unity.exe GUI was started with PowerShell Start-Process using `C:\Program Files\Unity\Hub\Editor\6000.3.25f1\Editor\Unity.exe -projectPath "C:\work\archive-0317" -logFile "C:\work\archive-0317\Temp\RetroRestartEditor.log"` (PID 36532), without batchmode.
+
+| Check | Actual result |
+| --- | --- |
+| Unity Editor actually launched | YES |
+| Engine version / project | 6000.3.25f1 / C:\work\archive-0317 |
+| Import and script compile | PASS; isCompiling=false, isUpdating=false |
+| Unity Console Error / runtime exception | PASS; 0 / 0 |
+| Editor smoke test executed | PASS; runtime smoke routines invoked through Unity MCP |
+| Actual Play Mode executed | PASS; full CASE 001 regression and separate saved-resume session |
+| Actual GPU visual output | PASS; camera RenderGraph output checked in both scenes |
+
+The pulled Case001ProgressAssist had four CS0104 compilation errors; a UnityEngine.Object alias fixed them and Editor compilation succeeded. Smoke assertions were updated for the current document viewer, contradiction tab and completed-report button. The full test finished with Console errors/warnings/logs 0/0/2. After the separate resume session and Play Mode exit, Console was 0/6/1; all six warnings were Unity MCP plugin lifecycle messages (disposed log flush and temporarily unavailable connection), not gameplay warnings. Original PlayerPrefs save data was restored and its temporary backup removed.
+
+Native Game View captures include Retro_ArchiveDocument.png, Retro_MotelGameView.png, Retro_CCTVGameView.png, Retro_CRTGameView.png and Retro_ReportGameView.png. The completed report retains sharp Korean text over the pixelated world. Physical keyboard/mouse and pointer input still require human testing: automated smoke checks invoke actual runtime component paths and UI listeners in Editor Play Mode.
+
+The existing CASE 001 smoke sequence now additionally validates serialized cold/warm profiles, an overlay HUD, absence of world effects on the CCTV/CRT recording cameras, exactly one active retro feature per PC/mobile renderer, shader compilation and restrained grain/dither settings. A temporary isolated random-color GPU probe renders through the actual player camera and RenderGraph, verifies uniform 2×2 output blocks at 1280×720, and restores every camera setting/resource in `finally`. This tests effect execution rather than just its configured values. Executed assertions are written to `RetroVisualSmokeTest.txt`; the prior full gameplay/evidence/save/CASE 00 assertions remain in `Case001SmokeTest.txt`.
+
+The world pass preserves output dimensions and uses a 360px-high sampling grid, adapting width to camera aspect. Only one integrated full-screen blit is added, and RenderGraph camera-color swapping avoids a copy-back blit. World geometry remains full resolution before the sampling effect: no lower GPU geometry cost is claimed. Existing SSAO and post-processing remain available. No package, pipeline, Unity version, frame cap, movement, save data or interaction rules are changed. Existing textures/material roughness were reviewed and retained. Vertex wobble and new full-screen VHS bursts are omitted. Stronger VHS remains on CCTV/CRT; the newly pulled VisualStyleDirector's existing event hooks are retained with a capped short chromatic pulse and no lens distortion. Its baseline grain/grading defer to the integrated pass to avoid duplicate effects.
+
+Native Game View captures cover archive world/documents, motel lobby, CCTV with 401–404 and 03:17, and the 403 CRT clue. Both 480×270 and 640×360 equivalents were visually compared: 640×360 was selected for file-cover and object-label readability. Grain/dither are attenuated near black. Inspection of the first CRT capture led to additional black-level noise attenuation in the recording shader.
+
+Manual target-hardware checks still required: monitor brightness and shadow visibility, eye fatigue during a longer moving-camera session, small world labels at normal viewing distance, perceived pixel/VHS strength and actual GPU performance on a lower-end PC. Automated image/physics/UI checks are not a human playthrough or a standalone packaged-build test.

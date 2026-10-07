@@ -16114,7 +16114,7 @@ Light:
   m_InnerSpotAngle: 21.80208
   m_CookieSize2D: {x: 0.5, y: 0.5}
   m_Shadows:
-    m_Type: 2
+    m_Type: 1
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
@@ -22225,7 +22225,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6988935937561256526, guid: bcc73cf5ed8ec2548a48ed4370ce3c56, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2619076142754280233}
   m_SourcePrefab: {fileID: 100100000, guid: bcc73cf5ed8ec2548a48ed4370ce3c56, type: 3}
 --- !u!114 &2619076142754280231 stripped
 MonoBehaviour:
@@ -22238,6 +22241,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13eebe445f3018e49bb583a237db095c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Archive0317.FirstPersonPlayer
+--- !u!1 &2619076142754280232 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6988935937561256526, guid: bcc73cf5ed8ec2548a48ed4370ce3c56, type: 3}
+  m_PrefabInstance: {fileID: 2619076142754280230}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2619076142754280233
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2619076142754280232}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: affa496b1b9b0da489c080ec9bffafcc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Archive0317.RetroCameraStyle
+  profile: {fileID: 11400000, guid: 9843ff78d5084164791933b7d14769b5, type: 2}
 --- !u!1001 &3683556644326541136
 PrefabInstance:
   m_ObjectHideFlags: 0

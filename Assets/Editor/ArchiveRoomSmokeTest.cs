@@ -23,6 +23,7 @@ public static class ArchiveRoomSmokeTest
         player.enabled=false;
         try
         {
+            player.transform.rotation=Quaternion.identity;
             Teleport(controller,player,new Vector3(2,.05f,-3));
             for(int i=0;i<60;i++) player.Move(Vector2.zero,false,1f/60);
             Check(controller.isGrounded,"Gravity and floor grounding",report);

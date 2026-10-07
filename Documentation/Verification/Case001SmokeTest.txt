@@ -128,15 +128,19 @@ PASS: Evidence filtering excludes undiscovered objects
 PASS: Verdict requires explicit selection before confirmation
 PASS: Selecting classification does not prematurely complete case
 PASS: All four verdicts accepted and saved: HumanCause
+PASS: Completion report returns to archive through its real UI button
 PASS: Verdict requires explicit selection before confirmation
 PASS: Selecting classification does not prematurely complete case
 PASS: All four verdicts accepted and saved: RecordErrorOrTampering
+PASS: Completion report returns to archive through its real UI button
 PASS: Verdict requires explicit selection before confirmation
 PASS: Selecting classification does not prematurely complete case
 PASS: All four verdicts accepted and saved: Unexplained
+PASS: Completion report returns to archive through its real UI button
 PASS: Verdict requires explicit selection before confirmation
 PASS: Selecting classification does not prematurely complete case
 PASS: All four verdicts accepted and saved: Deferred
+PASS: Completion report returns to archive through its real UI button
 PASS: CASE 00 does not appear while its empty slot is being watched
 PASS: CASE 00 appears silently outside view after leaving report area
 PASS: CASE 00 discovered by Raycast with fictional investigator code

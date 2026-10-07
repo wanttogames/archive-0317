@@ -59,15 +59,18 @@ public static class Case001MotelSmokeTest
     private static IEnumerator Run()
     {
         ArchiveRoomSmokeTest.Run(); Check(true, "Existing ArchiveRoom runtime smoke test");
+        System.IO.File.WriteAllText("Documentation/Verification/RetroVisualSmokeTest.txt","PS1 / VHS visual smoke test\n");RetroVisualSmokeTest.ValidateCurrentScene();
         var player = UnityEngine.Object.FindFirstObjectByType<FirstPersonPlayer>(); player.enabled = false;
         var file = UnityEngine.Object.FindFirstObjectByType<CaseFile>();
         Target(player, new Vector3(.45f,.05f,-.55f), file.transform.position);
         Check(player.TryInteract() && player.HUD.IsCaseOpen, "Official CASE file Raycast opens UI");
         Check(Body(player).Contains("투숙 객실: 404호"), "Official record says 404");
+        var archiveCapture=RetroVisualSmokeTest.Capture("Retro_ArchiveDocument");while(archiveCapture.MoveNext())yield return null;
         var start = Button(player,"StartField"); Check(start.gameObject.activeInHierarchy, "Start field button visible"); start.onClick.Invoke();
         Check(SceneTransitionManager.IsTransitioning, "Fade transition starts through UI listener");
         while (SceneTransitionManager.IsTransitioning) yield return null;
         Check(SceneManager.GetActiveScene().name == "Case001_Motel", "ArchiveRoom to motel scene load and fade complete");
+        RetroVisualSmokeTest.ValidateCurrentScene();
         player = UnityEngine.Object.FindFirstObjectByType<FirstPersonPlayer>(); player.enabled = false;
         Check(UnityEngine.Object.FindObjectsByType<FirstPersonPlayer>(FindObjectsSortMode.None).Length==1 && UnityEngine.Object.FindObjectsByType<AudioListener>(FindObjectsSortMode.None).Length==1 && UnityEngine.Object.FindObjectsByType<EventSystem>(FindObjectsSortMode.None).Length==1, "One shared player, AudioListener and EventSystem");
         Check(CaseProgressStore.Get(definition).Has("CaseStarted"), "CaseStarted stored");
@@ -79,6 +82,7 @@ public static class Case001MotelSmokeTest
         var initialNumbers=UnityEngine.Object.FindObjectsByType<TextMesh>(FindObjectsSortMode.None).Where(t=>t.name=="RoomNumber").Select(t=>t.text).OrderBy(t=>t).ToArray();
         Check(initialNumbers.SequenceEqual(new[]{"401","402","404","405"}),"Initial actual corridor numbers: 401 / 402 / 404 / 405");
         Teleport(player,new Vector3(0,.05f,-3.7f)); player.transform.rotation=Quaternion.identity;
+        player.ViewCamera.transform.localRotation=Quaternion.identity;var motelCapture=RetroVisualSmokeTest.Capture("Retro_MotelGameView");while(motelCapture.MoveNext())yield return null;
         Steps(player,Vector2.zero,60); Check(player.GetComponent<CharacterController>().isGrounded,"Motel floor grounding");
         var initial=player.transform.position; Steps(player,Vector2.up,30); float walk=player.transform.position.z-initial.z;
         Teleport(player,initial); Steps(player,Vector2.up,30,true); float sprint=player.transform.position.z-initial.z;
@@ -132,6 +136,7 @@ public static class Case001MotelSmokeTest
         Check(CaseProgressStore.Get(definition).Has("Room404PaperInspected"),"404 paper evidence stored"); player.CloseCase();
         Check(!CaseProgressStore.Get(definition).Has("RoomNumberMismatchFound"),"Player chooses to compare evidence");
         player.HUD.ShowNotebook(); Check(Body(player).Contains("404호") && Body(player).Contains("403호"),"Notebook shows official and field records");
+        player.HUD.SelectNotebookTab(1);
         Check(Button(player,"CompareRecords").gameObject.activeInHierarchy,"Compare button requires investigation"); Button(player,"CompareRecords").onClick.Invoke();
         Check(CaseProgressStore.Get(definition).Has("RoomNumberMismatchFound") && player.HUD.GetComponentsInChildren<Text>(true).Any(t=>t.name=="Observation" && t.text=="기록이 일치하지 않는다." && t.gameObject.activeSelf),"Slice endpoint short notification");
         CaseProgressStore.ClearCache(); Check(CaseProgressStore.Get(definition).Has("RoomNumberMismatchFound"),"Per-case JSON progress survives cache reload");
@@ -148,6 +153,7 @@ public static class Case001MotelSmokeTest
         var frame=player.HUD.GetComponentsInChildren<RawImage>(true).First(t=>t.name=="CCTVFrame");
         var stamp=player.HUD.GetComponentsInChildren<Text>(true).First(t=>t.name=="CCTVTimestamp");
         Check(frame.gameObject.activeInHierarchy && frame.texture==cctv.Frame && stamp.gameObject.activeInHierarchy && stamp.text.Contains("03:17"),"RenderTexture and single CCTV timestamp in existing document UI");
+        var cctvCapture=RetroVisualSmokeTest.Capture("Retro_CCTVGameView");while(cctvCapture.MoveNext())yield return null;
         Check(cctv.RecordingCamera.cullingMask==(1<<30) && GameObject.Find("RecordedNumber403").GetComponent<TextMesh>().text=="403","Recorded 403 exists only in isolated CCTV layer");
         Check(CaseProgressStore.Get(definition).Has("CCTVContradictionFound"),"CCTVContradictionFound stored after footage inspection");
         var texture=(RenderTexture)cctv.Frame;var previous=RenderTexture.active;RenderTexture.active=texture;
@@ -216,6 +222,7 @@ public static class Case001MotelSmokeTest
         Check(television.FootageVisible && progress.Has("TelevisionEventTriggered") && GameObject.Find("Room403TVTimestamp").GetComponent<TextMesh>().text=="03:17","CRT static resolves into present corridor image with 03:17");
         var rt=(RenderTexture)television.Frame;var prior=RenderTexture.active;RenderTexture.active=rt;var image=new Texture2D(rt.width,rt.height,TextureFormat.RGB24,false);image.ReadPixels(new Rect(0,0,rt.width,rt.height),0,0);image.Apply();RenderTexture.active=prior;var values=image.GetPixels();Check(values.Max(c=>c.r)-values.Min(c=>c.r)>.08f,"Room TV RenderTexture contains actual nonblank corridor imagery");UnityEngine.Object.DestroyImmediate(image);
         Target(player,new Vector3(-19.5f,9.05f,5.8f),television.transform.position);Check(player.TryInteract() && progress.Has("TelevisionInspected"),"TV inspection uses original interaction UI");environment.Evaluate();
+        var crtCapture=RetroVisualSmokeTest.Capture("Retro_CRTGameView");while(crtCapture.MoveNext())yield return null;
         Check(GameObject.Find("Room403KeyEvidence")!=null,"Key tag becomes discoverable beside bed after TV");
         Target(player,new Vector3(-19.3f,9.05f,4.03f),GameObject.Find("Room403KeyEvidence").transform.position);Check(player.TryInteract() && Body(player).Contains("403") && !progress.Has("KeyEvidenceFound"),"Key tag front inspected without prematurely recording reverse evidence");player.HUD.NextPage();Check(Body(player).Contains("404") && progress.Has("KeyEvidenceFound"),"Reverse side 404 sets KeyEvidenceFound");player.CloseCase();environment.Evaluate();
         Target(player,new Vector3(-19.5f,9.05f,5.15f),GameObject.Find("Room403Receipt").transform.position);Check(player.TryInteract() && Body(player).Contains("객실: 403") && progress.Has("ReceiptChangedSeen") && progress.Fact("ReceiptRoom")=="403","Reinspection silently changes receipt to 403");player.CloseCase();
@@ -261,7 +268,8 @@ public static class Case001MotelSmokeTest
             PlayerPrefs.SetString(storageKey,beforeVerdict);CaseProgressStore.ClearCache();player.HUD.ShowReport(resolution);Check(!Button(player,"ConfirmVerdict").gameObject.activeSelf,"Verdict requires explicit selection before confirmation");
             Button(player,choiceNames[choice]).onClick.Invoke();Check(Button(player,"ConfirmVerdict").gameObject.activeInHierarchy && !CaseProgressStore.Get(definition).Has("Case001Completed"),"Selecting classification does not prematurely complete case");
             Button(player,"ConfirmVerdict").onClick.Invoke();progress=CaseProgressStore.Get(definition);
-            Check(!player.HUD.IsCaseOpen && progress.Has("Case001Completed") && progress.verdict==((CaseVerdict)choice).ToString() && progress.Fact("Case001Verdict")==progress.verdict,"All four verdicts accepted and saved: "+((CaseVerdict)choice));
+            Check(player.HUD.IsCaseOpen && !Button(player,"VerdictDeferred").gameObject.activeInHierarchy && progress.Has("Case001Completed") && progress.verdict==((CaseVerdict)choice).ToString() && progress.Fact("Case001Verdict")==progress.verdict,"All four verdicts accepted and saved: "+((CaseVerdict)choice));
+            Button(player,"ContinueInvestigation").onClick.Invoke();Check(!player.HUD.IsCaseOpen,"Completion report returns to archive through its real UI button");
         }
         var archiveEnvironment=GameObject.Find("ArchiveClosure").GetComponent<CaseEnvironmentState>();var unknown=UnityEngine.Object.FindObjectsByType<InspectableDocument>(FindObjectsInactive.Include,FindObjectsSortMode.None).First(d=>d.name=="CASE 00");
         Target(player,new Vector3(2.62f,.05f,2.5f),unknown.transform.position);archiveEnvironment.Evaluate();until=Time.time+4.3f;while(Time.time<until)yield return null;Check(!unknown.gameObject.activeSelf,"CASE 00 does not appear while its empty slot is being watched");
@@ -279,6 +287,6 @@ public static class Case001MotelSmokeTest
     private static void Teleport(FirstPersonPlayer player,Vector3 position){var cc=player.GetComponent<CharacterController>();cc.enabled=false;player.transform.position=position;cc.enabled=true;Physics.SyncTransforms();}
     private static void Steps(FirstPersonPlayer player,Vector2 input,int count,bool run=false){for(int i=0;i<count;i++)player.Move(input,run,1f/60);}
     private static void Target(FirstPersonPlayer player,Vector3 position,Vector3 look){player.HUD.CloseCase();Teleport(player,position);player.transform.rotation=Quaternion.identity;player.ViewCamera.transform.LookAt(look);Physics.SyncTransforms();player.UpdateTarget();}
-    private static string Body(FirstPersonPlayer player)=>player.HUD.GetComponentsInChildren<Text>(true).First(t=>t.name=="Description").text;
+    private static string Body(FirstPersonPlayer player)=>player.HUD.GetComponentsInChildren<Text>(true).First(t=>t.name==(player.HUD.HasActiveDocument?"DocumentText":"Description")).text;
     private static Button Button(FirstPersonPlayer player,string name)=>player.HUD.GetComponentsInChildren<Button>(true).First(t=>t.name==name);
 }

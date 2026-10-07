@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e522b9e088c7e8a428ac95e8b7b8ffb4, type: 3}
+  m_Name: Motel
+  m_EditorClassIdentifier: Assembly-CSharp::Archive0317.RetroVisualProfile
+  shader: {fileID: 4800000, guid: 63c3db806561d7d4b8228201f8d7db7a, type: 3}
+  pixelHeight: 360
+  pixelStrength: 1
+  ditherStrength: 0.22
+  grain: 0.0032
+  saturation: 0.79
+  tint: {r: 1.035, g: 1.005, b: 0.96, a: 1}

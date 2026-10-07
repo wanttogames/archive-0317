@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using UnityEngine;
+using Object = UnityEngine.Object;
 using UnityEngine.SceneManagement;
 
 namespace Archive0317

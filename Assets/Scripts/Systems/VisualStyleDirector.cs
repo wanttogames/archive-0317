@@ -173,6 +173,17 @@ namespace Archive0317
             }
             else pulseStrength = Mathf.MoveTowards(pulseStrength, 0f, Time.unscaledDeltaTime * 4f);
 
+            // The integrated PS1 pass owns normal grain and scene grading.
+            // Retain existing event hooks with a short, restrained chromatic pulse.
+            if (worldCamera != null && worldCamera.TryGetComponent<RetroCameraStyle>(out var retro) && retro.isActiveAndEnabled && retro.Profile != null)
+            {
+                targetGrain = 0f;
+                targetChromatic = eventPulse ? .008f * Mathf.Clamp01(pulseStrength) : 0f;
+                targetDistortion = 0f;
+                targetSaturation = 0f;
+                targetContrast = 0f;
+            }
+
             targetGrain *= user;
             targetChromatic *= user;
             targetDistortion *= user;
