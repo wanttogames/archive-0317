@@ -52,9 +52,9 @@ public static class ArchiveRoomVisualPass
         foreach(var seam in room.Cast<Transform>().Where(t=>t.name=="FloorSeam").ToArray()) Object.DestroyImmediate(seam.gameObject);
         Resize(room,"Door",new Vector3(-.65f,1.12f,-4.32f),new Vector3(1.25f,2.24f,.09f),steel);
         Resize(room,"DoorHandle",new Vector3(-.18f,1.1f,-4.23f),new Vector3(.065f,.22f,.08f),black);
-        var sign=room.Find("DoorSign"); sign.localPosition=new Vector3(-.65f,2.46f,-4.28f); sign.localRotation=Quaternion.Euler(0,180,0);
+        var sign=room.Find("DoorSign"); sign.localPosition=new Vector3(-.65f,2.32f,-4.28f); sign.localRotation=Quaternion.Euler(0,180,0);
         sign.GetComponent<TextMesh>().text="지하 1층 · 기록보관실"; sign.GetComponent<TextMesh>().characterSize=.017f;
-        sign=room.Find("ArchiveSign"); sign.localPosition=new Vector3(0,2.55f,4.3f); sign.GetComponent<TextMesh>().text="기록물 보존구역\n관계자 외 출입금지"; sign.GetComponent<TextMesh>().characterSize=.017f;
+        sign=room.Find("ArchiveSign"); sign.localPosition=new Vector3(0,2.55f,2.365f); sign.GetComponent<TextMesh>().text="기록물 보존구역\n관계자 외 출입금지"; sign.GetComponent<TextMesh>().characterSize=.01275f;
 
         var detail = new GameObject(RootName).transform;
         Box("NorthDampBand",detail,new Vector3(0,.45f,4.32f),new Vector3(7.7f,.9f,.035f),lowerWall);

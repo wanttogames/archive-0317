@@ -185,6 +185,7 @@ namespace Archive0317
             label.anchor = TextAnchor.MiddleCenter;
             label.alignment = TextAlignment.Center;
             label.color = new Color(.72f, .72f, .63f);
+            labelGO.AddComponent<WorldTextDepth>();
             return folder;
         }
 
@@ -217,6 +218,7 @@ namespace Archive0317
             label.anchor = TextAnchor.MiddleCenter;
             label.alignment = TextAlignment.Center;
             label.color = new Color(.46f, .5f, .45f);
+            labelGO.AddComponent<WorldTextDepth>();
 
             var seal = GameObject.CreatePrimitive(PrimitiveType.Cube);
             seal.name = "RedSeal";

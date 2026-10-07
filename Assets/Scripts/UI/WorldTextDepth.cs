@@ -15,6 +15,13 @@ namespace Archive0317
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         private static void ApplyToSceneText()
         {
+            UnityEngine.SceneManagement.SceneManager.sceneLoaded-=OnSceneLoaded;
+            UnityEngine.SceneManagement.SceneManager.sceneLoaded+=OnSceneLoaded;
+            ApplyLabels();
+        }
+        private static void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene,UnityEngine.SceneManagement.LoadSceneMode mode){ApplyLabels();}
+        public static void ApplyLabels()
+        {
             var shader=Shader.Find("Archive0317/WorldTextDepth");
             if(shader==null)return;
             foreach(var label in Object.FindObjectsByType<TextMesh>(FindObjectsInactive.Include,FindObjectsSortMode.None))

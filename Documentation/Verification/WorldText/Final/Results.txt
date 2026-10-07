@@ -1,0 +1,34 @@
+Actual Play Mode / native Game View world text comparison
+PASS: ArchiveRoom actual GPU glyph cores preserved at VHS 0/.65/1, opaque depth occlusion retained, text visible without RetroCameraStyle
+PASS: ArchiveRoom / 기록물 보존구역 /관계자 외 출입금지 /CASE 001 / ARCHIVED / VHS=0 / correct shader, intensity and actual screenshot
+PASS: ArchiveRoom / 기록물 보존구역 /관계자 외 출입금지 /CASE 001 / ARCHIVED / VHS=0.65 / correct shader, intensity and actual screenshot
+PASS: ArchiveRoom / 기록물 보존구역 /관계자 외 출입금지 /CASE 001 / ARCHIVED / VHS=1 / correct shader, intensity and actual screenshot
+PASS: ArchiveRoom / 지하 1층 · 기록보관실 / VHS=0 / correct shader, intensity and actual screenshot
+PASS: ArchiveRoom / 지하 1층 · 기록보관실 / VHS=0.65 / correct shader, intensity and actual screenshot
+PASS: ArchiveRoom / 지하 1층 · 기록보관실 / VHS=1 / correct shader, intensity and actual screenshot
+PASS: ArchiveRoom / ← 비상구 EXIT / VHS=0 / correct shader, intensity and actual screenshot
+PASS: ArchiveRoom / ← 비상구 EXIT / VHS=0.65 / correct shader, intensity and actual screenshot
+PASS: ArchiveRoom / ← 비상구 EXIT / VHS=1 / correct shader, intensity and actual screenshot
+PASS: ArchiveRoom / CASE 001 /보존 원본 / VHS=0 / correct shader, intensity and actual screenshot
+PASS: ArchiveRoom / CASE 001 /보존 원본 / VHS=0.65 / correct shader, intensity and actual screenshot
+PASS: ArchiveRoom / CASE 001 /보존 원본 / VHS=1 / correct shader, intensity and actual screenshot
+PASS: ArchiveRoom / 문서 반출 금지 /정리 담당자 확인 / VHS=0 / correct shader, intensity and actual screenshot
+PASS: ArchiveRoom / 문서 반출 금지 /정리 담당자 확인 / VHS=0.65 / correct shader, intensity and actual screenshot
+PASS: ArchiveRoom / 문서 반출 금지 /정리 담당자 확인 / VHS=1 / correct shader, intensity and actual screenshot
+PASS: Case001_Motel actual GPU glyph cores preserved at VHS 0/.65/1, opaque depth occlusion retained, text visible without RetroCameraStyle
+PASS: Case001_Motel / 401 / VHS=0 / correct shader, intensity and actual screenshot
+PASS: Case001_Motel / 401 / VHS=0.65 / correct shader, intensity and actual screenshot
+PASS: Case001_Motel / 401 / VHS=1 / correct shader, intensity and actual screenshot
+PASS: Case001_Motel / 402 / VHS=0 / correct shader, intensity and actual screenshot
+PASS: Case001_Motel / 402 / VHS=0.65 / correct shader, intensity and actual screenshot
+PASS: Case001_Motel / 402 / VHS=1 / correct shader, intensity and actual screenshot
+PASS: Case001_Motel / 404 / VHS=0 / correct shader, intensity and actual screenshot
+PASS: Case001_Motel / 404 / VHS=0.65 / correct shader, intensity and actual screenshot
+PASS: Case001_Motel / 404 / VHS=1 / correct shader, intensity and actual screenshot
+PASS: Case001_Motel / 405 / VHS=0 / correct shader, intensity and actual screenshot
+PASS: Case001_Motel / 405 / VHS=0.65 / correct shader, intensity and actual screenshot
+PASS: Case001_Motel / 405 / VHS=1 / correct shader, intensity and actual screenshot
+PASS: Case001_Motel / 403 / VHS=0 / correct shader, intensity and actual screenshot
+PASS: Case001_Motel / 403 / VHS=0.65 / correct shader, intensity and actual screenshot
+PASS: Case001_Motel / 403 / VHS=1 / correct shader, intensity and actual screenshot
+PASS

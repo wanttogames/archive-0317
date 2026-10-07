@@ -8488,7 +8488,7 @@ Transform:
   m_GameObject: {fileID: 1112969235}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.55, z: 4.3}
+  m_LocalPosition: {x: 0, y: 2.55, z: 2.365}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -8505,7 +8505,7 @@ TextMesh:
   m_Text: "\uAE30\uB85D\uBB3C \uBCF4\uC874\uAD6C\uC5ED\n\uAD00\uACC4\uC790 \uC678
     \uCD9C\uC785\uAE08\uC9C0"
   m_OffsetZ: 0
-  m_CharacterSize: 0.017
+  m_CharacterSize: 0.012750001
   m_LineSpacing: 1
   m_Anchor: 4
   m_Alignment: 1
@@ -19004,7 +19004,7 @@ Transform:
   m_GameObject: {fileID: 1913367926}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: -0.00000004371139}
-  m_LocalPosition: {x: -0.65, y: 2.46, z: -4.28}
+  m_LocalPosition: {x: -0.65, y: 2.32, z: -4.28}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

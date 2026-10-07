@@ -6,6 +6,7 @@ Shader "Archive0317/WorldTextDepth"
         Tags { "RenderPipeline"="UniversalPipeline" "Queue"="Transparent" "RenderType"="Transparent" }
         Pass
         {
+            Tags { "LightMode"="ArchiveWorldText" }
             Blend SrcAlpha OneMinusSrcAlpha
             ZWrite Off
             ZTest LEqual

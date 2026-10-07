@@ -1,6 +1,6 @@
 PS1 / VHS visual smoke test
 PASS: ArchiveRoom / Player camera has a serialized visual profile
-PASS: ArchiveRoom / 640x360-equivalent pixel grid selected
+PASS: ArchiveRoom / 540p sampling grid and restrained scene pixel strength
 PASS: ArchiveRoom / Scene-specific cold/warm profile
 PASS: ArchiveRoom / HUD and document text bypass world post-processing
 PASS: ArchiveRoom / CCTV and CRT capture cameras exclude gameplay effects
@@ -8,11 +8,12 @@ PASS: ArchiveRoom / Exactly one integrated world pass: Assets/Settings/PC_Render
 PASS: ArchiveRoom / Exactly one integrated world pass: Assets/Settings/Mobile_Renderer.asset
 PASS: ArchiveRoom / Shader compiled and supported: Assets/Shaders/RetroWorld.shader
 PASS: ArchiveRoom / Shader compiled and supported: Assets/Shaders/CCTVImage.shader
+PASS: ArchiveRoom / Shader compiled and supported: Assets/Shaders/WorldTextDepth.shader
 PASS: ArchiveRoom / Restrained grain and shadow-safe dither settings
 PASS: ArchiveRoom / Actual RenderGraph output forms uniform 2x2 pixel blocks at 1280x720
 PASS: ArchiveRoom / Actual GPU output is nonblank
 PASS: Case001_Motel / Player camera has a serialized visual profile
-PASS: Case001_Motel / 640x360-equivalent pixel grid selected
+PASS: Case001_Motel / 540p sampling grid and restrained scene pixel strength
 PASS: Case001_Motel / Scene-specific cold/warm profile
 PASS: Case001_Motel / HUD and document text bypass world post-processing
 PASS: Case001_Motel / CCTV and CRT capture cameras exclude gameplay effects
@@ -20,6 +21,7 @@ PASS: Case001_Motel / Exactly one integrated world pass: Assets/Settings/PC_Rend
 PASS: Case001_Motel / Exactly one integrated world pass: Assets/Settings/Mobile_Renderer.asset
 PASS: Case001_Motel / Shader compiled and supported: Assets/Shaders/RetroWorld.shader
 PASS: Case001_Motel / Shader compiled and supported: Assets/Shaders/CCTVImage.shader
+PASS: Case001_Motel / Shader compiled and supported: Assets/Shaders/WorldTextDepth.shader
 PASS: Case001_Motel / Restrained grain and shadow-safe dither settings
 PASS: Case001_Motel / Actual RenderGraph output forms uniform 2x2 pixel blocks at 1280x720
 PASS: Case001_Motel / Actual GPU output is nonblank

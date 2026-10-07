@@ -36,7 +36,7 @@ public static class RetroVisualPatch
     {
         var profile=AssetDatabase.LoadAssetAtPath<RetroVisualProfile>(path);
         if(profile==null){profile=ScriptableObject.CreateInstance<RetroVisualProfile>();AssetDatabase.CreateAsset(profile,path);}
-        profile.shader=AssetDatabase.LoadAssetAtPath<Shader>("Assets/Shaders/RetroWorld.shader");profile.pixelHeight=360;profile.pixelStrength=1;
+        profile.shader=AssetDatabase.LoadAssetAtPath<Shader>("Assets/Shaders/RetroWorld.shader");profile.pixelHeight=540;profile.pixelStrength=path==ArchiveProfile?.45f:.52f;
         profile.ditherStrength=.22f;profile.grain=grain;profile.tint=tint;profile.saturation=saturation;EditorUtility.SetDirty(profile);return profile;
     }
     private static void ConfigureScene(string path,RetroVisualProfile profile)
