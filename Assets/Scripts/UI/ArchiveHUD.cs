@@ -5,6 +5,7 @@ namespace Archive0317
 {
     public sealed class ArchiveHUD : MonoBehaviour
     {
+        private enum NotebookTab { Facts, Contradictions, Evidence }
         [SerializeField] private GameObject casePanel;
         [SerializeField] private GameObject crosshair;
         [SerializeField] private Text prompt;
@@ -40,10 +41,15 @@ namespace Archive0317
         private GameObject documentViewport;
         private Text closeHintLabel;
         private string defaultCloseHint;
+        private GameObject notebookTabsRoot;
+        private Button[] notebookTabButtons;
+        private bool notebookOpen;
+        private NotebookTab activeNotebookTab;
         public CaseDefinition ActiveDefinition { get; private set; }
         public bool IsCaseOpen => casePanel != null && casePanel.activeSelf;
         public bool IsPromptVisible => prompt != null && prompt.gameObject.activeSelf;
         public bool HasActiveDocument => activeDocument != null;
+        public bool IsNotebookOpen => notebookOpen;
         public bool CanGoNextDocumentPage => activeDocument != null && documentPage + 1 < activeDocument.PageCount;
         public bool CanGoPreviousDocumentPage => activeDocument != null && documentPage > 0;
         public void Configure(GameObject panel, GameObject aim, Text interaction, Text heading, Text description, Text hint, FirstPersonPlayer controller)
@@ -79,6 +85,7 @@ namespace Archive0317
             if(returnButton!=null){returnButton.onClick.AddListener(InteractionSoundscape.PlayUIClick);returnButton.onClick.AddListener(ReturnFromField);}
             if(continueButton!=null){continueButton.onClick.AddListener(InteractionSoundscape.PlayUIBack);continueButton.onClick.AddListener(()=>player.CloseCase());}
             CreateDocumentReader();
+            CreateNotebookTabs();
         }
         private void ApplyReadabilityProfile()
         {
@@ -227,21 +234,119 @@ namespace Archive0317
         {
             if (ActiveDefinition == null) return;
             InteractionSoundscape.PlayDocumentOpen();
-            ResetActions(); var progress = CaseProgressStore.Get(ActiveDefinition);
+            ResetActions();
+            notebookOpen = true;
+            activeNotebookTab = NotebookTab.Facts;
+            if(notebookTabsRoot!=null)notebookTabsRoot.SetActive(true);
             title.text = "사건 기록 — " + ActiveDefinition.Title;
-            body.text = ActiveDefinition.OfficialRecord + "\n\n현장 메모\n";
-            foreach (var entry in ActiveDefinition.NotebookEntries ?? System.Array.Empty<CaseNotebookEntry>())
-                if (entry != null && progress.Has(entry.progressFlag))
-                    body.text += (entry.text ?? "").Replace("{value}", progress.Fact(entry.factKey) ?? "") + "\n";
-            bool ready = true;
-            foreach (var flag in ActiveDefinition.ComparisonRequirements ?? System.Array.Empty<string>()) if (!progress.Has(flag)) ready = false;
-            if (compareButton != null) compareButton.gameObject.SetActive(ready && !progress.Has("RoomNumberMismatchFound"));
-            casePanel.SetActive(true); SetPrompt(false);
+            body.rectTransform.sizeDelta = new Vector2(bodySize.x, 335);
+            body.rectTransform.anchoredPosition = new Vector2(bodyPosition.x, bodyPosition.y - 38);
+            if(closeHintLabel!=null)closeHintLabel.text="1 확인된 사실 · 2 모순 · 3 증거 · TAB/ESC 닫기";
+            casePanel.SetActive(true);
+            SetPrompt(false);
+            RefreshNotebook();
+        }
+
+        public void SelectNotebookTab(int index)
+        {
+            if(!notebookOpen || index<0 || index>2)return;
+            activeNotebookTab=(NotebookTab)index;
+            InteractionSoundscape.PlayUIClick();
+            RefreshNotebook();
+        }
+
+        private void RefreshNotebook()
+        {
+            if(!notebookOpen || ActiveDefinition==null)return;
+            var progress=CaseProgressStore.Get(ActiveDefinition);
+            UpdateNotebookTabVisuals();
+
+            if(compareButton!=null)compareButton.gameObject.SetActive(false);
+            switch(activeNotebookTab)
+            {
+                case NotebookTab.Facts:
+                    body.text=BuildFactsNotebook(progress);
+                    break;
+                case NotebookTab.Contradictions:
+                    body.text=BuildContradictionsNotebook(progress);
+                    bool ready=true;
+                    foreach(var flag in ActiveDefinition.ComparisonRequirements??System.Array.Empty<string>())
+                        if(!progress.Has(flag))ready=false;
+                    if(compareButton!=null)
+                    {
+                        compareButton.gameObject.SetActive(ready && !progress.Has("RoomNumberMismatchFound"));
+                        if(compareButton.gameObject.activeSelf)
+                        {
+                            var label=compareButton.GetComponentInChildren<Text>();
+                            if(label!=null)label.text="기록 대조";
+                        }
+                    }
+                    break;
+                case NotebookTab.Evidence:
+                    body.text=BuildEvidenceNotebook(progress);
+                    break;
+            }
+        }
+
+        private string BuildFactsNotebook(CaseProgress progress)
+        {
+            var entries=ActiveDefinition.NotebookEntries??System.Array.Empty<CaseNotebookEntry>();
+            int found=0;
+            foreach(var entry in entries)if(entry!=null && progress.Has(entry.progressFlag))found++;
+            var text=new System.Text.StringBuilder();
+            text.AppendLine("확인된 사실  "+found+" / "+entries.Length);
+            if(!string.IsNullOrEmpty(ActiveDefinition.OfficialRoom))
+                text.AppendLine("\n■ 공식 사건 기록의 투숙 객실: "+ActiveDefinition.OfficialRoom+"호");
+            foreach(var entry in entries)
+            {
+                if(entry==null)continue;
+                if(progress.Has(entry.progressFlag))
+                    text.AppendLine("■ "+(entry.text??"").Replace("{value}",progress.Fact(entry.factKey)??""));
+                else text.AppendLine("□ ???");
+            }
+            return text.ToString().TrimEnd();
+        }
+
+        private string BuildContradictionsNotebook(CaseProgress progress)
+        {
+            var entries=ActiveDefinition.ContradictionEntries??System.Array.Empty<CaseContradictionEntry>();
+            int found=0;
+            foreach(var entry in entries)if(entry!=null && progress.Has(entry.progressFlag))found++;
+            var text=new System.Text.StringBuilder();
+            text.AppendLine("확인된 모순  "+found+" / "+entries.Length);
+            if(entries.Length==0){text.Append("\n아직 분류된 모순 항목이 없다.");return text.ToString();}
+            foreach(var entry in entries)
+            {
+                if(entry==null)continue;
+                text.AppendLine(progress.Has(entry.progressFlag)?"\n! "+entry.text:"\n· ???");
+            }
+            return text.ToString().TrimEnd();
+        }
+
+        private string BuildEvidenceNotebook(CaseProgress progress)
+        {
+            EvidenceCollection.Collect(ActiveDefinition);
+            var entries=ActiveDefinition.Evidence??System.Array.Empty<EvidenceDefinition>();
+            int found=0;
+            foreach(var entry in entries)if(entry!=null && progress.evidenceIds.Contains(entry.id))found++;
+            var text=new System.Text.StringBuilder();
+            text.AppendLine("수집 증거  "+found+" / "+entries.Length);
+            foreach(var entry in entries)
+            {
+                if(entry==null)continue;
+                if(progress.evidenceIds.Contains(entry.id))text.AppendLine("\n[REC] "+entry.title);
+                else text.AppendLine("\n[---] ???");
+            }
+            return text.ToString().TrimEnd();
         }
         public void CompareRecords()
         {
             if (CaseProgressStore.CompareRooms(ActiveDefinition))
-            { ShowToast("기록이 일치하지 않는다.", 6); if (compareButton != null) compareButton.gameObject.SetActive(false); }
+            {
+                ShowToast("기록이 일치하지 않는다.", 6);
+                if (compareButton != null) compareButton.gameObject.SetActive(false);
+                if(notebookOpen)RefreshNotebook();
+            }
         }
         public void StartField()
         {
@@ -286,6 +391,8 @@ namespace Archive0317
         private void ResetActions()
         {
             activeDocument = null;
+            notebookOpen=false;
+            if(notebookTabsRoot!=null)notebookTabsRoot.SetActive(false);
             activeReport=null;activeExit=null;
             if(bodyFontSize>0){body.fontSize=bodyFontSize;body.rectTransform.sizeDelta=bodySize;body.rectTransform.anchoredPosition=bodyPosition;}
             if(reportCard!=null){reportCard.sizeDelta=cardSize;title.rectTransform.anchoredPosition=titlePosition;if(reportHeader!=null)reportHeader.anchoredPosition=headerPosition;if(reportCloseHint!=null)reportCloseHint.anchoredPosition=closeHintPosition;}
@@ -305,6 +412,49 @@ namespace Archive0317
             if(closeHintLabel!=null)closeHintLabel.text=defaultCloseHint;
             if (compareButton != null) compareButton.gameObject.SetActive(false);
         }
+        private void CreateNotebookTabs()
+        {
+            if(reportCard==null || notebookTabsRoot!=null)return;
+            notebookTabsRoot=new GameObject("NotebookTabs",typeof(RectTransform));
+            notebookTabsRoot.transform.SetParent(reportCard,false);
+            var rootRect=notebookTabsRoot.GetComponent<RectTransform>();
+            rootRect.sizeDelta=new Vector2(700,48);
+            rootRect.anchoredPosition=new Vector2(0,190);
+
+            notebookTabButtons=new Button[3];
+            string[] labels={"1  확인된 사실","2  모순","3  증거"};
+            float[] positions={-235f,0f,235f};
+            for(int i=0;i<3;i++)
+            {
+                int tab=i;
+                var go=new GameObject("NotebookTab"+i,typeof(RectTransform),typeof(Image),typeof(Button));
+                go.transform.SetParent(notebookTabsRoot.transform,false);
+                var rect=go.GetComponent<RectTransform>();
+                rect.sizeDelta=new Vector2(215,42);
+                rect.anchoredPosition=new Vector2(positions[i],0);
+                var image=go.GetComponent<Image>();
+                image.color=new Color(.08f,.105f,.1f,.94f);
+                var button=go.GetComponent<Button>();
+                button.onClick.AddListener(()=>SelectNotebookTab(tab));
+                var label=CreateDocumentLabel("Label",labels[i],16,Vector2.zero,new Vector2(205,38),TextAnchor.MiddleCenter,new Color(.76f,.8f,.75f,1),go.transform);
+                label.fontStyle=FontStyle.Bold;
+                notebookTabButtons[i]=button;
+            }
+            notebookTabsRoot.SetActive(false);
+        }
+
+        private void UpdateNotebookTabVisuals()
+        {
+            if(notebookTabButtons==null)return;
+            for(int i=0;i<notebookTabButtons.Length;i++)
+            {
+                var image=notebookTabButtons[i].GetComponent<Image>();
+                if(image!=null)image.color=i==(int)activeNotebookTab?new Color(.26f,.31f,.29f,.98f):new Color(.08f,.105f,.1f,.94f);
+                var label=notebookTabButtons[i].GetComponentInChildren<Text>();
+                if(label!=null)label.color=i==(int)activeNotebookTab?new Color(.96f,.97f,.92f,1):new Color(.7f,.75f,.7f,1);
+            }
+        }
+
         private void CreateDocumentReader()
         {
             if(reportCard==null || body==null || documentViewport!=null)return;
