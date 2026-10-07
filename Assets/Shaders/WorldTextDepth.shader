@@ -23,7 +23,12 @@ Shader "Archive0317/WorldTextDepth"
                 output.uv=input.uv; output.color=input.color; return output;
             }
             half4 Frag(Varyings input) : SV_Target
-            { return half4(input.color.rgb,input.color.a*SAMPLE_TEXTURE2D(_MainTex,sampler_MainTex,input.uv).a); }
+            {
+                half alpha=SAMPLE_TEXTURE2D(_MainTex,sampler_MainTex,input.uv).a;
+                half edge=max(fwidth(alpha),.025h);
+                alpha=smoothstep(.5h-edge,.5h+edge,alpha);
+                return half4(input.color.rgb,input.color.a*alpha);
+            }
             ENDHLSL
         }
     }
