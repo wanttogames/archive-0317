@@ -120,9 +120,10 @@ PASS: Entering bathroom after phone changes chair and closes door out of view
 PASS: Exit closed while evidence remains unfound
 PASS: Bathroom emits small drip on return
 PASS: TV powers on outside bathroom only when out of view
-PASS: CRT static resolves into present corridor image with 03:17
+PASS: CRT static resolves into present room surveillance with 03:17
 PASS: Room TV RenderTexture contains actual nonblank corridor imagery
 PASS: TV inspection uses original interaction UI
+PASS: TV-only watcher, no movement while seen, delayed proxy, save restore and key fallback regression
 PASS: Key tag becomes discoverable beside bed after TV
 PASS: Physical key, ring and tag appear after TV
 PASS: Key tag front inspected without prematurely recording reverse evidence

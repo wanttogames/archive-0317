@@ -245,9 +245,10 @@ public static class Case001MotelSmokeTest
         Teleport(player,new Vector3(-19.05f,9.05f,3.2f));player.ViewCamera.transform.LookAt(new Vector3(-22,10,3.2f));environment.Evaluate();yield return null;
         Check(progress.Has("TelevisionPowerOn"),"TV powers on outside bathroom only when out of view");
         stop=Time.time+2.4f;while(Time.time<stop)yield return null;var television=GameObject.Find("Room403CRTTV").GetComponent<InspectableCaseTelevision>();
-        Check(television.FootageVisible && progress.Has("TelevisionEventTriggered") && GameObject.Find("Room403TVTimestamp").GetComponent<TextMesh>().text=="03:17","CRT static resolves into present corridor image with 03:17");
+        Check(television.FootageVisible && progress.Has("TelevisionEventTriggered") && GameObject.Find("Room403TVTimestamp").GetComponent<TextMesh>().text=="03:17","CRT static resolves into present room surveillance with 03:17");
         var rt=(RenderTexture)television.Frame;var prior=RenderTexture.active;RenderTexture.active=rt;var image=new Texture2D(rt.width,rt.height,TextureFormat.RGB24,false);image.ReadPixels(new Rect(0,0,rt.width,rt.height),0,0);image.Apply();RenderTexture.active=prior;var values=image.GetPixels();Check(values.Max(c=>c.r)-values.Min(c=>c.r)>.08f,"Room TV RenderTexture contains actual nonblank corridor imagery");UnityEngine.Object.DestroyImmediate(image);
         Target(player,new Vector3(-19.5f,9.05f,5.8f),television.transform.position);Check(player.TryInteract() && progress.Has("TelevisionInspected"),"TV inspection uses original interaction UI");environment.Evaluate();
+        var watcherTest=Room403TVWatcherSmokeTest.Run(player,television,environment,definition);while(watcherTest.MoveNext())yield return null;Check(true,"TV-only watcher, no movement while seen, delayed proxy, save restore and key fallback regression");
         var crtCapture=RetroVisualSmokeTest.Capture("Retro_CRTGameView");while(crtCapture.MoveNext())yield return null;
         Check(GameObject.Find("Room403KeyEvidence")!=null,"Key tag becomes discoverable beside bed after TV");
         var keyEvidence=GameObject.Find("Room403KeyEvidence");Check(keyEvidence.transform.Find("EvidenceKeyVisual").gameObject.activeInHierarchy,"Physical key, ring and tag appear after TV");

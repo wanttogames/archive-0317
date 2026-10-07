@@ -1,6 +1,6 @@
 Shader "Archive0317/CCTVImage"
 {
-    Properties { _MainTex("Frame",2D)="white"{} }
+    Properties { _MainTex("Frame",2D)="white"{} _RoomSurveillance("Room CCTV",Float)=0 _WatcherStatic("Static",Float)=0 }
     SubShader
     {
         Tags { "RenderPipeline"="UniversalPipeline" }
@@ -12,6 +12,7 @@ Shader "Archive0317/CCTVImage"
             #pragma fragment frag
             #include "UnityCG.cginc"
             sampler2D _MainTex;
+            float _RoomSurveillance,_WatcherStatic;
             struct appdata { float4 vertex:POSITION;float2 uv:TEXCOORD0; };
             struct v2f { float4 vertex:SV_POSITION;float2 uv:TEXCOORD0; };
             v2f vert(appdata v){v2f o;o.vertex=UnityObjectToClipPos(v.vertex);o.uv=v.uv;return o;}
@@ -29,6 +30,9 @@ Shader "Archive0317/CCTVImage"
                 float noise=frac(sin(dot(floor(i.uv*float2(512,288))+floor(_Time.y*4),float2(12.9898,78.233)))*43758.5453)-.5;
                 float scan=1-step(.5,frac(i.uv.y*144))*.045;
                 float3 color=lerp(grey.xxx,rgb,.025)*scan+noise*.006*smoothstep(.015,.15,grey);
+                float edge=saturate(1-dot(i.uv-.5,i.uv-.5)*.65);
+                color*=lerp(1,edge*(.985+sin(_Time.y*2.7)*.01),_RoomSurveillance);
+                color=lerp(color,(noise+.5).xxx*.38,_WatcherStatic*.65);
                 return fixed4(saturate(color),1);
             }
             ENDHLSL

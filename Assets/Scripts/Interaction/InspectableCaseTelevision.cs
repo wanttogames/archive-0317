@@ -17,14 +17,24 @@ namespace Archive0317
         private Texture2D noise;
         private bool started;
         private float nextFrame;
+        private Room403TVWatcher watcher;
+        private float staticUntil;
+        public Camera RecordingCamera=>recording;
+        public void RequestStatic(float duration)
+        {
+            if(Time.time>=staticUntil)InteractionSoundscape.PlayCRTStatic(transform.position);
+            staticUntil=Time.time+duration;
+        }
         public bool FootageVisible {get;private set;}
         public Texture Frame=>output;
         public void Configure(CaseDefinition data,Renderer surface,Camera camera,Shader shader,TextMesh stamp,AudioSource hum,string flag)
         {definition=data;screen=surface;recording=camera;imageShader=shader;timestamp=stamp;electronics=hum;activationFlag=flag;}
         private void Start()
         {
-            source=new RenderTexture(384,216,24){filterMode=FilterMode.Point};output=new RenderTexture(384,216,0){filterMode=FilterMode.Point};source.Create();output.Create();
+            watcher=GetComponent<Room403TVWatcher>();int width=watcher!=null?320:384,height=watcher!=null?180:216;
+            source=new RenderTexture(width,height,24){filterMode=FilterMode.Point};output=new RenderTexture(width,height,0){filterMode=FilterMode.Point};source.Create();output.Create();
             effect=new Material(imageShader);original=screen.sharedMaterial;display=new Material(original);
+            effect.SetFloat("_RoomSurveillance",watcher!=null?1:0);
             noise=new Texture2D(64,36,TextureFormat.RGB24,false){filterMode=FilterMode.Point};var rng=new System.Random(403);var pixels=new Color[64*36];for(int i=0;i<pixels.Length;i++){float value=(float)rng.NextDouble()*.16f;pixels[i]=new Color(value,value,value);}noise.SetPixels(pixels);noise.Apply();
             timestamp.gameObject.SetActive(false);
         }
@@ -32,13 +42,15 @@ namespace Archive0317
         {
             if(!CaseProgressStore.Get(definition).Has(activationFlag))return;
             if(!started){started=true;StartCoroutine(Tune());}
-            if(FootageVisible && Time.time>=nextFrame){nextFrame=Time.time+.25f;RenderFrame();}
+            if(FootageVisible && Time.time>=nextFrame && (watcher==null || watcher.CanRender)){nextFrame=Time.time+(watcher!=null?1f/13:.25f);RenderFrame();}
         }
         private IEnumerator Tune()
         {display.SetColor("_BaseColor",new Color(1.8f,1.8f,1.8f,1));display.SetTexture("_BaseMap",noise);screen.sharedMaterial=display;if(electronics!=null)electronics.Play();yield return new WaitForSeconds(2);FootageVisible=true;timestamp.gameObject.SetActive(true);RenderFrame();CaseProgressStore.Mark(definition,"TelevisionEventTriggered");}
-        private void RenderFrame(){recording.targetTexture=source;recording.Render();Graphics.Blit(source,output,effect);display.SetTexture("_BaseMap",output);}
+        private void RenderFrame(){if(watcher!=null)watcher.BeforeFrame();effect.SetFloat("_WatcherStatic",Time.time<staticUntil?1:0);recording.targetTexture=source;recording.Render();Graphics.Blit(source,output,effect);display.SetTexture("_BaseMap",output);}
         public override void Inspect(FirstPersonPlayer player)
-        {player.HUD.ShowToast(FootageVisible?"화면에는 4층 복도가 비친다.":"전원 버튼 아래에 먼지가 쌓여 있다.");if(FootageVisible)CaseProgressStore.Mark(definition,"TelevisionInspected");}
+        {player.HUD.ShowToast(FootageVisible?(watcher!=null?"천장 모서리에서 내려다본 방이 비친다.":"화면에는 4층 복도가 비친다."):"전원 버튼 아래에 먼지가 쌓여 있다.");if(FootageVisible)CaseProgressStore.Mark(definition,"TelevisionInspected");}
+        private void OnEnable(){if(source!=null && !source.IsCreated())source.Create();if(output!=null && !output.IsCreated())output.Create();}
+        private void OnDisable(){if(recording!=null){recording.enabled=false;recording.targetTexture=null;}if(electronics!=null)electronics.Stop();if(source!=null)source.Release();if(output!=null)output.Release();}
         private void OnDestroy(){if(recording!=null)recording.targetTexture=null;if(screen!=null)screen.sharedMaterial=original;if(source!=null){source.Release();Destroy(source);}if(output!=null){output.Release();Destroy(output);}if(effect!=null)Destroy(effect);if(display!=null)Destroy(display);if(noise!=null)Destroy(noise);}
     }
 }

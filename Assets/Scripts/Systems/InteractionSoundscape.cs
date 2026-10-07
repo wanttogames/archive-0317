@@ -18,7 +18,7 @@ namespace Archive0317
         private AudioClip inspectTap, paperOpen, paperPage, paperClose;
         private AudioClip doorLatch, doorCreak, lockedRattle;
         private AudioClip uiClick, uiBack;
-        private AudioClip spareKey, evidenceKey;
+        private AudioClip spareKey, evidenceKey, crtStatic;
         private float uiSuppressedUntil;
         public int SpareKeyPlays { get; private set; }
         public int EvidenceKeyPlays { get; private set; }
@@ -67,6 +67,7 @@ namespace Archive0317
             uiBack = Build("UIBack", .09f, UiBackSample, 257);
             spareKey=Build("SpareKeyRing",.36f,LightKeySample,281);
             evidenceKey=Build("EvidenceKeyRing",.5f,HeavyKeySample,307);
+            crtStatic=Build("CRTStatic",.35f,(t,i,seed)=>Noise(i,seed)*Mathf.Sin(Mathf.PI*t/.35f)*.35f,331);
         }
 
         public static void PlayFootstep(Vector3 position, bool sprinting)
@@ -81,6 +82,11 @@ namespace Archive0317
 
         public static void PlayInspect(Vector3 position)
             => Ensure().PlaySpatial(Ensure().inspectTap, position, .035f, Random.Range(.96f, 1.04f), 3f);
+
+        public static void PlayCRTStatic(Vector3 position)
+            => Ensure().PlaySpatial(Ensure().crtStatic, position, .035f, 1f, 3f);
+
+        private void OnDestroy(){if(crtStatic!=null)Destroy(crtStatic);if(instance==this)instance=null;}
 
         public static void PlayDoorLatch(Vector3 position)
             => Ensure().PlaySpatial(Ensure().doorLatch, position, .08f, Random.Range(.96f, 1.03f), 7f);

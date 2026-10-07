@@ -1,0 +1,23 @@
+Actual Play Mode TV watcher regression
+PASS: Initial TV room view contains no watcher
+PASS: 320x180 manually rendered camera remains disabled
+PASS: Main view excludes actors while TV camera includes them
+PASS: TV-only silhouette has no collider and legacy real-room shadow is suppressed
+PASS: 40-second no-observation fallback releases existing key progression
+PASS: Saved completion restores without replaying watcher
+PASS: Normal feed contains delayed player body at actual room position
+PASS: Looking away advances to Doorway
+PASS: Figure never moves while TV is watched: Doorway
+PASS: Key does not appear before watcher completion: Doorway
+PASS: Looking away advances to Approaching
+PASS: Figure never moves while TV is watched: Approaching
+PASS: Key does not appear before watcher completion: Approaching
+PASS: Looking away advances to Behind
+PASS: Figure never moves while TV is watched: Behind
+PASS: Key does not appear before watcher completion: Behind
+PASS: Final TV silhouette stands directly behind player's proxy
+PASS: Final static has a quiet TV-position spatial source
+PASS: Looking back ends watcher and releases physical key
+PASS: Reloaded finished flags cannot restart sequence
+PASS
+Physical sound/brightness, watcher silhouette readability and natural turning tempo require human playthrough.

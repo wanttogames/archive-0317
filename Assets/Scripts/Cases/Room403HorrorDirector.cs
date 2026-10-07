@@ -22,6 +22,7 @@ namespace Archive0317
         private Renderer mirrorRenderer;
         private AudioSource fluorescentHum;
         private AudioSource pipeTone;
+        private Room403TVWatcher tvWatcher;
 
         private GameObject shadowFigure;
         private Renderer shadowRenderer;
@@ -55,7 +56,8 @@ namespace Archive0317
             fluorescentHum = FindComponent<AudioSource>("Room403FluorescentHum");
             pipeTone = FindComponent<AudioSource>("Room403PipeTone");
 
-            CreateShadowFigure();
+            tvWatcher=FindComponent<Room403TVWatcher>("Room403CRTTV");
+            if(tvWatcher==null)CreateShadowFigure();
             RestorePersistentAtmosphere();
         }
 
@@ -83,11 +85,10 @@ namespace Archive0317
             if (inside && progress.Has("TelevisionPowerOn") && !progress.Has("Room403TelevisionFlicker"))
             {
                 CaseProgressStore.Mark(definition, "Room403TelevisionFlicker");
-                VisualStyleDirector.Pulse(.82f, .8f);
-                StartCoroutine(FlickerRoom(1.45f, 8));
+                if(tvWatcher==null){VisualStyleDirector.Pulse(.82f, .8f);StartCoroutine(FlickerRoom(1.45f, 8));}
             }
 
-            if (inside && progress.Has("TelevisionInspected") && !progress.Has("Room403ShadowSeen"))
+            if (tvWatcher==null && inside && progress.Has("TelevisionInspected") && !progress.Has("Room403ShadowSeen"))
             {
                 if (!shadowArmed)
                 {
