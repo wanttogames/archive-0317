@@ -16,6 +16,7 @@ namespace Archive0317
         private float verticalSpeed;
         private float pitch;
         private bool captureRequested;
+        private float footstepDistance;
         public Inspectable CurrentTarget { get; private set; }
         public Camera ViewCamera => viewCamera;
         public ArchiveHUD HUD => hud;
@@ -89,7 +90,21 @@ namespace Archive0317
             if (controller.isGrounded && verticalSpeed < 0) verticalSpeed = -2;
             verticalSpeed += Physics.gravity.y * deltaTime;
             Vector3 velocity = (transform.right * input.x + transform.forward * input.y) * (sprint ? runSpeed : walkSpeed);
+            Vector3 before = transform.position;
             controller.Move((velocity + Vector3.up * verticalSpeed) * deltaTime);
+            Vector3 moved = transform.position - before;
+            moved.y = 0;
+            if (controller.isGrounded && input.sqrMagnitude > .04f)
+            {
+                footstepDistance += moved.magnitude;
+                float spacing = sprint ? 1.55f : 1.35f;
+                if (footstepDistance >= spacing)
+                {
+                    footstepDistance = 0f;
+                    InteractionSoundscape.PlayFootstep(transform.position + Vector3.up * .05f, sprint);
+                }
+            }
+            else if (input.sqrMagnitude <= .04f) footstepDistance = Mathf.Min(footstepDistance, .45f);
         }
         public void UpdateTarget()
         {
@@ -103,6 +118,7 @@ namespace Archive0317
         {
             UpdateTarget();
             if (CurrentTarget == null || hud.IsCaseOpen) return false;
+            InteractionSoundscape.PlayInspect(CurrentTarget.transform.position);
             CurrentTarget.Inspect(this);
             CurrentTarget = null;
             if (hud.IsCaseOpen) SetCapture(false);
