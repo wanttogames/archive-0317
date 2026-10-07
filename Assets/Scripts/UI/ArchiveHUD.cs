@@ -191,7 +191,7 @@ namespace Archive0317
 
             if(documentText!=null)
             {
-                documentText.text=photograph!=null?"":pageText;
+                documentText.text=pageText;
                 documentText.gameObject.SetActive(photograph==null);
                 Canvas.ForceUpdateCanvases();
                 var textRect=documentText.rectTransform;
@@ -202,7 +202,7 @@ namespace Archive0317
             }
 
             if(cctvFrame!=null){cctvFrame.texture=photograph;cctvFrame.gameObject.SetActive(photograph!=null);}
-            if(cctvTimestamp!=null){cctvTimestamp.text=activeDocument.ImageCaption;cctvTimestamp.gameObject.SetActive(photograph!=null);}
+            if(cctvTimestamp!=null){cctvTimestamp.text=activeDocument.Caption(documentPage);cctvTimestamp.gameObject.SetActive(photograph!=null);}
 
             bool newlyRecorded=activeDocument.Viewed(documentPage);
             if(pageIndicator!=null)

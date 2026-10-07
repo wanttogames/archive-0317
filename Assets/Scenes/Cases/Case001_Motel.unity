@@ -200,7 +200,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7a2833db9a5671f4493bd3c866f7514c, type: 3}
+  - {fileID: 485297317}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -237,6 +237,38 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Archive0317.WorldTextDepth
   depthShader: {fileID: 4800000, guid: 4a0802035a94b984499c5f6099fcec89, type: 3}
+--- !u!21 &3215681
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Archive0317/WorldTextDepth
+  m_Shader: {fileID: 4800000, guid: 4a0802035a94b984499c5f6099fcec89, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 7a2833db9a5671f4493bd3c866f7514c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats: []
+    m_Colors: []
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!1 &6277006
 GameObject:
   m_ObjectHideFlags: 0
@@ -731,6 +763,38 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 39054189}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!21 &47502016
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Archive0317/WorldTextDepth
+  m_Shader: {fileID: 4800000, guid: 4a0802035a94b984499c5f6099fcec89, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 7a2833db9a5671f4493bd3c866f7514c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats: []
+    m_Colors: []
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!1 &51423533
 GameObject:
   m_ObjectHideFlags: 0
@@ -1595,7 +1659,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &68237063
 Transform:
   m_ObjectHideFlags: 0
@@ -2261,6 +2325,38 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 97519636}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!21 &100996093
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Archive0317/WorldTextDepth
+  m_Shader: {fileID: 4800000, guid: 4a0802035a94b984499c5f6099fcec89, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 7a2833db9a5671f4493bd3c866f7514c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats: []
+    m_Colors: []
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!1 &105308356
 GameObject:
   m_ObjectHideFlags: 0
@@ -3799,7 +3895,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7a2833db9a5671f4493bd3c866f7514c, type: 3}
+  - {fileID: 1519031162}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4751,6 +4847,38 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 210086003}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!21 &220105205
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Archive0317/WorldTextDepth
+  m_Shader: {fileID: 4800000, guid: 4a0802035a94b984499c5f6099fcec89, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 7a2833db9a5671f4493bd3c866f7514c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats: []
+    m_Colors: []
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!1 &226789247
 GameObject:
   m_ObjectHideFlags: 0
@@ -5795,6 +5923,38 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_RenderingLayers: 1
   m_ShadowRenderingLayers: 1
+--- !u!21 &261518763
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Archive0317/WorldTextDepth
+  m_Shader: {fileID: 4800000, guid: 4a0802035a94b984499c5f6099fcec89, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 7a2833db9a5671f4493bd3c866f7514c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats: []
+    m_Colors: []
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!1 &262005490
 GameObject:
   m_ObjectHideFlags: 0
@@ -6113,7 +6273,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7a2833db9a5671f4493bd3c866f7514c, type: 3}
+  - {fileID: 618108361}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -7117,7 +7277,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7a2833db9a5671f4493bd3c866f7514c, type: 3}
+  - {fileID: 1415551747}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -7641,6 +7801,38 @@ Transform:
   m_Children: []
   m_Father: {fileID: 739862522}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!21 &316101278
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Archive0317/WorldTextDepth
+  m_Shader: {fileID: 4800000, guid: 4a0802035a94b984499c5f6099fcec89, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 7a2833db9a5671f4493bd3c866f7514c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats: []
+    m_Colors: []
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!1 &318617801
 GameObject:
   m_ObjectHideFlags: 0
@@ -8269,6 +8461,38 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 326393308}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!21 &331253931
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Archive0317/WorldTextDepth
+  m_Shader: {fileID: 4800000, guid: 4a0802035a94b984499c5f6099fcec89, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 7a2833db9a5671f4493bd3c866f7514c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats: []
+    m_Colors: []
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!1 &333186823
 GameObject:
   m_ObjectHideFlags: 0
@@ -8517,6 +8741,9 @@ MonoBehaviour:
   pageImage: {fileID: 0}
   imagePage: -1
   imageCaption: 
+  pageImages: []
+  pageImageCaptions: []
+  inspectionPrompt: 
 --- !u!4 &346876997
 Transform:
   m_ObjectHideFlags: 0
@@ -9191,6 +9418,38 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 371822633}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!21 &374806205
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Archive0317/WorldTextDepth
+  m_Shader: {fileID: 4800000, guid: 4a0802035a94b984499c5f6099fcec89, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 7a2833db9a5671f4493bd3c866f7514c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats: []
+    m_Colors: []
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!1 &381919639
 GameObject:
   m_ObjectHideFlags: 0
@@ -9707,6 +9966,38 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 400964465}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!21 &402254592
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Archive0317/WorldTextDepth
+  m_Shader: {fileID: 4800000, guid: 4a0802035a94b984499c5f6099fcec89, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 7a2833db9a5671f4493bd3c866f7514c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats: []
+    m_Colors: []
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!1 &412616333
 GameObject:
   m_ObjectHideFlags: 0
@@ -11287,6 +11578,9 @@ MonoBehaviour:
   pageImage: {fileID: 0}
   imagePage: -1
   imageCaption: 
+  pageImages: []
+  pageImageCaptions: []
+  inspectionPrompt: 
 --- !u!23 &446123419
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -11826,7 +12120,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7a2833db9a5671f4493bd3c866f7514c, type: 3}
+  - {fileID: 3215681}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -12043,7 +12337,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7a2833db9a5671f4493bd3c866f7514c, type: 3}
+  - {fileID: 1888914913}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -12080,6 +12374,38 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Archive0317.WorldTextDepth
   depthShader: {fileID: 4800000, guid: 4a0802035a94b984499c5f6099fcec89, type: 3}
+--- !u!21 &485297317
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Archive0317/WorldTextDepth
+  m_Shader: {fileID: 4800000, guid: 4a0802035a94b984499c5f6099fcec89, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 7a2833db9a5671f4493bd3c866f7514c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats: []
+    m_Colors: []
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!1 &486178434
 GameObject:
   m_ObjectHideFlags: 0
@@ -12553,6 +12879,9 @@ MonoBehaviour:
   pageImage: {fileID: 0}
   imagePage: -1
   imageCaption: 
+  pageImages: []
+  pageImageCaptions: []
+  inspectionPrompt: 
 --- !u!23 &497537816
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -12631,6 +12960,38 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 497537813}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!21 &509912873
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Archive0317/WorldTextDepth
+  m_Shader: {fileID: 4800000, guid: 4a0802035a94b984499c5f6099fcec89, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 7a2833db9a5671f4493bd3c866f7514c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats: []
+    m_Colors: []
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!1 &510541100
 GameObject:
   m_ObjectHideFlags: 0
@@ -14658,7 +15019,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7a2833db9a5671f4493bd3c866f7514c, type: 3}
+  - {fileID: 1247587562}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -14824,6 +15185,38 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!21 &618108361
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Archive0317/WorldTextDepth
+  m_Shader: {fileID: 4800000, guid: 4a0802035a94b984499c5f6099fcec89, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 7a2833db9a5671f4493bd3c866f7514c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats: []
+    m_Colors: []
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!1 &621074795
 GameObject:
   m_ObjectHideFlags: 0
@@ -15987,6 +16380,38 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 657550200}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!21 &658077132
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Archive0317/WorldTextDepth
+  m_Shader: {fileID: 4800000, guid: 4a0802035a94b984499c5f6099fcec89, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 7a2833db9a5671f4493bd3c866f7514c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats: []
+    m_Colors: []
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!1 &667855137
 GameObject:
   m_ObjectHideFlags: 0
@@ -16158,7 +16583,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7a2833db9a5671f4493bd3c866f7514c, type: 3}
+  - {fileID: 1276216693}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -19338,6 +19763,9 @@ MonoBehaviour:
   pageImage: {fileID: 0}
   imagePage: -1
   imageCaption: 
+  pageImages: []
+  pageImageCaptions: []
+  inspectionPrompt: 
 --- !u!23 &764093386
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -19737,7 +20165,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7a2833db9a5671f4493bd3c866f7514c, type: 3}
+  - {fileID: 331253931}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -20067,6 +20495,9 @@ MonoBehaviour:
   pageImage: {fileID: 0}
   imagePage: -1
   imageCaption: 
+  pageImages: []
+  pageImageCaptions: []
+  inspectionPrompt: 
 --- !u!23 &776949484
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -20257,6 +20688,38 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 786197062}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!21 &787412764
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Archive0317/WorldTextDepth
+  m_Shader: {fileID: 4800000, guid: 4a0802035a94b984499c5f6099fcec89, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 7a2833db9a5671f4493bd3c866f7514c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats: []
+    m_Colors: []
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!1 &787927414
 GameObject:
   m_ObjectHideFlags: 0
@@ -20360,6 +20823,10 @@ PrefabInstance:
       value: "\uC740\uC131 \uBAA8\uD154\n\uC7A5\uAE30 \uD22C\uC219 \uBB38\uC758\n\uD1F4\uC2E4
         \uC624\uC804 11\uC2DC"
       objectReference: {fileID: 0}
+    - target: {fileID: 2744753807389206292, guid: 2246f01af3a908049bba41b340a4eabe, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 1656026980}
     - target: {fileID: 3858549083760157499, guid: 2246f01af3a908049bba41b340a4eabe, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3.35
@@ -21057,7 +21524,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7a2833db9a5671f4493bd3c866f7514c, type: 3}
+  - {fileID: 1959167080}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -21893,7 +22360,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7a2833db9a5671f4493bd3c866f7514c, type: 3}
+  - {fileID: 1331189116}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -24001,7 +24468,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7a2833db9a5671f4493bd3c866f7514c, type: 3}
+  - {fileID: 2042160682}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -25041,7 +25508,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7a2833db9a5671f4493bd3c866f7514c, type: 3}
+  - {fileID: 658077132}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -25578,7 +26045,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7a2833db9a5671f4493bd3c866f7514c, type: 3}
+  - {fileID: 100996093}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -25906,6 +26373,9 @@ MonoBehaviour:
   pageImage: {fileID: 0}
   imagePage: -1
   imageCaption: 
+  pageImages: []
+  pageImageCaptions: []
+  inspectionPrompt: 
 --- !u!1 &1027793422
 GameObject:
   m_ObjectHideFlags: 0
@@ -26378,7 +26848,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7a2833db9a5671f4493bd3c866f7514c, type: 3}
+  - {fileID: 2042158137}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -26608,7 +27078,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7a2833db9a5671f4493bd3c866f7514c, type: 3}
+  - {fileID: 509912873}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -29108,7 +29578,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7a2833db9a5671f4493bd3c866f7514c, type: 3}
+  - {fileID: 1521320830}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -29897,7 +30367,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7a2833db9a5671f4493bd3c866f7514c, type: 3}
+  - {fileID: 374806205}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -31548,6 +32018,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1601068051158626523, guid: 6d84387c4685a5942bf29785d8093b09, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 47502016}
     - target: {fileID: 4056791447804667831, guid: 6d84387c4685a5942bf29785d8093b09, type: 3}
       propertyPath: m_Text
       value: 'CAM 01
@@ -32053,6 +32527,38 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_RenderingLayers: 1
   m_ShadowRenderingLayers: 1
+--- !u!21 &1247587562
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Archive0317/WorldTextDepth
+  m_Shader: {fileID: 4800000, guid: 4a0802035a94b984499c5f6099fcec89, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 7a2833db9a5671f4493bd3c866f7514c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats: []
+    m_Colors: []
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!1 &1253808220
 GameObject:
   m_ObjectHideFlags: 0
@@ -32667,6 +33173,38 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1275942436}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!21 &1276216693
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Archive0317/WorldTextDepth
+  m_Shader: {fileID: 4800000, guid: 4a0802035a94b984499c5f6099fcec89, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 7a2833db9a5671f4493bd3c866f7514c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats: []
+    m_Colors: []
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!1 &1277292118
 GameObject:
   m_ObjectHideFlags: 0
@@ -32685,7 +33223,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1277292119
 Transform:
   m_ObjectHideFlags: 0
@@ -33489,6 +34027,38 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1326722642}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!21 &1331189116
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Archive0317/WorldTextDepth
+  m_Shader: {fileID: 4800000, guid: 4a0802035a94b984499c5f6099fcec89, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 7a2833db9a5671f4493bd3c866f7514c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats: []
+    m_Colors: []
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!1 &1332809806
 GameObject:
   m_ObjectHideFlags: 0
@@ -33570,7 +34140,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7a2833db9a5671f4493bd3c866f7514c, type: 3}
+  - {fileID: 1397003675}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -33918,7 +34488,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7a2833db9a5671f4493bd3c866f7514c, type: 3}
+  - {fileID: 787412764}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -34837,8 +35407,41 @@ Transform:
   - {fileID: 1871305986}
   - {fileID: 1480129644}
   - {fileID: 3586883799021442815}
+  - {fileID: 1770699090}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!21 &1397003675
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Archive0317/WorldTextDepth
+  m_Shader: {fileID: 4800000, guid: 4a0802035a94b984499c5f6099fcec89, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 7a2833db9a5671f4493bd3c866f7514c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats: []
+    m_Colors: []
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!1 &1400001819
 GameObject:
   m_ObjectHideFlags: 0
@@ -35417,6 +36020,38 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1415107354}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!21 &1415551747
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Archive0317/WorldTextDepth
+  m_Shader: {fileID: 4800000, guid: 4a0802035a94b984499c5f6099fcec89, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 7a2833db9a5671f4493bd3c866f7514c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats: []
+    m_Colors: []
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!1 &1416139066
 GameObject:
   m_ObjectHideFlags: 0
@@ -36614,7 +37249,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7a2833db9a5671f4493bd3c866f7514c, type: 3}
+  - {fileID: 1661291489}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -36971,7 +37606,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7a2833db9a5671f4493bd3c866f7514c, type: 3}
+  - {fileID: 1634483601}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -37313,7 +37948,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7a2833db9a5671f4493bd3c866f7514c, type: 3}
+  - {fileID: 1578176218}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -37663,7 +38298,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7a2833db9a5671f4493bd3c866f7514c, type: 3}
+  - {fileID: 316101278}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -37799,6 +38434,70 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1515929212}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!21 &1519031162
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Archive0317/WorldTextDepth
+  m_Shader: {fileID: 4800000, guid: 4a0802035a94b984499c5f6099fcec89, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 7a2833db9a5671f4493bd3c866f7514c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats: []
+    m_Colors: []
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
+--- !u!21 &1521320830
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Archive0317/WorldTextDepth
+  m_Shader: {fileID: 4800000, guid: 4a0802035a94b984499c5f6099fcec89, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 7a2833db9a5671f4493bd3c866f7514c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats: []
+    m_Colors: []
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!1 &1521685486
 GameObject:
   m_ObjectHideFlags: 0
@@ -38764,6 +39463,9 @@ MonoBehaviour:
   pageImage: {fileID: 0}
   imagePage: -1
   imageCaption: 
+  pageImages: []
+  pageImageCaptions: []
+  inspectionPrompt: 
 --- !u!23 &1560702067
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -39246,6 +39948,38 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1577807714}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!21 &1578176218
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Archive0317/WorldTextDepth
+  m_Shader: {fileID: 4800000, guid: 4a0802035a94b984499c5f6099fcec89, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 7a2833db9a5671f4493bd3c866f7514c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats: []
+    m_Colors: []
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!1 &1583838616
 GameObject:
   m_ObjectHideFlags: 0
@@ -40717,6 +41451,38 @@ Transform:
   - {fileID: 1542163}
   m_Father: {fileID: 1334509850}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!21 &1634483601
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Archive0317/WorldTextDepth
+  m_Shader: {fileID: 4800000, guid: 4a0802035a94b984499c5f6099fcec89, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 7a2833db9a5671f4493bd3c866f7514c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats: []
+    m_Colors: []
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!1 &1636849986
 GameObject:
   m_ObjectHideFlags: 0
@@ -41375,6 +42141,70 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1655803841}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!21 &1656026980
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Archive0317/WorldTextDepth
+  m_Shader: {fileID: 4800000, guid: 4a0802035a94b984499c5f6099fcec89, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 7a2833db9a5671f4493bd3c866f7514c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats: []
+    m_Colors: []
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
+--- !u!21 &1661291489
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Archive0317/WorldTextDepth
+  m_Shader: {fileID: 4800000, guid: 4a0802035a94b984499c5f6099fcec89, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 7a2833db9a5671f4493bd3c866f7514c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats: []
+    m_Colors: []
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!1 &1664906355
 GameObject:
   m_ObjectHideFlags: 0
@@ -43039,7 +43869,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7a2833db9a5671f4493bd3c866f7514c, type: 3}
+  - {fileID: 402254592}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -43300,6 +44130,125 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1768773850}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1770699089
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1770699090}
+  - component: {fileID: 1770699093}
+  - component: {fileID: 1770699092}
+  - component: {fileID: 1770699091}
+  m_Layer: 0
+  m_Name: Spare404Key
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1770699090
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1770699089}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -1.4, y: 1.67, z: 2.63}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 5559156738783742971}
+  m_Father: {fileID: 1395951386}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1770699091
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1770699089}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbc51814f0d03c54d9fb5f49a57a7165, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Archive0317.CaseEnvironmentState
+  definition: {fileID: 11400000, guid: 138c362164a91b842b316b80bf5fd74d, type: 2}
+  player: {fileID: 1992535700}
+  rules:
+  - requirements:
+    - Room404KeyTaken
+    excludedFlags: []
+    restoreRequirements: []
+    completionFlag: Spare404KeyVisualTaken
+    flagsToMark: []
+    insideArea: {fileID: 0}
+    outsideArea: {fileID: 0}
+    hiddenFromView: {fileID: 0}
+    visibleFromView: {fileID: 0}
+    changes:
+    - target: {fileID: 1770699089}
+      changeActive: 1
+      active: 0
+      changePosition: 0
+      localPosition: {x: 0, y: 0, z: 0}
+      changeRotation: 0
+      localEulerAngles: {x: 0, y: 0, z: 0}
+      light: {fileID: 0}
+      lightEnabled: 0
+      label: {fileID: 0}
+      text: 
+      surface: {fileID: 0}
+      material: {fileID: 0}
+      door: {fileID: 0}
+      doorOpen: 0
+    cue: {fileID: 0}
+    observation: 
+    delayAfterReady: 0
+    restoreAfter: 0
+    restoreChanges: []
+--- !u!114 &1770699092
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1770699089}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd8f8921fbd8b7f45a3a4a133485a32d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Archive0317.InspectableNote
+  observation: "404\uD638 \uC608\uBE44 \uC5F4\uC1E0\uB97C \uCC59\uACBC\uB2E4. \uAE08\uC18D
+    \uC5F4\uC1E0\uC640 \uB0A1\uC740 \uD50C\uB77C\uC2A4\uD2F1 \uD0DC\uADF8\uAC00 \uD0A4\uB9C1\uC5D0
+    \uB2EC\uB824 \uC788\uB2E4."
+  definition: {fileID: 11400000, guid: 138c362164a91b842b316b80bf5fd74d, type: 2}
+  progressFlag: Room404KeyTaken
+--- !u!65 &1770699093
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1770699089}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.63, y: 0.025, z: 0.21}
+  m_Center: {x: -0.12, y: -0.05, z: 0}
 --- !u!1 &1777157677
 GameObject:
   m_ObjectHideFlags: 0
@@ -46189,6 +47138,38 @@ Transform:
   m_Children: []
   m_Father: {fileID: 642315504}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!21 &1888914913
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Archive0317/WorldTextDepth
+  m_Shader: {fileID: 4800000, guid: 4a0802035a94b984499c5f6099fcec89, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 7a2833db9a5671f4493bd3c866f7514c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats: []
+    m_Colors: []
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!1 &1902349447
 GameObject:
   m_ObjectHideFlags: 0
@@ -46485,7 +47466,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7a2833db9a5671f4493bd3c866f7514c, type: 3}
+  - {fileID: 1967880012}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -46878,6 +47859,38 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1955147678}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!21 &1959167080
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Archive0317/WorldTextDepth
+  m_Shader: {fileID: 4800000, guid: 4a0802035a94b984499c5f6099fcec89, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 7a2833db9a5671f4493bd3c866f7514c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats: []
+    m_Colors: []
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!1 &1959876116
 GameObject:
   m_ObjectHideFlags: 0
@@ -47192,6 +48205,38 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1966140882}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!21 &1967880012
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Archive0317/WorldTextDepth
+  m_Shader: {fileID: 4800000, guid: 4a0802035a94b984499c5f6099fcec89, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 7a2833db9a5671f4493bd3c866f7514c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats: []
+    m_Colors: []
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!1 &1973032189
 GameObject:
   m_ObjectHideFlags: 0
@@ -48628,6 +49673,70 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2039853281}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!21 &2042158137
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Archive0317/WorldTextDepth
+  m_Shader: {fileID: 4800000, guid: 4a0802035a94b984499c5f6099fcec89, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 7a2833db9a5671f4493bd3c866f7514c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats: []
+    m_Colors: []
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
+--- !u!21 &2042160682
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Archive0317/WorldTextDepth
+  m_Shader: {fileID: 4800000, guid: 4a0802035a94b984499c5f6099fcec89, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 7a2833db9a5671f4493bd3c866f7514c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats: []
+    m_Colors: []
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!1 &2046741522
 GameObject:
   m_ObjectHideFlags: 0
@@ -50104,7 +51213,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7a2833db9a5671f4493bd3c866f7514c, type: 3}
+  - {fileID: 261518763}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -50303,6 +51412,13 @@ MonoBehaviour:
   pageImage: {fileID: 0}
   imagePage: -1
   imageCaption: 
+  pageImages:
+  - {fileID: 2800000, guid: 61a259ad5450e5f4ca722ad607003750, type: 3}
+  - {fileID: 2800000, guid: 16f4d58728541284d8dfb33abbc92285, type: 3}
+  pageImageCaptions:
+  - "\uC55E\uBA74 403"
+  - "\uB4B7\uBA74 404"
+  inspectionPrompt: "E \uD0A4 \uD0DC\uADF8 \uC870\uC0AC"
 --- !u!23 &2100919335
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -50310,7 +51426,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2100919333}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -50371,8 +51487,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 2.5, y: 1.4, z: 1.4}
+  m_Center: {x: -0.45, y: 0.4, z: 0}
 --- !u!33 &2100919337
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -50389,12 +51505,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2100919333}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: -0, y: 1, z: -0, w: -0.00000004371139}
   m_LocalPosition: {x: -20.03, y: 9.035, z: 4.03}
   m_LocalScale: {x: 0.24, y: 0.055, z: 0.17}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1277292119}
+  - {fileID: 5816864128377338865}
   m_Father: {fileID: 739862522}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2102405152
@@ -51887,6 +53004,197 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7110106233435260380, guid: ec3f9a0066a8bed4ea08f069beceb7f2, type: 3}
   m_PrefabInstance: {fileID: 3586883799021442814}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &5559156738783742970
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1770699090}
+    m_Modifications:
+    - target: {fileID: 3687296209471700295, guid: 70fd8141c33cc314bb657a219e384826, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 220105205}
+    - target: {fileID: 6895481514708098506, guid: 70fd8141c33cc314bb657a219e384826, type: 3}
+      propertyPath: m_Name
+      value: SpareKeyVisual
+      objectReference: {fileID: 0}
+    - target: {fileID: 7742060341260731063, guid: 70fd8141c33cc314bb657a219e384826, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7742060341260731063, guid: 70fd8141c33cc314bb657a219e384826, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7742060341260731063, guid: 70fd8141c33cc314bb657a219e384826, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7742060341260731063, guid: 70fd8141c33cc314bb657a219e384826, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7742060341260731063, guid: 70fd8141c33cc314bb657a219e384826, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7742060341260731063, guid: 70fd8141c33cc314bb657a219e384826, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7742060341260731063, guid: 70fd8141c33cc314bb657a219e384826, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7742060341260731063, guid: 70fd8141c33cc314bb657a219e384826, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7742060341260731063, guid: 70fd8141c33cc314bb657a219e384826, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7742060341260731063, guid: 70fd8141c33cc314bb657a219e384826, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7983250070571269275, guid: 70fd8141c33cc314bb657a219e384826, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5559156738783742973}
+  m_SourcePrefab: {fileID: 100100000, guid: 70fd8141c33cc314bb657a219e384826, type: 3}
+--- !u!4 &5559156738783742971 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7742060341260731063, guid: 70fd8141c33cc314bb657a219e384826, type: 3}
+  m_PrefabInstance: {fileID: 5559156738783742970}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &5559156738783742972 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7983250070571269275, guid: 70fd8141c33cc314bb657a219e384826, type: 3}
+  m_PrefabInstance: {fileID: 5559156738783742970}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5559156738783742973
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5559156738783742972}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea2e9d7214c40264b9a4ecdf6fd14e6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Archive0317.WorldTextDepth
+  depthShader: {fileID: 4800000, guid: 4a0802035a94b984499c5f6099fcec89, type: 3}
+--- !u!1001 &5816864128377338864
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 2100919338}
+    m_Modifications:
+    - target: {fileID: 2967548321312589823, guid: dae1898523d069a43bb0770246658165, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2967548321312589823, guid: dae1898523d069a43bb0770246658165, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2967548321312589823, guid: dae1898523d069a43bb0770246658165, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2967548321312589823, guid: dae1898523d069a43bb0770246658165, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2967548321312589823, guid: dae1898523d069a43bb0770246658165, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2967548321312589823, guid: dae1898523d069a43bb0770246658165, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2967548321312589823, guid: dae1898523d069a43bb0770246658165, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2967548321312589823, guid: dae1898523d069a43bb0770246658165, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2967548321312589823, guid: dae1898523d069a43bb0770246658165, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2967548321312589823, guid: dae1898523d069a43bb0770246658165, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3447753592238265346, guid: dae1898523d069a43bb0770246658165, type: 3}
+      propertyPath: m_Name
+      value: EvidenceKeyVisual
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4130720106671188624, guid: dae1898523d069a43bb0770246658165, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5816864128377338869}
+    - targetCorrespondingSourceObject: {fileID: 4432835591683383389, guid: dae1898523d069a43bb0770246658165, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5816864128377338868}
+  m_SourcePrefab: {fileID: 100100000, guid: dae1898523d069a43bb0770246658165, type: 3}
+--- !u!4 &5816864128377338865 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2967548321312589823, guid: dae1898523d069a43bb0770246658165, type: 3}
+  m_PrefabInstance: {fileID: 5816864128377338864}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &5816864128377338866 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4432835591683383389, guid: dae1898523d069a43bb0770246658165, type: 3}
+  m_PrefabInstance: {fileID: 5816864128377338864}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &5816864128377338867 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4130720106671188624, guid: dae1898523d069a43bb0770246658165, type: 3}
+  m_PrefabInstance: {fileID: 5816864128377338864}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5816864128377338868
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5816864128377338866}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea2e9d7214c40264b9a4ecdf6fd14e6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Archive0317.WorldTextDepth
+  depthShader: {fileID: 4800000, guid: 4a0802035a94b984499c5f6099fcec89, type: 3}
+--- !u!114 &5816864128377338869
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5816864128377338867}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea2e9d7214c40264b9a4ecdf6fd14e6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Archive0317.WorldTextDepth
+  depthShader: {fileID: 4800000, guid: 4a0802035a94b984499c5f6099fcec89, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

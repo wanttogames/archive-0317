@@ -116,7 +116,10 @@ public static class Case001MotelSmokeTest
         float roomZ=door.transform.position.z;
         Target(player,new Vector3(0,9.05f,roomZ),door.transform.position+Vector3.up*1.05f);
         Check(player.TryInteract() && !door.IsOpen,"404 remains locked without key");
-        Target(player,new Vector3(-2,.05f,1.1f),GameObject.Find("RoomKeyCabinet").transform.position); Check(player.TryInteract() && CaseProgressStore.Get(definition).Has("Room404KeyTaken"),"Front key cabinet investigation");
+        var spareKey=GameObject.Find("Spare404Key");Check(spareKey!=null && spareKey.GetComponentsInChildren<Renderer>().Any(r=>r.enabled),"Physical 404 spare key visible at front cabinet");
+        var spareView=CaptureKeyWorld(player,"Spare404",new Vector3(-1.4f,1.8f,1.95f),spareKey.transform.position);while(spareView.MoveNext())yield return null;
+        Target(player,new Vector3(-2,.05f,1.1f),spareKey.transform.position); Check(player.CurrentTarget==spareKey.GetComponent<InspectableNote>() && player.TryInteract() && CaseProgressStore.Get(definition).Has("Room404KeyTaken"),"Physical spare key Raycast investigation grants 404 key");
+        spareKey.GetComponent<CaseEnvironmentState>().Evaluate();Check(!spareKey.activeSelf,"Acquired spare key disappears from cabinet");
         Teleport(player,new Vector3(-.88f,.05f,10)); player.transform.rotation=Quaternion.identity;
         for(int level=0;level<3;level++)
         {
@@ -243,7 +246,14 @@ public static class Case001MotelSmokeTest
         Target(player,new Vector3(-19.5f,9.05f,5.8f),television.transform.position);Check(player.TryInteract() && progress.Has("TelevisionInspected"),"TV inspection uses original interaction UI");environment.Evaluate();
         var crtCapture=RetroVisualSmokeTest.Capture("Retro_CRTGameView");while(crtCapture.MoveNext())yield return null;
         Check(GameObject.Find("Room403KeyEvidence")!=null,"Key tag becomes discoverable beside bed after TV");
-        Target(player,new Vector3(-19.3f,9.05f,4.03f),GameObject.Find("Room403KeyEvidence").transform.position);Check(player.TryInteract() && Body(player).Contains("403") && !progress.Has("KeyEvidenceFound"),"Key tag front inspected without prematurely recording reverse evidence");player.HUD.NextPage();Check(Body(player).Contains("404") && progress.Has("KeyEvidenceFound"),"Reverse side 404 sets KeyEvidenceFound");player.CloseCase();environment.Evaluate();
+        var keyEvidence=GameObject.Find("Room403KeyEvidence");Check(keyEvidence.transform.Find("EvidenceKeyVisual").gameObject.activeInHierarchy,"Physical key, ring and tag appear after TV");
+        var keyWorld=CaptureKeyWorld(player,"EvidenceWorld",new Vector3(-19.7f,9.85f,3.6f),keyEvidence.transform.position);while(keyWorld.MoveNext())yield return null;
+        Target(player,new Vector3(-19.3f,9.05f,4.03f),keyEvidence.transform.position);Check(player.TryInteract() && Body(player).Contains("403") && !progress.Has("KeyEvidenceFound"),"Key tag front inspected without prematurely recording reverse evidence");
+        var keyFrame=player.HUD.GetComponentsInChildren<RawImage>(true).First(t=>t.name=="CCTVFrame");var keyDoc=keyEvidence.GetComponent<InspectableDocument>();Check(keyFrame.gameObject.activeInHierarchy && keyFrame.texture==keyDoc.Image(0),"403 front close-up image visible in document viewer");
+        var keyFront=CaptureKeyUI("Front403");while(keyFront.MoveNext())yield return null;
+        player.HUD.NextPage();Check(Body(player).Contains("404") && progress.Has("KeyEvidenceFound"),"Reverse side 404 sets KeyEvidenceFound");Check(keyFrame.texture==keyDoc.Image(1) && keyDoc.Image(0)!=keyDoc.Image(1),"404 reverse has a separate close-up image");
+        var keyBack=CaptureKeyUI("Back404");while(keyBack.MoveNext())yield return null;
+        player.CloseCase();environment.Evaluate();
         Target(player,new Vector3(-19.5f,9.05f,5.15f),GameObject.Find("Room403Receipt").transform.position);Check(player.TryInteract() && Body(player).Contains("객실: 403") && progress.Has("ReceiptChangedSeen") && progress.Fact("ReceiptRoom")=="403","Reinspection silently changes receipt to 403");player.CloseCase();
         var inner=GameObject.Find("Room403ExitDoor").GetComponent<InspectableCaseDoor>();Target(player,new Vector3(-18.8f,9.05f,4.5f),new Vector3(-18,10.05f,4.5f));Check(player.TryInteract(),"Evidence permits reopening the exit");player.ViewCamera.transform.LookAt(new Vector3(-22,10,4.5f));stop=Time.time+3.5f;while(Time.time<stop)yield return null;Check(inner.IsOpen,"Exit slowly reopens after evidence");
         Target(player,new Vector3(-18.7f,9.05f,4.5f),GameObject.Find("ExitPreviewWallpaper").GetComponent<Renderer>().bounds.center);environment.Evaluate();
@@ -309,6 +319,10 @@ public static class Case001MotelSmokeTest
         try{camera.transform.position=position;camera.transform.LookAt(GameObject.Find(cover).transform.position);Directory.CreateDirectory("Documentation/Verification/StairBedding");ScreenCapture.CaptureScreenshot("Documentation/Verification/StairBedding/"+name+".png");float until=Time.time+.4f;while(Time.time<until)yield return null;}
         finally{camera.transform.localPosition=localPosition;camera.transform.localRotation=localRotation;}
     }
+    private static IEnumerator CaptureKeyUI(string name)
+    {Directory.CreateDirectory("Documentation/Verification/MotelKeys");ScreenCapture.CaptureScreenshot("Documentation/Verification/MotelKeys/"+name+".png");float stop=Time.time+.4f;while(Time.time<stop)yield return null;}
+    private static IEnumerator CaptureKeyWorld(FirstPersonPlayer player,string name,Vector3 position,Vector3 target)
+    {var camera=player.ViewCamera;var localPosition=camera.transform.localPosition;var rotation=camera.transform.localRotation;try{camera.transform.position=position;camera.transform.LookAt(target);player.UpdateTarget();var capture=CaptureKeyUI(name);while(capture.MoveNext())yield return null;}finally{camera.transform.localPosition=localPosition;camera.transform.localRotation=rotation;}}
     private static void Teleport(FirstPersonPlayer player,Vector3 position){var cc=player.GetComponent<CharacterController>();cc.enabled=false;player.transform.position=position;cc.enabled=true;Physics.SyncTransforms();}
     private static void Steps(FirstPersonPlayer player,Vector2 input,int count,bool run=false){for(int i=0;i<count;i++)player.Move(input,run,1f/60);}
     private static void Target(FirstPersonPlayer player,Vector3 position,Vector3 look){player.HUD.CloseCase();Teleport(player,position);player.transform.rotation=Quaternion.identity;player.ViewCamera.transform.LookAt(look);Physics.SyncTransforms();player.UpdateTarget();}
