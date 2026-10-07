@@ -54,7 +54,20 @@ namespace Archive0317
             if (hud.IsCaseOpen)
             {
                 CurrentTarget = null;
-                if (keyboard != null && keyboard.eKey.wasPressedThisFrame) CloseCase();
+                if (keyboard != null)
+                {
+                    if (hud.HasActiveDocument)
+                    {
+                        if (keyboard.qKey.wasPressedThisFrame || keyboard.leftArrowKey.wasPressedThisFrame)
+                            hud.PreviousPage();
+                        else if (keyboard.eKey.wasPressedThisFrame || keyboard.rightArrowKey.wasPressedThisFrame)
+                        {
+                            if (hud.CanGoNextDocumentPage) hud.NextPage();
+                            else CloseCase();
+                        }
+                    }
+                    else if (keyboard.eKey.wasPressedThisFrame) CloseCase();
+                }
                 hud.SetPrompt(false);
                 return;
             }
