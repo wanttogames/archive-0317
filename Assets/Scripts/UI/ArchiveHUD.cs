@@ -347,8 +347,8 @@ namespace Archive0317
             previousPageButton=CreateDocumentButton("PreviousPage","Q  이전 페이지",new Vector2(-190,-240));
             previousPageButton.onClick.AddListener(PreviousPage);
 
-            pageIndicator=CreateDocumentLabel("PageIndicator","1 / 1",15,new Vector2(0,-240),new Vector2(120,42),TextAnchor.MiddleCenter,new Color(.58f,.65f,.6f,1));
-            documentState=CreateDocumentLabel("DocumentState","",13,new Vector2(270,210),new Vector2(190,26),TextAnchor.MiddleRight,new Color(.5f,.58f,.54f,1));
+            pageIndicator=CreateDocumentLabel("PageIndicator","1 / 1",15,new Vector2(-10,-240),new Vector2(70,42),TextAnchor.MiddleCenter,new Color(.58f,.65f,.6f,1));
+            documentState=CreateDocumentLabel("DocumentState","",13,new Vector2(270,280),new Vector2(190,26),TextAnchor.MiddleRight,new Color(.5f,.58f,.54f,1));
 
             documentViewport.SetActive(false);
             previousPageButton.gameObject.SetActive(false);
@@ -365,7 +365,6 @@ namespace Archive0317
             rect.anchoredPosition=position;
             go.GetComponent<Image>().color=new Color(.1f,.13f,.125f,.98f);
             var button=go.GetComponent<Button>();
-            button.onClick.AddListener(InteractionSoundscape.PlayUIClick);
             var label=CreateDocumentLabel("Label",caption,18,Vector2.zero,new Vector2(250,42),TextAnchor.MiddleCenter,new Color(.86f,.89f,.84f,1),go.transform);
             label.fontStyle=FontStyle.Bold;
             return button;
