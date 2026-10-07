@@ -32,9 +32,20 @@ namespace Archive0317
         private float toastUntil;
         private InspectableDocument activeDocument;
         private int documentPage;
+        private Button previousPageButton;
+        private Text pageIndicator;
+        private Text documentState;
+        private Text documentText;
+        private ScrollRect documentScroll;
+        private GameObject documentViewport;
+        private Text closeHintLabel;
+        private string defaultCloseHint;
         public CaseDefinition ActiveDefinition { get; private set; }
         public bool IsCaseOpen => casePanel != null && casePanel.activeSelf;
         public bool IsPromptVisible => prompt != null && prompt.gameObject.activeSelf;
+        public bool HasActiveDocument => activeDocument != null;
+        public bool CanGoNextDocumentPage => activeDocument != null && documentPage + 1 < activeDocument.PageCount;
+        public bool CanGoPreviousDocumentPage => activeDocument != null && documentPage > 0;
         public void Configure(GameObject panel, GameObject aim, Text interaction, Text heading, Text description, Text hint, FirstPersonPlayer controller)
         { casePanel = panel; crosshair = aim; prompt = interaction; title = heading; body = description; cursorHint = hint; player = controller; }
         public void ConfigureCaseUI(Button start, Button next, Button compare, Text notification)
@@ -55,6 +66,7 @@ namespace Archive0317
             ApplyReadabilityProfile();
             bodySize=body.rectTransform.sizeDelta;bodyPosition=body.rectTransform.anchoredPosition;bodyFontSize=body.fontSize;
             reportCard=title.rectTransform.parent as RectTransform;reportHeader=reportCard.Find("DocumentHeader") as RectTransform;reportCloseHint=reportCard.Find("CloseHint") as RectTransform;
+            closeHintLabel=reportCloseHint!=null?reportCloseHint.GetComponent<Text>():null;defaultCloseHint=closeHintLabel!=null?closeHintLabel.text:"";
             cardSize=reportCard.sizeDelta;titlePosition=title.rectTransform.anchoredPosition;
             if(reportHeader!=null)headerPosition=reportHeader.anchoredPosition;if(reportCloseHint!=null)closeHintPosition=reportCloseHint.anchoredPosition;
             if(confirmVerdictButton!=null)confirmPosition=confirmVerdictButton.GetComponent<RectTransform>().anchoredPosition;
@@ -66,6 +78,7 @@ namespace Archive0317
             if(confirmVerdictButton!=null){confirmVerdictButton.onClick.AddListener(InteractionSoundscape.PlayUIClick);confirmVerdictButton.onClick.AddListener(ConfirmVerdict);}
             if(returnButton!=null){returnButton.onClick.AddListener(InteractionSoundscape.PlayUIClick);returnButton.onClick.AddListener(ReturnFromField);}
             if(continueButton!=null){continueButton.onClick.AddListener(InteractionSoundscape.PlayUIBack);continueButton.onClick.AddListener(()=>player.CloseCase());}
+            CreateDocumentReader();
         }
         private void ApplyReadabilityProfile()
         {
@@ -134,20 +147,75 @@ namespace Archive0317
             }
         }
         public void ShowDocument(InspectableDocument document)
-        { InteractionSoundscape.PlayDocumentOpen(); ResetActions(); activeDocument = document; documentPage = 0; DisplayPage(); casePanel.SetActive(true); SetPrompt(false); }
+        {
+            InteractionSoundscape.PlayDocumentOpen();
+            ResetActions();
+            activeDocument = document;
+            documentPage = 0;
+            if(documentViewport!=null)documentViewport.SetActive(true);
+            if(body!=null)body.gameObject.SetActive(false);
+            casePanel.SetActive(true);
+            DisplayPage();
+            SetPrompt(false);
+        }
         private void DisplayPage()
         {
             if (activeDocument == null) return;
             title.text = activeDocument.Title;
-            body.text = activeDocument.Page(documentPage);
+            string pageText = activeDocument.Page(documentPage);
             var photograph=activeDocument.Image(documentPage);
+
+            if(documentText!=null)
+            {
+                documentText.text=photograph!=null?"":pageText;
+                documentText.gameObject.SetActive(photograph==null);
+                Canvas.ForceUpdateCanvases();
+                var textRect=documentText.rectTransform;
+                float viewportHeight=documentScroll!=null?documentScroll.viewport.rect.height:bodySize.y;
+                textRect.sizeDelta=new Vector2(textRect.sizeDelta.x,Mathf.Max(viewportHeight,documentText.preferredHeight+28f));
+                textRect.anchoredPosition=Vector2.zero;
+                if(documentScroll!=null){documentScroll.verticalNormalizedPosition=1f;documentScroll.enabled=photograph==null && textRect.sizeDelta.y>viewportHeight+2f;}
+            }
+
             if(cctvFrame!=null){cctvFrame.texture=photograph;cctvFrame.gameObject.SetActive(photograph!=null);}
             if(cctvTimestamp!=null){cctvTimestamp.text=activeDocument.ImageCaption;cctvTimestamp.gameObject.SetActive(photograph!=null);}
-            if(photograph!=null)body.text="";
-            activeDocument.Viewed(documentPage);
-            if (nextPageButton != null) nextPageButton.gameObject.SetActive(documentPage + 1 < activeDocument.PageCount);
+
+            bool newlyRecorded=activeDocument.Viewed(documentPage);
+            if(pageIndicator!=null)
+            {
+                pageIndicator.text=(documentPage+1)+" / "+Mathf.Max(1,activeDocument.PageCount);
+                pageIndicator.gameObject.SetActive(true);
+            }
+            if(documentState!=null)
+            {
+                documentState.text=newlyRecorded?"EVIDENCE RECORDED":activeDocument.IsRecorded?"기록됨":"열람 중";
+                documentState.color=newlyRecorded?new Color(.78f,.34f,.28f,1):new Color(.5f,.58f,.54f,1);
+                documentState.gameObject.SetActive(true);
+            }
+
+            if(previousPageButton!=null)previousPageButton.gameObject.SetActive(CanGoPreviousDocumentPage);
+            if(nextPageButton!=null)
+            {
+                nextPageButton.gameObject.SetActive(CanGoNextDocumentPage);
+                var label=nextPageButton.GetComponentInChildren<Text>();
+                if(label!=null)label.text="다음 페이지  E";
+            }
+            if(closeHintLabel!=null)closeHintLabel.text=activeDocument.PageCount>1?"Q 이전 · E 다음 · ESC 닫기":"E 또는 ESC — 파일 닫기";
         }
-        public void NextPage() { if (activeDocument != null && documentPage + 1 < activeDocument.PageCount) { InteractionSoundscape.PlayDocumentPage(); documentPage++; DisplayPage(); } }
+        public void NextPage()
+        {
+            if (!CanGoNextDocumentPage) return;
+            InteractionSoundscape.PlayDocumentPage();
+            documentPage++;
+            DisplayPage();
+        }
+        public void PreviousPage()
+        {
+            if (!CanGoPreviousDocumentPage) return;
+            InteractionSoundscape.PlayDocumentPage();
+            documentPage--;
+            DisplayPage();
+        }
         public void ShowNotebook()
         {
             if (ActiveDefinition == null) return;
@@ -221,8 +289,108 @@ namespace Archive0317
             if(cctvTimestamp!=null)cctvTimestamp.gameObject.SetActive(false);
             if (startFieldButton != null) { startFieldButton.gameObject.SetActive(false); startFieldButton.interactable = true; }
             if (nextPageButton != null) nextPageButton.gameObject.SetActive(false);
+            if(previousPageButton!=null)previousPageButton.gameObject.SetActive(false);
+            if(pageIndicator!=null)pageIndicator.gameObject.SetActive(false);
+            if(documentState!=null)documentState.gameObject.SetActive(false);
+            if(documentViewport!=null)documentViewport.SetActive(false);
+            if(documentText!=null)documentText.text="";
+            if(body!=null)body.gameObject.SetActive(true);
+            if(closeHintLabel!=null)closeHintLabel.text=defaultCloseHint;
             if (compareButton != null) compareButton.gameObject.SetActive(false);
         }
+        private void CreateDocumentReader()
+        {
+            if(reportCard==null || body==null || documentViewport!=null)return;
+
+            documentViewport=new GameObject("DocumentViewport",typeof(RectTransform),typeof(Image),typeof(RectMask2D),typeof(ScrollRect));
+            documentViewport.transform.SetParent(reportCard,false);
+            var viewportRect=documentViewport.GetComponent<RectTransform>();
+            viewportRect.sizeDelta=bodySize;
+            viewportRect.anchoredPosition=bodyPosition;
+            var viewportImage=documentViewport.GetComponent<Image>();
+            viewportImage.color=new Color(0,0,0,.001f);
+            viewportImage.raycastTarget=true;
+
+            var textObject=new GameObject("DocumentText",typeof(RectTransform),typeof(Text),typeof(Shadow));
+            textObject.transform.SetParent(documentViewport.transform,false);
+            documentText=textObject.GetComponent<Text>();
+            documentText.font=body.font;
+            documentText.fontSize=bodyFontSize;
+            documentText.fontStyle=body.fontStyle;
+            documentText.color=body.color;
+            documentText.alignment=TextAnchor.UpperLeft;
+            documentText.horizontalOverflow=HorizontalWrapMode.Wrap;
+            documentText.verticalOverflow=VerticalWrapMode.Overflow;
+            documentText.raycastTarget=false;
+            var textRect=documentText.rectTransform;
+            textRect.anchorMin=new Vector2(0,1);
+            textRect.anchorMax=new Vector2(1,1);
+            textRect.pivot=new Vector2(.5f,1);
+            textRect.offsetMin=new Vector2(0,0);
+            textRect.offsetMax=new Vector2(0,0);
+            textRect.sizeDelta=new Vector2(0,bodySize.y);
+            textRect.anchoredPosition=Vector2.zero;
+            var shadow=textObject.GetComponent<Shadow>();
+            shadow.effectColor=new Color(0,0,0,.88f);
+            shadow.effectDistance=new Vector2(1,-1);
+
+            documentScroll=documentViewport.GetComponent<ScrollRect>();
+            documentScroll.viewport=viewportRect;
+            documentScroll.content=textRect;
+            documentScroll.horizontal=false;
+            documentScroll.vertical=true;
+            documentScroll.movementType=ScrollRect.MovementType.Clamped;
+            documentScroll.scrollSensitivity=32f;
+            documentScroll.inertia=true;
+            documentScroll.decelerationRate=.14f;
+
+            previousPageButton=CreateDocumentButton("PreviousPage","Q  이전 페이지",new Vector2(-190,-240));
+            previousPageButton.onClick.AddListener(PreviousPage);
+
+            pageIndicator=CreateDocumentLabel("PageIndicator","1 / 1",15,new Vector2(0,-240),new Vector2(120,42),TextAnchor.MiddleCenter,new Color(.58f,.65f,.6f,1));
+            documentState=CreateDocumentLabel("DocumentState","",13,new Vector2(270,210),new Vector2(190,26),TextAnchor.MiddleRight,new Color(.5f,.58f,.54f,1));
+
+            documentViewport.SetActive(false);
+            previousPageButton.gameObject.SetActive(false);
+            pageIndicator.gameObject.SetActive(false);
+            documentState.gameObject.SetActive(false);
+        }
+
+        private Button CreateDocumentButton(string name,string caption,Vector2 position)
+        {
+            var go=new GameObject(name,typeof(RectTransform),typeof(Image),typeof(Button));
+            go.transform.SetParent(reportCard,false);
+            var rect=go.GetComponent<RectTransform>();
+            rect.sizeDelta=new Vector2(270,48);
+            rect.anchoredPosition=position;
+            go.GetComponent<Image>().color=new Color(.1f,.13f,.125f,.98f);
+            var button=go.GetComponent<Button>();
+            button.onClick.AddListener(InteractionSoundscape.PlayUIClick);
+            var label=CreateDocumentLabel("Label",caption,18,Vector2.zero,new Vector2(250,42),TextAnchor.MiddleCenter,new Color(.86f,.89f,.84f,1),go.transform);
+            label.fontStyle=FontStyle.Bold;
+            return button;
+        }
+
+        private Text CreateDocumentLabel(string name,string value,int size,Vector2 position,Vector2 dimensions,TextAnchor anchor,Color color,Transform parent=null)
+        {
+            var go=new GameObject(name,typeof(RectTransform),typeof(Text),typeof(Shadow));
+            go.transform.SetParent(parent??reportCard,false);
+            var rect=go.GetComponent<RectTransform>();
+            rect.sizeDelta=dimensions;
+            rect.anchoredPosition=position;
+            var label=go.GetComponent<Text>();
+            label.font=body.font;
+            label.fontSize=size;
+            label.text=value;
+            label.color=color;
+            label.alignment=anchor;
+            label.raycastTarget=false;
+            var shadow=go.GetComponent<Shadow>();
+            shadow.effectColor=new Color(0,0,0,.9f);
+            shadow.effectDistance=new Vector2(1,-1);
+            return label;
+        }
+
         public void CloseCase()
         {
             if (casePanel != null && casePanel.activeSelf) InteractionSoundscape.PlayDocumentClose();
