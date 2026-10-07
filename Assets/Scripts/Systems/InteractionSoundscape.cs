@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 namespace Archive0317
 {
@@ -17,6 +18,13 @@ namespace Archive0317
         private AudioClip inspectTap, paperOpen, paperPage, paperClose;
         private AudioClip doorLatch, doorCreak, lockedRattle;
         private AudioClip uiClick, uiBack;
+        private AudioClip spareKey, evidenceKey;
+        private float uiSuppressedUntil;
+        public int SpareKeyPlays { get; private set; }
+        public int EvidenceKeyPlays { get; private set; }
+        public int RearKeyPlays { get; private set; }
+        public float LastRearDelay { get; private set; }
+        public Vector3 LastKeyRearPosition { get; private set; }
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
         private static void ResetStatics() { instance = null; footstepIndex = 0; }
@@ -57,6 +65,8 @@ namespace Archive0317
             lockedRattle = Build("LockedRattle", .34f, LockedSample, 211);
             uiClick = Build("UIClick", .08f, UiClickSample, 239);
             uiBack = Build("UIBack", .09f, UiBackSample, 257);
+            spareKey=Build("SpareKeyRing",.36f,LightKeySample,281);
+            evidenceKey=Build("EvidenceKeyRing",.5f,HeavyKeySample,307);
         }
 
         public static void PlayFootstep(Vector3 position, bool sprinting)
@@ -96,9 +106,35 @@ namespace Archive0317
         public static void PlayUIBack()
             => Ensure().PlayUI(Ensure().uiBack, .04f, .98f);
 
+        public static void PlaySpareKey(Vector3 position)
+        {
+            var sound=Ensure();sound.SpareKeyPlays++;sound.QuietenUI(.4f);
+            sound.PlaySpatial(sound.spareKey,position,.10f,1f,5f);
+        }
+        public static void PlayKeyEvidence(Transform view)
+        {
+            if(view==null)return;
+            var sound=Ensure();sound.EvidenceKeyPlays++;sound.QuietenUI(.9f);
+            sound.PlaySpatial(sound.evidenceKey,view.position+view.forward*.35f-Vector3.up*.25f,.13f,.9f,5f);
+            var back=-Vector3.ProjectOnPlane(view.forward,Vector3.up).normalized;
+            if(back.sqrMagnitude<.1f)back=-view.parent.forward;
+            var rear=view.position+back*2.1f;
+            if(Physics.Linecast(view.position,rear,out var hit,~0,QueryTriggerInteraction.Ignore))rear=hit.point-back*.12f;
+            sound.StartCoroutine(sound.DelayedKeyRear(rear,SceneManager.GetActiveScene().handle));
+        }
+        private IEnumerator DelayedKeyRear(Vector3 position,int sceneHandle)
+        {
+            float started=Time.unscaledTime;yield return new WaitForSecondsRealtime(.4f);
+            if(SceneManager.GetActiveScene().handle!=sceneHandle)yield break;
+            LastRearDelay=Time.unscaledTime-started;LastKeyRearPosition=position;RearKeyPlays++;
+            PlaySpatial(doorLatch,position,.06f,.78f,5f);
+        }
+        private void QuietenUI(float seconds)
+        {uiSource.Stop();uiSuppressedUntil=Time.unscaledTime+seconds;}
+
         private void PlayUI(AudioClip clip, float volume, float pitch)
         {
-            if (clip == null || uiSource == null) return;
+            if (clip == null || uiSource == null || Time.unscaledTime<uiSuppressedUntil) return;
             uiSource.pitch = pitch;
             uiSource.PlayOneShot(clip, volume);
         }
@@ -228,6 +264,21 @@ namespace Archive0317
             float env = Mathf.Exp(-t * 58f);
             return (Mathf.Sin(t * Mathf.PI * 2f * 980f) * .18f + Noise(i, seed) * .035f) * env;
         }
+        private static float KeySample(float t,int i,int seed,bool heavy)
+        {
+            float value=0;
+            for(int strike=0;strike<3;strike++)
+            {
+                float age=t-(strike==0?.005f:strike==1?.095f:.185f);if(age<0)continue;
+                float attack=Mathf.Clamp01(age/.004f),decay=Mathf.Exp(-age*(heavy?15:23));
+                float frequency=heavy?530:1250;
+                float ring=Mathf.Sin(age*Mathf.PI*2*frequency)+.55f*Mathf.Sin(age*Mathf.PI*2*frequency*1.79f)+.25f*Mathf.Sin(age*Mathf.PI*2*frequency*2.93f);
+                value+=(ring*.19f*decay+Noise(i,seed+strike)*.10f*Mathf.Exp(-age*95))*attack*(1-strike*.2f);
+            }
+            return value;
+        }
+        private static float LightKeySample(float t,int i,int seed)=>KeySample(t,i,seed,false);
+        private static float HeavyKeySample(float t,int i,int seed)=>KeySample(t,i,seed,true);
 
         private static float UiBackSample(float t, int i, int seed)
         {

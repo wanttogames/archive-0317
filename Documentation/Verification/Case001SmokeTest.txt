@@ -46,7 +46,10 @@ PASS: Timestamp occurs once on CCTV display, no repeated document timestamp
 PASS: 404 remains locked without key
 PASS: Physical 404 spare key visible at front cabinet
 PASS: Physical spare key Raycast investigation grants 404 key
+PASS: First spare pickup plays dedicated key ring without generic tap
+PASS: Spare key actual low-volume 3D AudioSource plays
 PASS: Acquired spare key disappears from cabinet
+PASS: Cabinet reread cannot repeat spare acquisition audio
 PASS: Stair flight 1 ascent: (-0.77, 1.53, 13.68)
 PASS: Stair flight 2 ascent: (1.01, 3.03, 10.00)
 PASS: Stair flight 3 ascent: (-0.77, 4.53, 13.68)
@@ -123,9 +126,17 @@ PASS: TV inspection uses original interaction UI
 PASS: Key tag becomes discoverable beside bed after TV
 PASS: Physical key, ring and tag appear after TV
 PASS: Key tag front inspected without prematurely recording reverse evidence
+PASS: Front 403 page does not trigger acquisition or rear cue
 PASS: 403 front close-up image visible in document viewer
 PASS: Reverse side 404 sets KeyEvidenceFound
 PASS: 404 reverse has a separate close-up image
+PASS: Evidence sound starts exactly when reverse-page flag is recorded; rear cue waits
+PASS: Heavy key actual low-volume 3D AudioSource plays
+PASS: Document UI source is quiet during key acquisition
+PASS: Delayed small latch plays behind player after approximately 0.4 seconds
+PASS: Page cycling cannot replay evidence acquisition
+PASS: Recorded key can be reopened
+PASS: Recorded key reread cannot replay heavy metal or rear cue
 PASS: Reinspection silently changes receipt to 403
 PASS: Evidence permits reopening the exit
 PASS: Exit slowly reopens after evidence

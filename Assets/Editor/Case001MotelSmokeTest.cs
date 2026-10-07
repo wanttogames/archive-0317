@@ -118,8 +118,12 @@ public static class Case001MotelSmokeTest
         Check(player.TryInteract() && !door.IsOpen,"404 remains locked without key");
         var spareKey=GameObject.Find("Spare404Key");Check(spareKey!=null && spareKey.GetComponentsInChildren<Renderer>().Any(r=>r.enabled),"Physical 404 spare key visible at front cabinet");
         var spareView=CaptureKeyWorld(player,"Spare404",new Vector3(-1.4f,1.8f,1.95f),spareKey.transform.position);while(spareView.MoveNext())yield return null;
+        var keyAudio=InteractionSoundscape.Ensure();int sparePlays=keyAudio.SpareKeyPlays;
         Target(player,new Vector3(-2,.05f,1.1f),spareKey.transform.position); Check(player.CurrentTarget==spareKey.GetComponent<InspectableNote>() && player.TryInteract() && CaseProgressStore.Get(definition).Has("Room404KeyTaken"),"Physical spare key Raycast investigation grants 404 key");
+        Check(keyAudio.SpareKeyPlays==sparePlays+1 && !spareKey.GetComponent<InspectableNote>().PlayInspectSound,"First spare pickup plays dedicated key ring without generic tap");
+        var spareSource=GameObject.Find("SpatialOneShot_SpareKeyRing").GetComponent<AudioSource>();Check(spareSource.isPlaying && spareSource.spatialBlend==1 && spareSource.volume<=.1f,"Spare key actual low-volume 3D AudioSource plays");
         spareKey.GetComponent<CaseEnvironmentState>().Evaluate();Check(!spareKey.activeSelf,"Acquired spare key disappears from cabinet");
+        Target(player,new Vector3(-2,.05f,1.1f),GameObject.Find("RoomKeyCabinet").transform.position);Check(player.TryInteract() && keyAudio.SpareKeyPlays==sparePlays+1,"Cabinet reread cannot repeat spare acquisition audio");
         Teleport(player,new Vector3(-.88f,.05f,10)); player.transform.rotation=Quaternion.identity;
         for(int level=0;level<3;level++)
         {
@@ -248,12 +252,21 @@ public static class Case001MotelSmokeTest
         Check(GameObject.Find("Room403KeyEvidence")!=null,"Key tag becomes discoverable beside bed after TV");
         var keyEvidence=GameObject.Find("Room403KeyEvidence");Check(keyEvidence.transform.Find("EvidenceKeyVisual").gameObject.activeInHierarchy,"Physical key, ring and tag appear after TV");
         var keyWorld=CaptureKeyWorld(player,"EvidenceWorld",new Vector3(-19.7f,9.85f,3.6f),keyEvidence.transform.position);while(keyWorld.MoveNext())yield return null;
-        Target(player,new Vector3(-19.3f,9.05f,4.03f),keyEvidence.transform.position);Check(player.TryInteract() && Body(player).Contains("403") && !progress.Has("KeyEvidenceFound"),"Key tag front inspected without prematurely recording reverse evidence");
+        var keyAudio=InteractionSoundscape.Ensure();int evidencePlays=keyAudio.EvidenceKeyPlays,rearPlays=keyAudio.RearKeyPlays;
+        Target(player,new Vector3(-19.3f,9.05f,4.03f),keyEvidence.transform.position);Check(player.TryInteract() && Body(player).Contains("403") && !progress.Has("KeyEvidenceFound"),"Key tag front inspected without prematurely recording reverse evidence");Check(keyAudio.EvidenceKeyPlays==evidencePlays && keyAudio.RearKeyPlays==rearPlays,"Front 403 page does not trigger acquisition or rear cue");
         var keyFrame=player.HUD.GetComponentsInChildren<RawImage>(true).First(t=>t.name=="CCTVFrame");var keyDoc=keyEvidence.GetComponent<InspectableDocument>();Check(keyFrame.gameObject.activeInHierarchy && keyFrame.texture==keyDoc.Image(0),"403 front close-up image visible in document viewer");
         var keyFront=CaptureKeyUI("Front403");while(keyFront.MoveNext())yield return null;
         player.HUD.NextPage();Check(Body(player).Contains("404") && progress.Has("KeyEvidenceFound"),"Reverse side 404 sets KeyEvidenceFound");Check(keyFrame.texture==keyDoc.Image(1) && keyDoc.Image(0)!=keyDoc.Image(1),"404 reverse has a separate close-up image");
+        Check(keyAudio.EvidenceKeyPlays==evidencePlays+1 && keyAudio.RearKeyPlays==rearPlays,"Evidence sound starts exactly when reverse-page flag is recorded; rear cue waits");
+        var heavySource=GameObject.Find("SpatialOneShot_EvidenceKeyRing").GetComponent<AudioSource>();Check(heavySource.isPlaying && heavySource.spatialBlend==1 && heavySource.volume<=.13f,"Heavy key actual low-volume 3D AudioSource plays");
+        Check(!keyAudio.GetComponents<AudioSource>().Any(s=>s.isPlaying),"Document UI source is quiet during key acquisition");
+        var rearOrigin=player.ViewCamera.transform.position;var rearForward=Vector3.ProjectOnPlane(player.ViewCamera.transform.forward,Vector3.up).normalized;
         var keyBack=CaptureKeyUI("Back404");while(keyBack.MoveNext())yield return null;
+        float rearWait=Time.unscaledTime+.25f;while(Time.unscaledTime<rearWait)yield return null;
+        Check(keyAudio.RearKeyPlays==rearPlays+1 && keyAudio.LastRearDelay>=.3f && keyAudio.LastRearDelay<=.55f && Vector3.Dot(keyAudio.LastKeyRearPosition-rearOrigin,rearForward)<0,"Delayed small latch plays behind player after approximately 0.4 seconds");
+        player.HUD.PreviousPage();player.HUD.NextPage();Check(keyAudio.EvidenceKeyPlays==evidencePlays+1,"Page cycling cannot replay evidence acquisition");
         player.CloseCase();environment.Evaluate();
+        Target(player,new Vector3(-19.3f,9.05f,4.03f),keyEvidence.transform.position);Check(player.TryInteract(),"Recorded key can be reopened");player.HUD.NextPage();Check(keyAudio.EvidenceKeyPlays==evidencePlays+1 && keyAudio.RearKeyPlays==rearPlays+1,"Recorded key reread cannot replay heavy metal or rear cue");player.CloseCase();
         Target(player,new Vector3(-19.5f,9.05f,5.15f),GameObject.Find("Room403Receipt").transform.position);Check(player.TryInteract() && Body(player).Contains("객실: 403") && progress.Has("ReceiptChangedSeen") && progress.Fact("ReceiptRoom")=="403","Reinspection silently changes receipt to 403");player.CloseCase();
         var inner=GameObject.Find("Room403ExitDoor").GetComponent<InspectableCaseDoor>();Target(player,new Vector3(-18.8f,9.05f,4.5f),new Vector3(-18,10.05f,4.5f));Check(player.TryInteract(),"Evidence permits reopening the exit");player.ViewCamera.transform.LookAt(new Vector3(-22,10,4.5f));stop=Time.time+3.5f;while(Time.time<stop)yield return null;Check(inner.IsOpen,"Exit slowly reopens after evidence");
         Target(player,new Vector3(-18.7f,9.05f,4.5f),GameObject.Find("ExitPreviewWallpaper").GetComponent<Renderer>().bounds.center);environment.Evaluate();

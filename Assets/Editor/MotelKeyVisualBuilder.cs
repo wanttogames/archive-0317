@@ -23,13 +23,13 @@ public static class MotelKeyVisualBuilder
         var old=key.transform.Find("KeyTag403");if(old!=null)old.gameObject.SetActive(false);
         ReplaceVisual(key.transform,"EvidenceKeyVisual","403",true);
         var box=key.GetComponent<BoxCollider>();box.center=new Vector3(-.45f,.4f,0);box.size=new Vector3(2.5f,1.4f,1.4f);
-        var doc=key.GetComponent<InspectableDocument>();doc.ConfigureImages(new Texture[]{Image("403"),Image("404")},new[]{"앞면 403","뒷면 404"},"E 키 태그 조사");
+        var doc=key.GetComponent<InspectableDocument>();doc.ConfigureImages(new Texture[]{Image("403"),Image("404")},new[]{"앞면 403","뒷면 404"},"E 키 태그 조사");doc.ConfigureKeyEvidenceSound();
         var cabinet=GameObject.Find("RoomKeyCabinet");
         var spare=GameObject.Find("Spare404Key");if(spare==null)spare=new GameObject("Spare404Key");spare.transform.SetParent(cabinet.transform.parent,true);
         spare.transform.position=new Vector3(-1.4f,1.67f,2.63f);spare.transform.rotation=Quaternion.Euler(-90,0,0);spare.transform.localScale=Vector3.one;
         ReplaceVisual(spare.transform,"SpareKeyVisual","404",false);
         if(spare.GetComponent<BoxCollider>()==null)spare.AddComponent<BoxCollider>();spare.GetComponent<BoxCollider>().center=new Vector3(-.12f,-.05f,0);spare.GetComponent<BoxCollider>().size=new Vector3(.63f,.025f,.21f);
-        var note=spare.GetComponent<InspectableNote>();if(note==null)note=spare.AddComponent<InspectableNote>();note.Configure("404호 예비 열쇠를 챙겼다. 금속 열쇠와 낡은 플라스틱 태그가 키링에 달려 있다.",data,"Room404KeyTaken");
+        var note=spare.GetComponent<InspectableNote>();if(note==null)note=spare.AddComponent<InspectableNote>();note.Configure("404호 예비 열쇠를 챙겼다. 금속 열쇠와 낡은 플라스틱 태그가 키링에 달려 있다.",data,"Room404KeyTaken");note.ConfigureKeyPickupSound();cabinet.GetComponent<InspectableNote>().ConfigureKeyPickupSound();
         foreach(var label in cabinet.GetComponentsInChildren<TextMesh>())if(label.text=="404" && !label.transform.IsChildOf(spare.transform))label.gameObject.SetActive(false);
         foreach(var t in cabinet.transform.parent.GetComponentsInChildren<Transform>())if(t.name=="PlasticKeyHolder" && Mathf.Abs(t.position.x+1.4f)<.05f)t.gameObject.SetActive(false);
         var state=spare.GetComponent<CaseEnvironmentState>();if(state==null)state=spare.AddComponent<CaseEnvironmentState>();state.Configure(data,Object.FindFirstObjectByType<FirstPersonPlayer>(),new[]{new EnvironmentRule{requirements=new[]{"Room404KeyTaken"},completionFlag="Spare404KeyVisualTaken",changes=new[]{new EnvironmentChange{target=spare,changeActive=true,active=false}}}});

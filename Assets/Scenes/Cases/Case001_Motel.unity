@@ -1784,6 +1784,7 @@ MonoBehaviour:
     \uBA3C\uC9C0\uAC00 \uC587\uAC8C \uC313\uC5EC \uC788\uB2E4."
   definition: {fileID: 0}
   progressFlag: 
+  keyPickupSound: 0
 --- !u!23 &77650857
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -2157,6 +2158,7 @@ MonoBehaviour:
     \uB4E4\uC5B4\uC628\uB2E4."
   definition: {fileID: 0}
   progressFlag: 
+  keyPickupSound: 0
 --- !u!23 &95412413
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -2736,6 +2738,7 @@ MonoBehaviour:
     \uC774\uC5B4\uC838 \uC788\uB2E4."
   definition: {fileID: 0}
   progressFlag: 
+  keyPickupSound: 0
 --- !u!1 &122173121
 GameObject:
   m_ObjectHideFlags: 0
@@ -5297,6 +5300,7 @@ MonoBehaviour:
     \uC788\uB2E4."
   definition: {fileID: 11400000, guid: 138c362164a91b842b316b80bf5fd74d, type: 2}
   progressFlag: BathroomInspected
+  keyPickupSound: 0
 --- !u!23 &237346827
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -5628,6 +5632,7 @@ MonoBehaviour:
     \uD0A4\uD640\uB354\uAC00 \uC190\uBC14\uB2E5\uC5D0 \uCC28\uAC11\uAC8C \uB2FF\uB294\uB2E4."
   definition: {fileID: 11400000, guid: 138c362164a91b842b316b80bf5fd74d, type: 2}
   progressFlag: Room404KeyTaken
+  keyPickupSound: 1
 --- !u!23 &246969023
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -8744,6 +8749,7 @@ MonoBehaviour:
   pageImages: []
   pageImageCaptions: []
   inspectionPrompt: 
+  keyEvidenceSound: 0
 --- !u!4 &346876997
 Transform:
   m_ObjectHideFlags: 0
@@ -11581,6 +11587,7 @@ MonoBehaviour:
   pageImages: []
   pageImageCaptions: []
   inspectionPrompt: 
+  keyEvidenceSound: 0
 --- !u!23 &446123419
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -12882,6 +12889,7 @@ MonoBehaviour:
   pageImages: []
   pageImageCaptions: []
   inspectionPrompt: 
+  keyEvidenceSound: 0
 --- !u!23 &497537816
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -13203,6 +13211,7 @@ MonoBehaviour:
     \uC218\uD654\uAE30 \uC120\uC740 \uADF8\uB300\uB85C \uC5F0\uACB0\uB418\uC5B4 \uC788\uB2E4."
   definition: {fileID: 11400000, guid: 138c362164a91b842b316b80bf5fd74d, type: 2}
   progressFlag: RoomPhoneInspected
+  keyPickupSound: 0
 --- !u!1 &515284204
 GameObject:
   m_ObjectHideFlags: 0
@@ -18081,6 +18090,7 @@ MonoBehaviour:
     \uBC88\uC9C4\uB2E4."
   definition: {fileID: 11400000, guid: 138c362164a91b842b316b80bf5fd74d, type: 2}
   progressFlag: MirrorInspected
+  keyPickupSound: 0
 --- !u!23 &730834427
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -19766,6 +19776,7 @@ MonoBehaviour:
   pageImages: []
   pageImageCaptions: []
   inspectionPrompt: 
+  keyEvidenceSound: 0
 --- !u!23 &764093386
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -20498,6 +20509,7 @@ MonoBehaviour:
   pageImages: []
   pageImageCaptions: []
   inspectionPrompt: 
+  keyEvidenceSound: 0
 --- !u!23 &776949484
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -20909,6 +20921,7 @@ MonoBehaviour:
     \uBAA8\uC11C\uB9AC\uC5D0 \uC2B5\uAE30\uAC00 \uBC30\uC5B4 \uC788\uB2E4."
   definition: {fileID: 0}
   progressFlag: 
+  keyPickupSound: 0
 --- !u!1 &789576162 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7072003676588364268, guid: 2246f01af3a908049bba41b340a4eabe, type: 3}
@@ -24219,6 +24232,7 @@ MonoBehaviour:
   observation: "405\uD638"
   definition: {fileID: 0}
   progressFlag: 
+  keyPickupSound: 0
 --- !u!65 &944953633
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -24556,6 +24570,7 @@ MonoBehaviour:
     \uBCA0\uAC1C\uC5D0\uB294 \uB20C\uB9B0 \uC790\uAD6D\uC774 \uB0A8\uC544 \uC788\uB2E4."
   definition: {fileID: 11400000, guid: 138c362164a91b842b316b80bf5fd74d, type: 2}
   progressFlag: BedInspected
+  keyPickupSound: 0
 --- !u!23 &957385477
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -25686,6 +25701,7 @@ MonoBehaviour:
     \uBE44\uCE58\uC9C0 \uC54A\uB294\uB2E4."
   definition: {fileID: 0}
   progressFlag: 
+  keyPickupSound: 0
 --- !u!23 &1004153153
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -26376,6 +26392,7 @@ MonoBehaviour:
   pageImages: []
   pageImageCaptions: []
   inspectionPrompt: 
+  keyEvidenceSound: 0
 --- !u!1 &1027793422
 GameObject:
   m_ObjectHideFlags: 0
@@ -27639,6 +27656,7 @@ MonoBehaviour:
     \uCD5C\uBBFC\uC218\uB77C\uACE0 \uC801\uD600 \uC788\uB2E4."
   definition: {fileID: 11400000, guid: 138c362164a91b842b316b80bf5fd74d, type: 2}
   progressFlag: BelongingsInspected
+  keyPickupSound: 0
 --- !u!23 &1119111942
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -29847,6 +29865,7 @@ MonoBehaviour:
     \uC811\uD78C \uC601\uC218\uC99D\uC774 \uB0A8\uC544 \uC788\uB2E4."
   definition: {fileID: 11400000, guid: 138c362164a91b842b316b80bf5fd74d, type: 2}
   progressFlag: BagInspected
+  keyPickupSound: 0
 --- !u!23 &1173677095
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -30456,6 +30475,7 @@ MonoBehaviour:
     \uC54A\uB294\uB2E4."
   definition: {fileID: 0}
   progressFlag: 
+  keyPickupSound: 0
 --- !u!23 &1188913854
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -39466,6 +39486,7 @@ MonoBehaviour:
   pageImages: []
   pageImageCaptions: []
   inspectionPrompt: 
+  keyEvidenceSound: 0
 --- !u!23 &1560702067
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -43139,6 +43160,7 @@ MonoBehaviour:
   observation: "402\uD638"
   definition: {fileID: 11400000, guid: 138c362164a91b842b316b80bf5fd74d, type: 2}
   progressFlag: Room402PlateSeen
+  keyPickupSound: 0
 --- !u!65 &1721809876
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -43655,6 +43677,7 @@ MonoBehaviour:
   observation: "404\uD638"
   definition: {fileID: 11400000, guid: 138c362164a91b842b316b80bf5fd74d, type: 2}
   progressFlag: Room404PlateSeen
+  keyPickupSound: 0
 --- !u!65 &1743616916
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -44228,6 +44251,7 @@ MonoBehaviour:
     \uB2EC\uB824 \uC788\uB2E4."
   definition: {fileID: 11400000, guid: 138c362164a91b842b316b80bf5fd74d, type: 2}
   progressFlag: Room404KeyTaken
+  keyPickupSound: 1
 --- !u!65 &1770699093
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -45241,6 +45265,7 @@ MonoBehaviour:
     \uBCF4\uC774\uC9C0 \uC54A\uB294\uB2E4."
   definition: {fileID: 0}
   progressFlag: 
+  keyPickupSound: 0
 --- !u!1 &1821436255
 GameObject:
   m_ObjectHideFlags: 0
@@ -46529,6 +46554,7 @@ MonoBehaviour:
     \uBC14\uB2E5 \uC544\uB798\uB85C \uB9C8\uB978 \uBB3C\uC790\uAD6D\uC774 \uC774\uC5B4\uC9C4\uB2E4."
   definition: {fileID: 0}
   progressFlag: 
+  keyPickupSound: 0
 --- !u!23 &1872831511
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -49281,6 +49307,7 @@ MonoBehaviour:
     \uB2E8\uB2E8\uD788 \uB4E4\uC5B4\uAC00 \uC788\uB2E4."
   definition: {fileID: 0}
   progressFlag: 
+  keyPickupSound: 0
 --- !u!23 &2030089438
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -51419,6 +51446,7 @@ MonoBehaviour:
   - "\uC55E\uBA74 403"
   - "\uB4B7\uBA74 404"
   inspectionPrompt: "E \uD0A4 \uD0DC\uADF8 \uC870\uC0AC"
+  keyEvidenceSound: 1
 --- !u!23 &2100919335
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -52376,6 +52404,7 @@ MonoBehaviour:
     \uC788\uB2E4."
   definition: {fileID: 0}
   progressFlag: 
+  keyPickupSound: 0
 --- !u!65 &2134247854
 BoxCollider:
   m_ObjectHideFlags: 0

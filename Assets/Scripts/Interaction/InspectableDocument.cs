@@ -21,6 +21,10 @@ namespace Archive0317
         [SerializeField] private Texture[] pageImages;
         [SerializeField] private string[] pageImageCaptions;
         [SerializeField] private string inspectionPrompt;
+        [SerializeField] private bool keyEvidenceSound;
+        public bool KeyEvidenceSound=>keyEvidenceSound;
+        public void ConfigureKeyEvidenceSound(bool enabled=true)=>keyEvidenceSound=enabled;
+        public override bool PlayInspectSound=>!keyEvidenceSound;
         public Texture Image(int index)=>pageImages!=null && index>=0 && index<pageImages.Length && pageImages[index]!=null?pageImages[index]:index==imagePage?pageImage:null;
         public string ImageCaption=>imageCaption;
         public string Caption(int index)=>pageImageCaptions!=null && index>=0 && index<pageImageCaptions.Length?pageImageCaptions[index]:imageCaption;

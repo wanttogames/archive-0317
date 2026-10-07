@@ -172,7 +172,7 @@ namespace Archive0317
         }
         public void ShowDocument(InspectableDocument document)
         {
-            InteractionSoundscape.PlayDocumentOpen();
+            if(!document.KeyEvidenceSound)InteractionSoundscape.PlayDocumentOpen();
             ResetActions();
             activeDocument = document;
             documentPage = 0;
@@ -205,6 +205,8 @@ namespace Archive0317
             if(cctvTimestamp!=null){cctvTimestamp.text=activeDocument.Caption(documentPage);cctvTimestamp.gameObject.SetActive(photograph!=null);}
 
             bool newlyRecorded=activeDocument.Viewed(documentPage);
+            if(newlyRecorded && activeDocument.KeyEvidenceSound)
+                InteractionSoundscape.PlayKeyEvidence(player.ViewCamera.transform);
             if(pageIndicator!=null)
             {
                 pageIndicator.text=(documentPage+1)+" / "+Mathf.Max(1,activeDocument.PageCount);
@@ -236,14 +238,14 @@ namespace Archive0317
         public void NextPage()
         {
             if (!CanGoNextDocumentPage) return;
-            InteractionSoundscape.PlayDocumentPage();
+            if(activeDocument==null || !activeDocument.KeyEvidenceSound)InteractionSoundscape.PlayDocumentPage();
             documentPage++;
             DisplayPage();
         }
         public void PreviousPage()
         {
             if (!CanGoPreviousDocumentPage) return;
-            InteractionSoundscape.PlayDocumentPage();
+            if(activeDocument==null || !activeDocument.KeyEvidenceSound)InteractionSoundscape.PlayDocumentPage();
             documentPage--;
             DisplayPage();
         }
