@@ -5,36 +5,93 @@ namespace Archive0317
 {
     public sealed class InspectableDoor : Inspectable
     {
+        private enum DoorState { Closed, Opening, Open }
+
         [SerializeField] private Transform leaf;
         [SerializeField] private CaseDefinition definition;
         [SerializeField] private string requiredFlag;
         [SerializeField] private string lockedMessage = "문이 잠겨 있다.";
         [SerializeField] private bool permanentlyLocked;
         [SerializeField] private float openAngle = -95;
-        private bool moving;
-        public bool IsOpen { get; private set; }
-        public override string Prompt => "E 열기";
+
+        private DoorState state = DoorState.Closed;
+        private Coroutine transitionRoutine;
+        private float nextLockedFeedbackAt;
+
+        public bool IsOpen => state == DoorState.Open;
+        public override bool IsInteractionAvailable => state == DoorState.Closed && isActiveAndEnabled;
+        public override float InteractionCooldown => .24f;
+        public override bool PlayInspectSound => false;
+        public override string Prompt => state == DoorState.Open ? "열림" : state == DoorState.Opening ? "여는 중…" : "E 열기";
+
         public void Configure(Transform panel, CaseDefinition data, string requirement, string message, bool locked = false)
-        { leaf = panel; definition = data; requiredFlag = requirement; lockedMessage = message; permanentlyLocked = locked; }
+        {
+            leaf = panel;
+            definition = data;
+            requiredFlag = requirement;
+            lockedMessage = message;
+            permanentlyLocked = locked;
+        }
+
         public override void Inspect(FirstPersonPlayer player)
         {
-            if (moving || IsOpen) return;
-            if (permanentlyLocked || (!string.IsNullOrEmpty(requiredFlag) && !CaseProgressStore.Get(definition).Has(requiredFlag)))
-            { InteractionSoundscape.PlayLockedDoor(transform.position); player.HUD.ShowToast(lockedMessage); return; }
-            InteractionSoundscape.PlayDoorLatch(transform.position);
-            StartCoroutine(Open());
+            if (!IsInteractionAvailable || player == null) return;
+
+            if (IsLocked())
+            {
+                if (Time.unscaledTime >= nextLockedFeedbackAt)
+                {
+                    nextLockedFeedbackAt = Time.unscaledTime + .65f;
+                    InteractionSoundscape.PlayLockedDoor(transform.position);
+                    player.HUD.ShowToast(lockedMessage);
+                }
+                return;
+            }
+
+            transitionRoutine = StartCoroutine(OpenRoutine());
         }
-        private IEnumerator Open()
+
+        private bool IsLocked()
         {
-            moving = true;
-            // Disable only the swinging leaf collider; frame and room boundaries remain solid.
-            foreach (var collider in leaf.GetComponentsInChildren<Collider>()) collider.enabled = false;
+            if (permanentlyLocked) return true;
+            if (string.IsNullOrEmpty(requiredFlag)) return false;
+            if (definition == null) return true;
+            return !CaseProgressStore.Get(definition).Has(requiredFlag);
+        }
+
+        private IEnumerator OpenRoutine()
+        {
+            state = DoorState.Opening;
+            InteractionSoundscape.PlayDoorLatch(transform.position);
+
+            foreach (var collider in leaf.GetComponentsInChildren<Collider>())
+                collider.enabled = false;
+
             var start = leaf.localRotation;
             var end = start * Quaternion.Euler(0, openAngle, 0);
             InteractionSoundscape.PlayDoorCreak(leaf.position);
-            for (float elapsed = 0; elapsed < .4f; elapsed += Time.deltaTime)
-            { leaf.localRotation = Quaternion.Slerp(start, end, elapsed / .4f); yield return null; }
-            leaf.localRotation = end; IsOpen = true; moving = false;
+
+            const float duration = .4f;
+            for (float elapsed = 0; elapsed < duration; elapsed += Time.deltaTime)
+            {
+                leaf.localRotation = Quaternion.Slerp(start, end, elapsed / duration);
+                yield return null;
+            }
+
+            leaf.localRotation = end;
+            state = DoorState.Open;
+            transitionRoutine = null;
+        }
+
+        private void OnDisable()
+        {
+            if (transitionRoutine != null)
+            {
+                StopCoroutine(transitionRoutine);
+                transitionRoutine = null;
+            }
+            if (state == DoorState.Opening)
+                state = DoorState.Closed;
         }
     }
 }
