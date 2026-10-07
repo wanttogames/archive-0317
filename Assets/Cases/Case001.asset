@@ -93,6 +93,11 @@ MonoBehaviour:
     - Room403Revealed
     completionFlag: Room403Opened
     text: "\uB098\uD0C0\uB09C 403\uD638\uC758 \uBB38\uC744 \uC870\uC0AC\uD55C\uB2E4."
+  - id: enter_403
+    requirements:
+    - Room403Opened
+    completionFlag: Room403Entered
+    text: "\uC5F4\uB9B0 403\uD638 \uC548\uC73C\uB85C \uB4E4\uC5B4\uAC04\uB2E4."
   - id: inspect_403
     requirements:
     - Room403Entered
