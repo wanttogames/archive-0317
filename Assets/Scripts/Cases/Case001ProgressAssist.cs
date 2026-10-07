@@ -84,7 +84,7 @@ namespace Archive0317
 
         private bool ShouldSuppressHints(CaseProgress progress)
         {
-            if (progress.Has("Room403Completed")) return true;
+            if (progress.Has("ReturnedToArchive") || progress.Has("CaseCompleted")) return true;
             if (player.HUD.IsCaseOpen || PauseMenuController.IsOpen || MainMenuController.IsMenuOpen || SceneTransitionManager.IsTransitioning) return true;
             return false;
         }
@@ -203,11 +203,16 @@ namespace Archive0317
 
             if (!p.Has("Room403ExitOpened"))
                 return direct
-                    ? "키 태그을 확보했다. 403호 출구 손잡이를 다시 확인해 보자."
+                    ? "키 태그를 확보했다. 403호 출구 손잡이를 다시 확인해 보자."
                     : "방을 나갈 방법이 이제 달라졌을지도 모른다.";
 
             if (!p.Has("Room403Completed"))
                 return "403호를 나가 복도에 무엇이 남아 있는지 확인해 보자.";
+
+            if (!p.Has("ReturnedToArchive"))
+                return direct
+                    ? "1층 현관 출입문으로 돌아가 현장 조사를 종료하자."
+                    : "현장 확인은 끝났다. 이제 모텔에서 나갈 수 있다.";
 
             return string.Empty;
         }
