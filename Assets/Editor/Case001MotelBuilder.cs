@@ -289,6 +289,12 @@ public static class Case001MotelBuilder
             new CaseNotebookEntry{progressFlag="LedgerInspected",text="숙박 장부 세부 기록: 객실 {value}호",factKey="LedgerRoom"},
             new CaseNotebookEntry{progressFlag="CCTVInspected",text="출입 영상 확인"},
             new CaseNotebookEntry{progressFlag="Room404PaperInspected",text="객실에서 회수한 종이 기록 확인"}});
+        data.ConfigureContradictions(new[]{
+            new CaseContradictionEntry{progressFlag="RoomNumberMismatchFound",text="공식 기록 404호와 숙박 장부 403호가 일치하지 않는다."},
+            new CaseContradictionEntry{progressFlag="CCTVContradictionFound",text="4층 CCTV의 객실 배열이 현재 복도와 다르다."},
+            new CaseContradictionEntry{progressFlag="KeyEvidenceFound",text="객실 키 태그의 앞면은 403, 뒷면은 404로 표기되어 있다."},
+            new CaseContradictionEntry{progressFlag="ReceiptChangedSeen",text="숙박 영수증의 객실 번호가 조사 도중 404에서 403으로 바뀌었다."},
+            new CaseContradictionEntry{progressFlag="Room403Completed",text="403호에서 나온 뒤 객실 자체가 복도에서 사라졌다."}});
         EditorUtility.SetDirty(data);
     }
     private static Material LoadMaterial(string name)=>AssetDatabase.LoadAssetAtPath<Material>("Assets/Materials/ArchiveRoom/Institutional/"+name+".mat");
