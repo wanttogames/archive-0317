@@ -12,6 +12,26 @@ PASS: Initial actual corridor numbers: 401 / 402 / 404 / 405
 PASS: Motel floor grounding
 PASS: WASD movement / Shift speed
 PASS: Lobby wall collision
+PASS: Intermediate-floor front wall coverage 2 / -1.4 / 1.3
+PASS: Intermediate-floor front wall coverage 2 / -1.4 / 1.7
+PASS: Intermediate-floor front wall coverage 2 / -1.4 / 2.7
+PASS: Intermediate-floor front wall coverage 2 / 0 / 1.3
+PASS: Intermediate-floor front wall coverage 2 / 0 / 1.7
+PASS: Intermediate-floor front wall coverage 2 / 0 / 2.7
+PASS: Intermediate-floor front wall coverage 2 / 1.4 / 1.3
+PASS: Intermediate-floor front wall coverage 2 / 1.4 / 1.7
+PASS: Intermediate-floor front wall coverage 2 / 1.4 / 2.7
+PASS: CharacterController cannot walk through intermediate stair front wall 2
+PASS: Intermediate-floor front wall coverage 3 / -1.4 / 1.3
+PASS: Intermediate-floor front wall coverage 3 / -1.4 / 1.7
+PASS: Intermediate-floor front wall coverage 3 / -1.4 / 2.7
+PASS: Intermediate-floor front wall coverage 3 / 0 / 1.3
+PASS: Intermediate-floor front wall coverage 3 / 0 / 1.7
+PASS: Intermediate-floor front wall coverage 3 / 0 / 2.7
+PASS: Intermediate-floor front wall coverage 3 / 1.4 / 1.3
+PASS: Intermediate-floor front wall coverage 3 / 1.4 / 1.7
+PASS: Intermediate-floor front wall coverage 3 / 1.4 / 2.7
+PASS: CharacterController cannot walk through intermediate stair front wall 3
 PASS: Mouse look pitch clamp
 PASS: Ledger Raycast / E prompt
 PASS: Ledger first page does not reveal room number

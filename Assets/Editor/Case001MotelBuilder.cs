@@ -160,6 +160,7 @@ public static class Case001MotelBuilder
         }
         Box("FourthLanding",new Vector3(0,8.9f,9.9f),new Vector3(3.4f,.2f,.8f),tile);
         // Prevent walking into the stairwell void from the sides of landings.
+        for(int level=2;level<=3;level++)Box("StairwellFrontWall_"+level,new Vector3(0,(level-1)*3+1.5f,9.38f),new Vector3(3.6f,3f,.2f),wallpaper);
         for(int level=1;level<=2;level++)Box("LandingRearGuard",new Vector3(0,level*3+.55f,9.47f),new Vector3(3.3f,1.1f,.06f),steel);
         foreach(float x in new[]{-1.4f,1.4f})Box("FourthLandingSideGuard",new Vector3(x,9.55f,9.47f),new Vector3(.5f,1.1f,.06f),steel);
     }

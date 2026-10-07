@@ -88,6 +88,14 @@ public static class Case001MotelSmokeTest
         Teleport(player,initial); Steps(player,Vector2.up,30,true); float sprint=player.transform.position.z-initial.z;
         Check(walk>1.2f && sprint>walk*1.6f,"WASD movement / Shift speed");
         Teleport(player,new Vector3(2.5f,.05f,-2)); Steps(player,Vector2.right,90,true); Check(player.transform.position.x<3.15f,"Lobby wall collision");
+        foreach(int floor in new[]{2,3})
+        {
+            float y=(floor-1)*3;
+            foreach(float x in new[]{-1.4f,0,1.4f})foreach(float h in new[]{1.3f,1.7f,2.7f})
+                Check(Physics.Raycast(new Vector3(x,y+h,9.9f),Vector3.back,out var wallHit,1f) && wallHit.collider.name=="StairwellFrontWall_"+floor,"Intermediate-floor front wall coverage "+floor+" / "+x+" / "+h);
+            Teleport(player,new Vector3(.8f,y+.05f,9.98f));Steps(player,Vector2.down,90,true);
+            Check(player.transform.position.z>=9.7f,"CharacterController cannot walk through intermediate stair front wall "+floor);
+        }
         player.ApplyLook(new Vector2(200,2000)); Check(Mathf.Abs(Mathf.DeltaAngle(0,player.ViewCamera.transform.localEulerAngles.x))<=80.1f,"Mouse look pitch clamp");
         Target(player,new Vector3(-1.6f,.05f,-2),GameObject.Find("GuestLedger").transform.position);
         Check(player.CurrentTarget is InspectableDocument && player.HUD.IsPromptVisible,"Ledger Raycast / E prompt");
@@ -132,6 +140,7 @@ public static class Case001MotelSmokeTest
         player.transform.rotation=Quaternion.identity; Steps(player,Vector2.left,42);
         float entered=Time.fixedTime+.08f; while(Time.fixedTime<entered)yield return null;
         Check(CaseProgressStore.Get(definition).Has("Room404Entered"),"404 entry trigger through opened doorway");
+        var bed404Capture=CaptureBed(player,"Bed404Final","BedCover",new Vector3(-2.15f,10.5f,2.5f));while(bed404Capture.MoveNext())yield return null;
         Target(player,new Vector3(-1.8f,9.05f,roomZ-.4f),GameObject.Find("Room404Paper").transform.position); Check(player.TryInteract() && player.HUD.IsCaseOpen,"404 paper Raycast / document UI");
         Check(CaseProgressStore.Get(definition).Has("Room404PaperInspected"),"404 paper evidence stored"); player.CloseCase();
         Check(!CaseProgressStore.Get(definition).Has("RoomNumberMismatchFound"),"Player chooses to compare evidence");
@@ -195,6 +204,7 @@ public static class Case001MotelSmokeTest
         Check(player.transform.position.x<-18 && progress.Has("Room403Entered"),"Walking across threshold enters isolated 403 without changing player/camera");
         var environment=GameObject.Find("Room403Interior").GetComponent<CaseEnvironmentState>();environment.Evaluate();
         Check(GameObject.Find("Room403ExitDoor").GetComponent<InspectableCaseDoor>().IsOpen,"Inner doorway starts open");
+        var bed403Capture=CaptureBed(player,"Bed403Final","Room403BedCover",new Vector3(-19.4f,10.5f,3.5f));while(bed403Capture.MoveNext())yield return null;
         player.transform.rotation=Quaternion.identity;Steps(player,Vector2.right,20);stop=Time.time+.25f;while(Time.time<stop)yield return null;Check(player.transform.position.x>-.9f && !progress.Has("Room403Completed"),"Leaving before evidence safely returns to corridor without completing case");
         stop=Time.time+1.1f;while(Time.time<stop)yield return null;player.transform.rotation=Quaternion.identity;Steps(player,Vector2.left,30);yield return null;Check(player.transform.position.x<-18,"Unfinished 403 can be re-entered without a duplicate player");
         Target(player,new Vector3(-19.05f,9.05f,3.15f),GameObject.Find("Room403BathDoor").transform.position);Check(player.TryInteract(),"First bathroom door inspection opens normally");stop=Time.time+.6f;while(Time.time<stop)yield return null;player.transform.rotation=Quaternion.identity;Steps(player,Vector2.down,40);stop=Time.time+.25f;while(Time.time<stop)yield return null;
@@ -283,6 +293,12 @@ public static class Case001MotelSmokeTest
         var motel=SceneManager.LoadSceneAsync("Case001_Motel");while(!motel.isDone)yield return null;while(SceneManager.GetActiveScene().name!="ArchiveRoom" || SceneTransitionManager.IsTransitioning)yield return null;yield return null;
         Check(SceneManager.GetActiveScene().name=="ArchiveRoom" && GameObject.Find("CASE 00")!=null,"Launching completed motel save redirects safely to ArchiveRoom");
         player=UnityEngine.Object.FindFirstObjectByType<FirstPersonPlayer>();player.enabled=false;Teleport(player,new Vector3(2,.05f,-3));player.transform.rotation=Quaternion.identity;var start=player.transform.position;Steps(player,Vector2.up,20);Check(Vector3.Distance(start,player.transform.position)>.5f,"Player continues moving after episode completion");
+    }
+    private static IEnumerator CaptureBed(FirstPersonPlayer player,string name,string cover,Vector3 position)
+    {
+        var camera=player.ViewCamera;var localPosition=camera.transform.localPosition;var localRotation=camera.transform.localRotation;
+        try{camera.transform.position=position;camera.transform.LookAt(GameObject.Find(cover).transform.position);Directory.CreateDirectory("Documentation/Verification/StairBedding");ScreenCapture.CaptureScreenshot("Documentation/Verification/StairBedding/"+name+".png");float until=Time.time+.4f;while(Time.time<until)yield return null;}
+        finally{camera.transform.localPosition=localPosition;camera.transform.localRotation=localRotation;}
     }
     private static void Teleport(FirstPersonPlayer player,Vector3 position){var cc=player.GetComponent<CharacterController>();cc.enabled=false;player.transform.position=position;cc.enabled=true;Physics.SyncTransforms();}
     private static void Steps(FirstPersonPlayer player,Vector2 input,int count,bool run=false){for(int i=0;i<count;i++)player.Move(input,run,1f/60);}

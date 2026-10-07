@@ -1,0 +1,2 @@
+PASS errors=0 warnings=7 logs=2
+Warnings are MCP plugin connection/disposal messages observed during domain reload.

@@ -1,0 +1,2 @@
+PASS: floor 2 nine wall rays and CharacterController boundary collision
+PASS: floor 3 nine wall rays and CharacterController boundary collision
