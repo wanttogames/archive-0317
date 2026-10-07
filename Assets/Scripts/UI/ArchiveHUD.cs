@@ -44,6 +44,7 @@ namespace Archive0317
         {reportActions=actions;verdictButtons=verdicts;confirmVerdictButton=confirm;returnButton=back;continueButton=resume;}
         public void ShowCCTV(InspectableCCTV recording)
         {
+            InteractionSoundscape.PlayUIClick();
             ResetActions();title.text=recording.Title;body.text="";
             cctvFrame.texture=recording.Frame;cctvFrame.gameObject.SetActive(true);
             cctvTimestamp.text=recording.Timestamp;cctvTimestamp.gameObject.SetActive(true);
@@ -58,13 +59,13 @@ namespace Archive0317
             if(reportHeader!=null)headerPosition=reportHeader.anchoredPosition;if(reportCloseHint!=null)closeHintPosition=reportCloseHint.anchoredPosition;
             if(confirmVerdictButton!=null)confirmPosition=confirmVerdictButton.GetComponent<RectTransform>().anchoredPosition;
             if(verdictButtons!=null){verdictPositions=new Vector2[verdictButtons.Length];for(int i=0;i<verdictButtons.Length;i++)verdictPositions[i]=verdictButtons[i].GetComponent<RectTransform>().anchoredPosition;}
-            if (startFieldButton != null) startFieldButton.onClick.AddListener(StartField);
+            if (startFieldButton != null) { startFieldButton.onClick.AddListener(InteractionSoundscape.PlayUIClick); startFieldButton.onClick.AddListener(StartField); }
             if (nextPageButton != null) nextPageButton.onClick.AddListener(NextPage);
-            if (compareButton != null) compareButton.onClick.AddListener(CompareRecords);
-            if(verdictButtons!=null)for(int i=0;i<verdictButtons.Length;i++){int choice=i;verdictButtons[i].onClick.AddListener(()=>ChooseVerdict(choice));}
-            if(confirmVerdictButton!=null)confirmVerdictButton.onClick.AddListener(ConfirmVerdict);
-            if(returnButton!=null)returnButton.onClick.AddListener(ReturnFromField);
-            if(continueButton!=null)continueButton.onClick.AddListener(()=>player.CloseCase());
+            if (compareButton != null) { compareButton.onClick.AddListener(InteractionSoundscape.PlayUIClick); compareButton.onClick.AddListener(CompareRecords); }
+            if(verdictButtons!=null)for(int i=0;i<verdictButtons.Length;i++){int choice=i;verdictButtons[i].onClick.AddListener(InteractionSoundscape.PlayUIClick);verdictButtons[i].onClick.AddListener(()=>ChooseVerdict(choice));}
+            if(confirmVerdictButton!=null){confirmVerdictButton.onClick.AddListener(InteractionSoundscape.PlayUIClick);confirmVerdictButton.onClick.AddListener(ConfirmVerdict);}
+            if(returnButton!=null){returnButton.onClick.AddListener(InteractionSoundscape.PlayUIClick);returnButton.onClick.AddListener(ReturnFromField);}
+            if(continueButton!=null){continueButton.onClick.AddListener(InteractionSoundscape.PlayUIBack);continueButton.onClick.AddListener(()=>player.CloseCase());}
         }
         private void ApplyReadabilityProfile()
         {
@@ -122,6 +123,7 @@ namespace Archive0317
         public void SetPrompt(bool visible, string text = "E 조사") { prompt.text = text; prompt.gameObject.SetActive(visible && !IsCaseOpen); }
         public void ShowCase(CaseFile file)
         {
+            InteractionSoundscape.PlayDocumentOpen();
             ResetActions(); ActiveDefinition = file.Definition;
             title.text = file.Title; body.text = file.Description; casePanel.SetActive(true); SetPrompt(false);
             if (ActiveDefinition != null)
@@ -132,7 +134,7 @@ namespace Archive0317
             }
         }
         public void ShowDocument(InspectableDocument document)
-        { ResetActions(); activeDocument = document; documentPage = 0; DisplayPage(); casePanel.SetActive(true); SetPrompt(false); }
+        { InteractionSoundscape.PlayDocumentOpen(); ResetActions(); activeDocument = document; documentPage = 0; DisplayPage(); casePanel.SetActive(true); SetPrompt(false); }
         private void DisplayPage()
         {
             if (activeDocument == null) return;
@@ -145,10 +147,11 @@ namespace Archive0317
             activeDocument.Viewed(documentPage);
             if (nextPageButton != null) nextPageButton.gameObject.SetActive(documentPage + 1 < activeDocument.PageCount);
         }
-        public void NextPage() { if (activeDocument != null && documentPage + 1 < activeDocument.PageCount) { documentPage++; DisplayPage(); } }
+        public void NextPage() { if (activeDocument != null && documentPage + 1 < activeDocument.PageCount) { InteractionSoundscape.PlayDocumentPage(); documentPage++; DisplayPage(); } }
         public void ShowNotebook()
         {
             if (ActiveDefinition == null) return;
+            InteractionSoundscape.PlayDocumentOpen();
             ResetActions(); var progress = CaseProgressStore.Get(ActiveDefinition);
             title.text = "사건 기록 — " + ActiveDefinition.Title;
             body.text = ActiveDefinition.OfficialRecord + "\n\n현장 메모\n";
@@ -172,6 +175,7 @@ namespace Archive0317
         }
         public void ShowReport(CaseReport report)
         {
+            InteractionSoundscape.PlayDocumentOpen();
             ResetActions();activeReport=report;ActiveDefinition=report.Definition;selectedVerdict=-1;
             title.text=report.Definition.Title+" / 사건 정리";body.text=report.Summary();body.fontSize=19;
             reportCard.sizeDelta=new Vector2(850,880);title.rectTransform.anchoredPosition=new Vector2(0,280);
@@ -219,7 +223,12 @@ namespace Archive0317
             if (nextPageButton != null) nextPageButton.gameObject.SetActive(false);
             if (compareButton != null) compareButton.gameObject.SetActive(false);
         }
-        public void CloseCase() { casePanel.SetActive(false); ResetActions(); }
+        public void CloseCase()
+        {
+            if (casePanel != null && casePanel.activeSelf) InteractionSoundscape.PlayDocumentClose();
+            casePanel.SetActive(false);
+            ResetActions();
+        }
         private void LateUpdate()
         {
             crosshair.SetActive(!IsCaseOpen && player.IsCaptured);
