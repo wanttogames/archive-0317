@@ -19,6 +19,7 @@ namespace Archive0317
         public const string SensitivityKey = "Archive0317.Settings.MouseSensitivity";
 
         private static bool presentedThisSession;
+        public static bool IsMenuOpen { get; private set; }
         private CanvasGroup rootGroup;
         private GameObject settingsPanel;
         private GameObject confirmPanel;
@@ -31,7 +32,7 @@ namespace Archive0317
         private bool busy;
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-        private static void ResetStatics() => presentedThisSession = false;
+        private static void ResetStatics() { presentedThisSession = false; IsMenuOpen = false; }
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         private static void PresentOnFirstArchiveLoad()
@@ -45,6 +46,7 @@ namespace Archive0317
 
         private void Build()
         {
+            IsMenuOpen = true;
             player = Object.FindFirstObjectByType<FirstPersonPlayer>();
             if (player != null)
             {
@@ -306,6 +308,11 @@ namespace Archive0317
                 yield return null;
             }
             rootGroup.alpha = to;
+        }
+
+        private void OnDestroy()
+        {
+            IsMenuOpen = false;
         }
 
         private void QuitGame()
