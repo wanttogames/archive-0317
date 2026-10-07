@@ -118,7 +118,7 @@ namespace Archive0317
             float user = Mathf.Clamp01(PlayerPrefs.GetFloat(MainMenuController.VisualIntensityKey, .65f));
             if (user <= .001f)
             {
-                SmoothTo(0f, 0f, 0f, .16f, 0f, 0f, 10f);
+                SmoothTo(0f, 0f, 0f, 0f, 0f, 0f, 10f);
                 return;
             }
 
@@ -176,7 +176,7 @@ namespace Archive0317
             targetGrain *= user;
             targetChromatic *= user;
             targetDistortion *= user;
-            targetVignette = Mathf.Lerp(.16f, targetVignette, user);
+            targetVignette *= user;
             targetSaturation *= user;
             targetContrast *= user;
 
