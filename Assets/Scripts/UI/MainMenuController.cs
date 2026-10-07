@@ -389,7 +389,7 @@ namespace Archive0317
             go.transform.SetParent(parent, false);
             var image = go.GetComponent<Image>();
             image.color = color;
-            image.raycastTarget = name == "Backdrop" || name == "LeftShade";
+            image.raycastTarget = name == "Backdrop" || name == "LeftShade" || name == "SettingsPanel" || name == "NewGameConfirm";
             return go;
         }
 
@@ -431,7 +431,7 @@ namespace Archive0317
         private static void EnsureEventSystem()
         {
             if (Object.FindFirstObjectByType<EventSystem>() != null) return;
-            var eventSystem = new GameObject("EventSystem", typeof(EventSystem), typeof(InputSystemUIInputModule));
+            var eventSystem = new GameObject("EventSystem", typeof(EventSystem), typeof(UnityEngine.InputSystem.UI.InputSystemUIInputModule));
             DontDestroyOnLoad(eventSystem);
         }
     }
