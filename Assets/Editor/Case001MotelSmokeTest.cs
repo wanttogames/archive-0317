@@ -81,6 +81,8 @@ public static class Case001MotelSmokeTest
         Check(!door403.activeSelf && missingWall.activeSelf,"403 initially absent and its wall solid");
         var initialNumbers=UnityEngine.Object.FindObjectsByType<TextMesh>(FindObjectsSortMode.None).Where(t=>t.name=="RoomNumber").Select(t=>t.text).OrderBy(t=>t).ToArray();
         Check(initialNumbers.SequenceEqual(new[]{"401","402","404","405"}),"Initial actual corridor numbers: 401 / 402 / 404 / 405");
+        CorridorRearCueSmokeTest.Run();Check(true,"Sparse rear sound / distant figure / camera-motion disappearance regression");
+        var rearPreview=CorridorRearCueSmokeTest.CapturePreview();while(rearPreview.MoveNext())yield return null;
         Teleport(player,new Vector3(0,.05f,-3.7f)); player.transform.rotation=Quaternion.identity;
         player.ViewCamera.transform.localRotation=Quaternion.identity;var motelCapture=RetroVisualSmokeTest.Capture("Retro_MotelGameView");while(motelCapture.MoveNext())yield return null;
         Steps(player,Vector2.zero,60); Check(player.GetComponent<CharacterController>().isGrounded,"Motel floor grounding");

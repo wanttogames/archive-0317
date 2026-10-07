@@ -1,0 +1,1 @@
+PASS: three sparse rear spatial cues; second/third appearance selection (second tested); empty first and third cues; observation then camera-motion disappearance; no stationary repetition; maximum three cues. Actual Unity Play Mode component execution. Audio mix and subjective visual timing require human headphones playthrough.

@@ -9,6 +9,7 @@ PASS: One shared player, AudioListener and EventSystem
 PASS: CaseStarted stored
 PASS: 403 initially absent and its wall solid
 PASS: Initial actual corridor numbers: 401 / 402 / 404 / 405
+PASS: Sparse rear sound / distant figure / camera-motion disappearance regression
 PASS: Motel floor grounding
 PASS: WASD movement / Shift speed
 PASS: Lobby wall collision
