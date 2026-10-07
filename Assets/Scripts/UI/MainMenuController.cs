@@ -48,7 +48,19 @@ namespace Archive0317
         private static void PresentOnFirstArchiveLoad()
         {
             if (presentedThisSession || SceneManager.GetActiveScene().name != "ArchiveRoom") return;
+            PresentTitle();
+        }
+
+        public static void PresentFromPause()
+        {
+            if (SceneManager.GetActiveScene().name != "ArchiveRoom" || IsMenuOpen) return;
+            PresentTitle();
+        }
+
+        private static void PresentTitle()
+        {
             presentedThisSession = true;
+            IsMenuOpen = true;
             var host = new GameObject("MainMenuController");
             DontDestroyOnLoad(host);
             host.AddComponent<MainMenuController>().Build();
