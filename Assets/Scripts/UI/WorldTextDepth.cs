@@ -10,14 +10,47 @@ namespace Archive0317
         private Renderer textRenderer;
         private Material original;
         private Material material;
-        public void Configure(Shader shader) { depthShader=shader; }
+        private bool subscribed;
+
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+        private static void ApplyToSceneText()
+        {
+            var shader=Shader.Find("Archive0317/WorldTextDepth");
+            if(shader==null)return;
+            foreach(var label in Object.FindObjectsByType<TextMesh>(FindObjectsInactive.Include,FindObjectsSortMode.None))
+            {
+                var clarity=label.GetComponent<WorldTextDepth>();
+                if(clarity==null)clarity=label.gameObject.AddComponent<WorldTextDepth>();
+                clarity.Configure(shader);
+            }
+        }
+
+        public void Configure(Shader shader)
+        {
+            depthShader=shader;
+            if(isActiveAndEnabled)Apply();
+        }
+
         private void OnEnable()
         {
-            text=GetComponent<TextMesh>(); textRenderer=GetComponent<Renderer>();
-            if(depthShader==null || text.font==null)return;
+            Apply();
+        }
+
+        private void Apply()
+        {
+            if(material!=null)return;
+            text=GetComponent<TextMesh>();
+            textRenderer=GetComponent<Renderer>();
+            if(depthShader==null)depthShader=Shader.Find("Archive0317/WorldTextDepth");
+            if(depthShader==null || text==null || text.font==null || textRenderer==null)return;
             original=textRenderer.sharedMaterial;
-            material=new Material(depthShader); textRenderer.sharedMaterial=material;
-            Font.textureRebuilt+=RefreshAtlas;
+            material=new Material(depthShader);
+            textRenderer.sharedMaterial=material;
+            if(!subscribed)
+            {
+                Font.textureRebuilt+=RefreshAtlas;
+                subscribed=true;
+            }
             text.font.RequestCharactersInTexture(text.text,text.fontSize,text.fontStyle);
             RefreshAtlas(text.font);
         }
@@ -25,9 +58,15 @@ namespace Archive0317
         { if(material!=null && rebuilt==text.font)material.mainTexture=rebuilt.material.mainTexture; }
         private void OnDisable()
         {
-            Font.textureRebuilt-=RefreshAtlas;
+            if(subscribed)
+            {
+                Font.textureRebuilt-=RefreshAtlas;
+                subscribed=false;
+            }
             if(material==null)return;
-            textRenderer.sharedMaterial=original; Destroy(material); material=null;
+            if(textRenderer!=null)textRenderer.sharedMaterial=original;
+            Destroy(material);
+            material=null;
         }
     }
 }
