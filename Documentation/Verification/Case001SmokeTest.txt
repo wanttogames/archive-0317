@@ -56,6 +56,8 @@ PASS: 402 numberplate Raycast observation
 PASS: 404 numberplate Raycast observation
 PASS: Both plates and ledger permit only a short observation
 PASS: 404 door Raycast with key
+PASS: 404 numberplate remains Raycast inspectable after opening the door first
+PASS: Corridor-number objective can complete after 404 door opens
 PASS: 404 entry trigger through opened doorway
 PASS: 404 paper Raycast / document UI
 PASS: 404 paper evidence stored

@@ -137,6 +137,13 @@ public static class Case001MotelSmokeTest
         environment.Evaluate();Check(CaseProgressStore.Get(definition).Has("MissingRoomNoticed"),"Both plates and ledger permit only a short observation");
         Target(player,new Vector3(0,9.05f,roomZ),door.transform.position+Vector3.up*1.05f); Check(player.TryInteract(),"404 door Raycast with key");
         while(!door.IsOpen)yield return null;
+        var progressAfterOpen=CaseProgressStore.Get(definition);
+        progressAfterOpen.flags.Remove("Room404PlateSeen");progressAfterOpen.flags.Remove("MissingRoomNoticed");
+        var openPlate=door.transform.Find("DoorHinge/NumberPlate");
+        Target(player,new Vector3(0,9.05f,openPlate.position.z),openPlate.position);
+        Check(player.CurrentTarget==openPlate.GetComponent<InspectableNote>() && player.TryInteract() && progressAfterOpen.Has("Room404PlateSeen"),"404 numberplate remains Raycast inspectable after opening the door first");
+        environment.Evaluate();Check(progressAfterOpen.Has("MissingRoomNoticed"),"Corridor-number objective can complete after 404 door opens");
+        Target(player,new Vector3(0,9.05f,roomZ),door.transform.position+Vector3.up*1.05f);
         player.transform.rotation=Quaternion.identity; Steps(player,Vector2.left,42);
         float entered=Time.fixedTime+.08f; while(Time.fixedTime<entered)yield return null;
         Check(CaseProgressStore.Get(definition).Has("Room404Entered"),"404 entry trigger through opened doorway");

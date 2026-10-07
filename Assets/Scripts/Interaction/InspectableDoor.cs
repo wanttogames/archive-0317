@@ -86,6 +86,10 @@ namespace Archive0317
             }
 
             leaf.localRotation = end;
+            // Door-mounted clues must remain raycastable after the solid leaf stops blocking passage.
+            foreach (var collider in leaf.GetComponentsInChildren<Collider>())
+                if (collider.GetComponent<Inspectable>() != null)
+                    collider.enabled = true;
             state = DoorState.Open;
             transitionRoutine = null;
         }
