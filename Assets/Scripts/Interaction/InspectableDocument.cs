@@ -22,19 +22,27 @@ namespace Archive0317
         public string ImageCaption=>imageCaption;
         public void ConfigureImage(int page,Texture image,string caption){imagePage=page;pageImage=image;imageCaption=caption;}
         public string Title => heading;
-        public int PageCount => pages?.Length ?? 0;
+        public CaseDefinition Definition => definition;
         private bool Alternate => definition != null && !string.IsNullOrEmpty(alternateCondition) && CaseProgressStore.Get(definition).Has(alternateCondition);
+        public int PageCount { get { var contents=Alternate?alternatePages:pages; return contents?.Length ?? 0; } }
+        public bool IsRecorded => definition != null && !string.IsNullOrEmpty(progressFlag) && CaseProgressStore.Get(definition).Has(progressFlag);
+        public bool IsEvidencePage(int index) => index == evidencePage;
+        public override string Prompt => IsRecorded ? "E 다시 읽기" : "E 문서 읽기";
         public string Page(int index) { var contents=Alternate?alternatePages:pages; return contents!=null && index>=0 && index<contents.Length?contents[index]:""; }
         public void ConfigureVariant(string condition,string[] contents,string viewedFlag,string value=""){alternateCondition=condition;alternatePages=contents;alternateViewedFlag=viewedFlag;alternateFactValue=value;}
         public void Configure(CaseDefinition data, string title, string[] contents, string flag, int recordPage = 0, string key = "", string value = "")
         { definition = data; heading = title; pages = contents; progressFlag = flag; evidencePage = recordPage; factKey = key; factValue = value; }
         public override void Inspect(FirstPersonPlayer player) => player.HUD.ShowDocument(this);
-        public void Viewed(int page)
+        public bool Viewed(int page)
         {
-            if (page != evidencePage) return;
+            if (page != evidencePage || definition == null) return false;
+            var progress = CaseProgressStore.Get(definition);
+            bool newlyRecorded = !string.IsNullOrEmpty(progressFlag) && !progress.Has(progressFlag);
+            bool alternateNew = Alternate && !string.IsNullOrEmpty(alternateViewedFlag) && !progress.Has(alternateViewedFlag);
             CaseProgressStore.Mark(definition, progressFlag);
             if(Alternate)CaseProgressStore.Mark(definition,alternateViewedFlag);
             CaseProgressStore.RecordFact(definition, factKey, Alternate && !string.IsNullOrEmpty(alternateFactValue)?alternateFactValue:factValue);
+            return newlyRecorded || alternateNew;
         }
     }
 }
