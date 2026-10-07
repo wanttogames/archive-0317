@@ -32,6 +32,7 @@ namespace Archive0317
         {
             definition=data;
             leaf=panel;
+            if (leaf != null) closed = leaf.localRotation;
             requirements=conditions;
             firstFlag=first;
             openFlag=opened;
