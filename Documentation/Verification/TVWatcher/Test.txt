@@ -6,15 +6,42 @@ PASS: TV-only silhouette has no collider and legacy real-room shadow is suppress
 PASS: 40-second no-observation fallback releases existing key progression
 PASS: Saved completion restores without replaying watcher
 PASS: Normal feed contains delayed player body at actual room position
+PASS: Watching TV does not bypass observation sequence
 PASS: Looking away advances to Doorway
 PASS: Figure never moves while TV is watched: Doorway
 PASS: Key does not appear before watcher completion: Doorway
+PASS: Figure stays framed from head to feet: Doorway
+PASS: VHS intensity drives world pixelation: 0
+PASS: TV screen material references the current live frame: 0
+PASS: VHS intensity drives world pixelation: 0.65
+PASS: TV screen material references the current live frame: 0.65
+PASS: VHS intensity drives world pixelation: 1
+PASS: TV screen material references the current live frame: 1
+PASS: Watching TV does not bypass observation sequence
 PASS: Looking away advances to Approaching
 PASS: Figure never moves while TV is watched: Approaching
 PASS: Key does not appear before watcher completion: Approaching
+PASS: Figure stays framed from head to feet: Approaching
+PASS: VHS intensity drives world pixelation: 0
+PASS: TV screen material references the current live frame: 0
+PASS: VHS intensity drives world pixelation: 0.65
+PASS: TV screen material references the current live frame: 0.65
+PASS: VHS intensity drives world pixelation: 1
+PASS: TV screen material references the current live frame: 1
+PASS: Actual scene unload, cleared save cache and reload restore intermediate stage and pose
+PASS: Intermediate reload does not release key or finish sequence early
+PASS: Reloaded TV returns to live room feed and continues observation
+PASS: Watching TV does not bypass observation sequence
 PASS: Looking away advances to Behind
 PASS: Figure never moves while TV is watched: Behind
 PASS: Key does not appear before watcher completion: Behind
+PASS: Figure stays framed from head to feet: Behind
+PASS: VHS intensity drives world pixelation: 0
+PASS: TV screen material references the current live frame: 0
+PASS: VHS intensity drives world pixelation: 0.65
+PASS: TV screen material references the current live frame: 0.65
+PASS: VHS intensity drives world pixelation: 1
+PASS: TV screen material references the current live frame: 1
 PASS: Final TV silhouette stands directly behind player's proxy
 PASS: Final static has a quiet TV-position spatial source
 PASS: Looking back ends watcher and releases physical key

@@ -46,7 +46,7 @@ namespace Archive0317
         }
         private IEnumerator Tune()
         {display.SetColor("_BaseColor",new Color(1.8f,1.8f,1.8f,1));display.SetTexture("_BaseMap",noise);screen.sharedMaterial=display;if(electronics!=null)electronics.Play();yield return new WaitForSeconds(2);FootageVisible=true;timestamp.gameObject.SetActive(true);RenderFrame();CaseProgressStore.Mark(definition,"TelevisionEventTriggered");}
-        private void RenderFrame(){if(watcher!=null)watcher.BeforeFrame();effect.SetFloat("_WatcherStatic",Time.time<staticUntil?1:0);recording.targetTexture=source;recording.Render();Graphics.Blit(source,output,effect);display.SetTexture("_BaseMap",output);}
+        private void RenderFrame(){if(watcher!=null)watcher.BeforeFrame();effect.SetFloat("_WatcherStatic",Time.time<staticUntil?1:0);recording.targetTexture=source;recording.Render();Graphics.Blit(source,output,effect);display.SetTexture("_BaseMap",output);screen.sharedMaterial=display;}
         public override void Inspect(FirstPersonPlayer player)
         {player.HUD.ShowToast(FootageVisible?(watcher!=null?"천장 모서리에서 내려다본 방이 비친다.":"화면에는 4층 복도가 비친다."):"전원 버튼 아래에 먼지가 쌓여 있다.");if(FootageVisible)CaseProgressStore.Mark(definition,"TelevisionInspected");}
         private void OnEnable(){if(source!=null && !source.IsCreated())source.Create();if(output!=null && !output.IsCreated())output.Create();}

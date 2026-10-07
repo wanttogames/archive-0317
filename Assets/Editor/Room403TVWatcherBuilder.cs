@@ -15,7 +15,7 @@ public static class Room403TVWatcherBuilder
         int layer=LayerMask.NameToLayer("Room403TVOnly");
         if(layer<0){var tags=new SerializedObject(AssetDatabase.LoadAllAssetsAtPath("ProjectSettings/TagManager.asset")[0]);var layers=tags.FindProperty("layers");for(int i=29;i>=24;i--)if(string.IsNullOrEmpty(layers.GetArrayElementAtIndex(i).stringValue)){layer=i;layers.GetArrayElementAtIndex(i).stringValue="Room403TVOnly";break;}if(layer<0)throw new System.Exception("No free TV layer.");tags.ApplyModifiedProperties();}
         var television=Find("Room403CRTTV").GetComponent<InspectableCaseTelevision>();var camera=television.RecordingCamera;
-        camera.name="Room403RoomSurveillanceCamera";camera.transform.position=new Vector3(-22,11.4f,6.42f);camera.transform.LookAt(new Vector3(-19.9f,9.8f,4.25f));camera.fieldOfView=82;camera.nearClipPlane=.08f;camera.farClipPlane=10;camera.enabled=false;camera.allowHDR=false;camera.allowMSAA=false;
+        camera.name="Room403RoomSurveillanceCamera";camera.transform.position=new Vector3(-22,11.4f,2.7f);camera.transform.LookAt(new Vector3(-20,9.8f,4.8f));camera.fieldOfView=88;camera.nearClipPlane=.08f;camera.farClipPlane=10;camera.enabled=false;camera.allowHDR=false;camera.allowMSAA=false;
         var extra=camera.GetUniversalAdditionalCameraData();extra.renderPostProcessing=false;
         foreach(var c in Object.FindObjectsByType<Camera>(FindObjectsInactive.Include,FindObjectsSortMode.None))c.cullingMask&=~(1<<layer);camera.cullingMask|=1<<layer;
         var old=FindOptional("Room403TVOnlyActors");if(old!=null)Object.DestroyImmediate(old);
@@ -24,7 +24,7 @@ public static class Room403TVWatcherBuilder
         var proxy=Body(root.transform,"TVPlayerProxy",layer,Material("TVPlayerCoat",new Color(.32f,.35f,.32f)));
         figure.gameObject.SetActive(false);proxy.gameObject.SetActive(false);
         var watcher=television.GetComponent<Room403TVWatcher>();if(watcher==null)watcher=television.gameObject.AddComponent<Room403TVWatcher>();
-        watcher.Configure(AssetDatabase.LoadAssetAtPath<CaseDefinition>(Case001MotelBuilder.DefinitionPath),Object.FindFirstObjectByType<FirstPersonPlayer>(),Find("Room403Area").GetComponent<Collider>(),Find("Room403TVScreen").GetComponent<Renderer>(),proxy,figure,new Vector3(-21.7f,9.05f,2.85f));
+        watcher.Configure(AssetDatabase.LoadAssetAtPath<CaseDefinition>(Case001MotelBuilder.DefinitionPath),Object.FindFirstObjectByType<FirstPersonPlayer>(),Find("Room403Area").GetComponent<Collider>(),Find("Room403TVScreen").GetComponent<Renderer>(),proxy,figure,new Vector3(-18.5f,9.05f,3f));
         var environment=Find("Room403Interior").GetComponent<CaseEnvironmentState>();var state=new SerializedObject(environment);var rules=state.FindProperty("rules");
         for(int i=0;i<rules.arraySize;i++){var rule=rules.GetArrayElementAtIndex(i);if(rule.FindPropertyRelative("completionFlag").stringValue=="KeyTagVisible"){var requirements=rule.FindPropertyRelative("requirements");requirements.arraySize=2;requirements.GetArrayElementAtIndex(0).stringValue="TelevisionInspected";requirements.GetArrayElementAtIndex(1).stringValue="TVWatcherFinished";}}
         state.ApplyModifiedProperties();EditorUtility.SetDirty(watcher);EditorSceneManager.MarkSceneDirty(scene);EditorSceneManager.SaveScene(scene);AssetDatabase.SaveAssets();

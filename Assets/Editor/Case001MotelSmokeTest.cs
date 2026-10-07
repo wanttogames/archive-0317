@@ -19,6 +19,7 @@ public static class Case001MotelSmokeTest
     private static string saved;
     private static double deadline;
     private static bool previousBackground;
+    private static string capturePrefix;
     public static string Status { get; private set; } = "Not run";
     [MenuItem("Archive 03:17/Run CASE 001 Play Mode Smoke Test")]
     public static void Begin()
@@ -29,6 +30,7 @@ public static class Case001MotelSmokeTest
         var key = CaseProgressStore.StorageKey(definition); hadSave = PlayerPrefs.HasKey(key); saved = PlayerPrefs.GetString(key);
         PlayerPrefs.DeleteKey(key); CaseProgressStore.ClearCache();
         previousBackground=Application.runInBackground; Application.runInBackground=true;
+        capturePrefix="TVWatcher/Suite_"+DateTime.Now.ToString("yyyyMMdd_HHmmss")+"/";Directory.CreateDirectory("Documentation/Verification/"+capturePrefix);
         report = new StringBuilder("CASE 001 Play Mode smoke test\n"); Status = "Running"; deadline = EditorApplication.timeSinceStartup + 180;
         sequence = Run(); EditorApplication.update += Tick;
     }
@@ -178,7 +180,7 @@ public static class Case001MotelSmokeTest
         var frame=player.HUD.GetComponentsInChildren<RawImage>(true).First(t=>t.name=="CCTVFrame");
         var stamp=player.HUD.GetComponentsInChildren<Text>(true).First(t=>t.name=="CCTVTimestamp");
         Check(frame.gameObject.activeInHierarchy && frame.texture==cctv.Frame && stamp.gameObject.activeInHierarchy && stamp.text.Contains("03:17"),"RenderTexture and single CCTV timestamp in existing document UI");
-        var cctvCapture=RetroVisualSmokeTest.Capture("Retro_CCTVGameView");while(cctvCapture.MoveNext())yield return null;
+        var cctvCapture=RetroVisualSmokeTest.Capture(capturePrefix+"Retro_CCTVGameView");while(cctvCapture.MoveNext())yield return null;
         Check(cctv.RecordingCamera.cullingMask==(1<<30) && GameObject.Find("RecordedNumber403").GetComponent<TextMesh>().text=="403","Recorded 403 exists only in isolated CCTV layer");
         Check(CaseProgressStore.Get(definition).Has("CCTVContradictionFound"),"CCTVContradictionFound stored after footage inspection");
         var texture=(RenderTexture)cctv.Frame;var previous=RenderTexture.active;RenderTexture.active=texture;
@@ -249,7 +251,8 @@ public static class Case001MotelSmokeTest
         var rt=(RenderTexture)television.Frame;var prior=RenderTexture.active;RenderTexture.active=rt;var image=new Texture2D(rt.width,rt.height,TextureFormat.RGB24,false);image.ReadPixels(new Rect(0,0,rt.width,rt.height),0,0);image.Apply();RenderTexture.active=prior;var values=image.GetPixels();Check(values.Max(c=>c.r)-values.Min(c=>c.r)>.08f,"Room TV RenderTexture contains actual nonblank corridor imagery");UnityEngine.Object.DestroyImmediate(image);
         Target(player,new Vector3(-19.5f,9.05f,5.8f),television.transform.position);Check(player.TryInteract() && progress.Has("TelevisionInspected"),"TV inspection uses original interaction UI");environment.Evaluate();
         var watcherTest=Room403TVWatcherSmokeTest.Run(player,television,environment,definition);while(watcherTest.MoveNext())yield return null;Check(true,"TV-only watcher, no movement while seen, delayed proxy, save restore and key fallback regression");
-        var crtCapture=RetroVisualSmokeTest.Capture("Retro_CRTGameView");while(crtCapture.MoveNext())yield return null;
+        player=UnityEngine.Object.FindFirstObjectByType<FirstPersonPlayer>();player.enabled=false;environment=GameObject.Find("Room403Interior").GetComponent<CaseEnvironmentState>();progress=CaseProgressStore.Get(definition);
+        ScreenCapture.CaptureScreenshot(Room403TVWatcherSmokeTest.CaptureFolder+"CRTGameView.png");stop=Time.time+.25f;while(Time.time<stop)yield return null;
         Check(GameObject.Find("Room403KeyEvidence")!=null,"Key tag becomes discoverable beside bed after TV");
         var keyEvidence=GameObject.Find("Room403KeyEvidence");Check(keyEvidence.transform.Find("EvidenceKeyVisual").gameObject.activeInHierarchy,"Physical key, ring and tag appear after TV");
         var keyWorld=CaptureKeyWorld(player,"EvidenceWorld",new Vector3(-19.7f,9.85f,3.6f),keyEvidence.transform.position);while(keyWorld.MoveNext())yield return null;
