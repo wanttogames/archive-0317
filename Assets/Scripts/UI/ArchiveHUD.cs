@@ -393,7 +393,6 @@ namespace Archive0317
                 if(completionStampRoot!=null)
                 {
                     completionStampRoot.SetActive(true);
-                    StopCoroutine(nameof(AnimateCompletionStamp));
                     StartCoroutine(AnimateCompletionStamp());
                 }
             }
@@ -410,7 +409,6 @@ namespace Archive0317
             if(activeReport==null || selectedVerdict<0)return;
             var report=activeReport;
             if(!report.Confirm((CaseVerdict)selectedVerdict))return;
-            InteractionSoundscape.PlayUIClick();
             ShowReport(report);
         }
         public void ShowExit(InspectableCaseExit exit)
