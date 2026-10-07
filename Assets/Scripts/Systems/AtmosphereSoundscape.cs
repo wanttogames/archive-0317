@@ -48,8 +48,9 @@ namespace Archive0317
             airTone = Loop("VentilationAir", BuildLoop("Archive_VentilationAir", 7f, AirSample));
             lowRumble = Loop("PipeRumble", BuildLoop("Archive_PipeRumble", 8f, RumbleSample));
 
-            transient = gameObject.AddComponent<AudioSource>();
-            transient.name = "BuildingTransient";
+            var transientObject = new GameObject("BuildingTransient");
+            transientObject.transform.SetParent(transform, false);
+            transient = transientObject.AddComponent<AudioSource>();
             transient.playOnAwake = false;
             transient.loop = false;
             transient.spatialBlend = 0f;
@@ -204,8 +205,9 @@ namespace Archive0317
 
         private AudioSource Loop(string name, AudioClip clip)
         {
-            var source = gameObject.AddComponent<AudioSource>();
-            source.name = name;
+            var layer = new GameObject(name);
+            layer.transform.SetParent(transform, false);
+            var source = layer.AddComponent<AudioSource>();
             source.clip = clip;
             source.loop = true;
             source.playOnAwake = false;
