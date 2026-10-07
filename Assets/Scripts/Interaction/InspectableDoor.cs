@@ -28,6 +28,7 @@ namespace Archive0317
         public void Configure(Transform panel, CaseDefinition data, string requirement, string message, bool locked = false)
         {
             leaf = panel;
+            if (leaf != null) closedRotation = leaf.localRotation;
             definition = data;
             requiredFlag = requirement;
             lockedMessage = message;
