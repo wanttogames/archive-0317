@@ -14,6 +14,9 @@ namespace Archive0317
         private float nextCheck;
         public bool Ringing=>ringing!=null && ringing.isPlaying;
         public bool Answering=>answering;
+        public override bool IsInteractionAvailable=>!answering && isActiveAndEnabled;
+        public override float InteractionCooldown=>.3f;
+        public override string Prompt=>answering?"통화 중…":"E 조사";
         public bool EchoPlayed {get;private set;}
         public void Configure(CaseDefinition data,string[] conditions,AudioSource bell,AudioSource handset,AudioClip staticNoise,AudioSource[] ambience)
         {definition=data;requirements=conditions;ringing=bell;receiver=handset;noise=staticNoise;roomSounds=ambience;}
