@@ -51,6 +51,7 @@ namespace Archive0317
         }
         private void Awake()
         {
+            ApplyReadabilityProfile();
             bodySize=body.rectTransform.sizeDelta;bodyPosition=body.rectTransform.anchoredPosition;bodyFontSize=body.fontSize;
             reportCard=title.rectTransform.parent as RectTransform;reportHeader=reportCard.Find("DocumentHeader") as RectTransform;reportCloseHint=reportCard.Find("CloseHint") as RectTransform;
             cardSize=reportCard.sizeDelta;titlePosition=title.rectTransform.anchoredPosition;
@@ -65,6 +66,58 @@ namespace Archive0317
             if(returnButton!=null)returnButton.onClick.AddListener(ReturnFromField);
             if(continueButton!=null)continueButton.onClick.AddListener(()=>player.CloseCase());
         }
+        private void ApplyReadabilityProfile()
+        {
+            // Keep the PS1/VHS treatment on the 3D scene, but render investigation UI as a crisp overlay.
+            var canvas = GetComponent<Canvas>();
+            if (canvas != null)
+            {
+                canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+                canvas.pixelPerfect = true;
+            }
+
+            var scaler = GetComponent<CanvasScaler>();
+            if (scaler != null)
+            {
+                scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+                scaler.referenceResolution = new Vector2(1600, 900);
+                scaler.screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
+                scaler.matchWidthOrHeight = .5f;
+            }
+
+            foreach (var label in GetComponentsInChildren<Text>(true))
+            {
+                label.resizeTextForBestFit = false;
+                label.alignByGeometry = false;
+                if (label.GetComponent<Shadow>() == null)
+                {
+                    var shadow = label.gameObject.AddComponent<Shadow>();
+                    shadow.effectColor = new Color(0, 0, 0, .88f);
+                    shadow.effectDistance = new Vector2(1, -1);
+                    shadow.useGraphicAlpha = true;
+                }
+            }
+
+            if (title != null)
+            {
+                title.fontStyle = FontStyle.Bold;
+                title.color = new Color(.95f, .96f, .92f, 1);
+            }
+            if (body != null) body.color = new Color(.9f, .92f, .88f, 1);
+            if (prompt != null)
+            {
+                prompt.fontStyle = FontStyle.Bold;
+                prompt.color = new Color(.96f, .97f, .92f, 1);
+            }
+            if (cursorHint != null) cursorHint.color = new Color(.92f, .94f, .9f, 1);
+            if (toast != null)
+            {
+                toast.fontStyle = FontStyle.Bold;
+                toast.color = new Color(.96f, .97f, .92f, 1);
+            }
+            if (cctvTimestamp != null) cctvTimestamp.color = new Color(.92f, .95f, .9f, 1);
+        }
+
         public void SetDefinition(CaseDefinition definition) { ActiveDefinition = definition; }
         public void SetPrompt(bool visible, string text = "E 조사") { prompt.text = text; prompt.gameObject.SetActive(visible && !IsCaseOpen); }
         public void ShowCase(CaseFile file)
@@ -120,7 +173,7 @@ namespace Archive0317
         public void ShowReport(CaseReport report)
         {
             ResetActions();activeReport=report;ActiveDefinition=report.Definition;selectedVerdict=-1;
-            title.text=report.Definition.Title+" / 사건 정리";body.text=report.Summary();body.fontSize=19;
+            title.text=report.Definition.Title+" / 사건 정리";body.text=report.Summary();body.fontSize=20;
             reportCard.sizeDelta=new Vector2(850,880);title.rectTransform.anchoredPosition=new Vector2(0,280);
             if(reportHeader!=null)reportHeader.anchoredPosition=new Vector2(0,350);if(reportCloseHint!=null)reportCloseHint.anchoredPosition=new Vector2(0,-395);
             body.rectTransform.sizeDelta=new Vector2(730,report.Completed?510:440);body.rectTransform.anchoredPosition=new Vector2(0,report.Completed?-25:10);
