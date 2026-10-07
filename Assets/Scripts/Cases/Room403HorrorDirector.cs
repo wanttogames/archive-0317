@@ -75,6 +75,7 @@ namespace Archive0317
                 {
                     DisturbRoomDetails();
                     CaseProgressStore.Mark(definition, "Room403AfterBathroomDisturbance");
+                    VisualStyleDirector.Pulse(.45f, .5f);
                     StartCoroutine(FlickerRoom(.95f, 5));
                 }
             }
@@ -82,6 +83,7 @@ namespace Archive0317
             if (inside && progress.Has("TelevisionPowerOn") && !progress.Has("Room403TelevisionFlicker"))
             {
                 CaseProgressStore.Mark(definition, "Room403TelevisionFlicker");
+                VisualStyleDirector.Pulse(.82f, .8f);
                 StartCoroutine(FlickerRoom(1.45f, 8));
             }
 
@@ -105,6 +107,7 @@ namespace Archive0317
                 if (!IsVisible(mirrorRenderer))
                 {
                     CollapseAtmosphere();
+                    VisualStyleDirector.Pulse(.62f, .55f);
                     CaseProgressStore.Mark(definition, "Room403AtmosphereCollapsed");
                 }
             }
@@ -113,6 +116,7 @@ namespace Archive0317
                 && !progress.Has("Room403ExitLightPulse"))
             {
                 CaseProgressStore.Mark(definition, "Room403ExitLightPulse");
+                VisualStyleDirector.Pulse(.95f, .7f);
                 StartCoroutine(PulseExitLight());
             }
         }
@@ -248,6 +252,7 @@ namespace Archive0317
                 {
                     shadowFigure.SetActive(false);
                     CaseProgressStore.Mark(definition, "Room403ShadowSeen");
+                    VisualStyleDirector.Pulse(1f, .28f);
                     StartCoroutine(FlickerRoom(.32f, 2));
                     player.HUD.ShowToast("문가에 있던 것이 사라졌다.", 2.2f);
                 }
