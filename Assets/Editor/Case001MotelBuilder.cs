@@ -305,6 +305,7 @@ public static class Case001MotelBuilder
             new CaseObjectiveEntry{id="cctv_compare",requirements=new[]{"CorridorAltered"},completionFlag="CCTVContradictionFound",text="프런트 CCTV의 4층 복도 기록을 현재와 대조한다."},
             new CaseObjectiveEntry{id="return_floor4",requirements=new[]{"CCTVContradictionFound"},completionFlag="Room403Revealed",text="4층으로 돌아가 사라진 객실 자리를 다시 확인한다."},
             new CaseObjectiveEntry{id="open_403",requirements=new[]{"Room403Revealed"},completionFlag="Room403Opened",text="나타난 403호의 문을 조사한다."},
+            new CaseObjectiveEntry{id="enter_403",requirements=new[]{"Room403Opened"},completionFlag="Room403Entered",text="열린 403호 안으로 들어간다."},
             new CaseObjectiveEntry{id="inspect_403",requirements=new[]{"Room403Entered"},completionFlag="PhoneEventTriggered",text="403호의 개인 물품과 전화기를 조사한다."},
             new CaseObjectiveEntry{id="answer_phone",requirements=new[]{"PhoneEventTriggered"},completionFlag="PhoneEventAnswered",text="울리는 전화기의 수화기를 확인한다."},
             new CaseObjectiveEntry{id="bathroom",requirements=new[]{"PhoneEventAnswered"},completionFlag="BathroomVisited",text="403호 안쪽 욕실을 조사한다."},
