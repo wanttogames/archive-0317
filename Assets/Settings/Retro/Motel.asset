@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Motel
   m_EditorClassIdentifier: Assembly-CSharp::Archive0317.RetroVisualProfile
   shader: {fileID: 4800000, guid: 63c3db806561d7d4b8228201f8d7db7a, type: 3}
-  pixelHeight: 360
-  pixelStrength: 1
+  pixelHeight: 540
+  pixelStrength: 0.52
   ditherStrength: 0.22
   grain: 0.0032
   saturation: 0.79
