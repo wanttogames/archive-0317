@@ -173,7 +173,7 @@ namespace Archive0317
         public void ShowReport(CaseReport report)
         {
             ResetActions();activeReport=report;ActiveDefinition=report.Definition;selectedVerdict=-1;
-            title.text=report.Definition.Title+" / 사건 정리";body.text=report.Summary();body.fontSize=20;
+            title.text=report.Definition.Title+" / 사건 정리";body.text=report.Summary();body.fontSize=19;
             reportCard.sizeDelta=new Vector2(850,880);title.rectTransform.anchoredPosition=new Vector2(0,280);
             if(reportHeader!=null)reportHeader.anchoredPosition=new Vector2(0,350);if(reportCloseHint!=null)reportCloseHint.anchoredPosition=new Vector2(0,-395);
             body.rectTransform.sizeDelta=new Vector2(730,report.Completed?510:440);body.rectTransform.anchoredPosition=new Vector2(0,report.Completed?-25:10);
