@@ -167,6 +167,11 @@ namespace Archive0317
                 16, new Color(.5f, .58f, .54f, 1), TextAnchor.MiddleLeft);
             Place(note.rectTransform, new Vector2(440, 28), new Vector2(-476, -181));
 
+            var navigation = Label("NavigationHint", canvasObject.transform,
+                "마우스 / 방향키 선택   ·   ENTER 확인",
+                13, new Color(.39f, .45f, .41f, 1), TextAnchor.MiddleLeft);
+            Place(navigation.rectTransform, new Vector2(440, 24), new Vector2(-476, -212));
+
             BuildCaseStatus(canvasObject.transform, savedProgress, hasSave);
 
             var warning = Label("Warning", canvasObject.transform,
@@ -239,8 +244,9 @@ namespace Archive0317
             Place(caseName.rectTransform, new Vector2(350, 38), new Vector2(0, 42));
             caseName.fontStyle = FontStyle.Bold;
 
+            string compactStatus = hasSave ? DescribeProgress(progress).Replace("CASE 001 / ", "") : "새 기록을 시작할 수 있습니다.";
             var status = Label("CaseStatus", card.transform,
-                hasSave ? DescribeProgress(progress) : "새 기록을 시작할 수 있습니다.",
+                compactStatus,
                 16, new Color(.66f, .72f, .67f, 1), TextAnchor.MiddleLeft);
             Place(status.rectTransform, new Vector2(350, 32), new Vector2(0, 6));
 
