@@ -44,8 +44,11 @@ namespace Archive0317
             if (SceneTransitionManager.IsTransitioning || PauseMenuController.IsOpen) return;
             var keyboard = Keyboard.current;
             var mouse = Mouse.current;
-            if (keyboard != null && keyboard.tabKey.wasPressedThisFrame && !hud.IsCaseOpen && hud.ActiveDefinition != null)
-            { hud.ShowNotebook(); SetCapture(false); }
+            if (keyboard != null && keyboard.tabKey.wasPressedThisFrame)
+            {
+                if (hud.IsNotebookOpen) { CloseCase(); return; }
+                if (!hud.IsCaseOpen && hud.ActiveDefinition != null) { hud.ShowNotebook(); SetCapture(false); }
+            }
             if (keyboard != null && keyboard.escapeKey.wasPressedThisFrame)
             {
                 if (hud.IsCaseOpen) CloseCase();
@@ -65,6 +68,12 @@ namespace Archive0317
                             if (hud.CanGoNextDocumentPage) hud.NextPage();
                             else CloseCase();
                         }
+                    }
+                    else if (hud.IsNotebookOpen)
+                    {
+                        if (keyboard.digit1Key.wasPressedThisFrame || keyboard.numpad1Key.wasPressedThisFrame) hud.SelectNotebookTab(0);
+                        else if (keyboard.digit2Key.wasPressedThisFrame || keyboard.numpad2Key.wasPressedThisFrame) hud.SelectNotebookTab(1);
+                        else if (keyboard.digit3Key.wasPressedThisFrame || keyboard.numpad3Key.wasPressedThisFrame) hud.SelectNotebookTab(2);
                     }
                     else if (keyboard.eKey.wasPressedThisFrame) CloseCase();
                 }
