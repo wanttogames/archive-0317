@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace Archive0317
@@ -47,6 +48,11 @@ namespace Archive0317
         private CanvasGroup completionStampGroup;
         private Text completionStampLabel;
         private Vector3 completionStampBaseScale;
+        private GameObject objectiveRoot;
+        private Text objectiveLabel;
+        private Text objectiveOverline;
+        private string currentObjectiveId;
+        private float nextObjectiveRefresh;
         private bool notebookOpen;
         private NotebookTab activeNotebookTab;
         public CaseDefinition ActiveDefinition { get; private set; }
@@ -91,6 +97,7 @@ namespace Archive0317
             CreateDocumentReader();
             CreateNotebookTabs();
             CreateCompletionPresentation();
+            CreateObjectiveUI();
         }
         private void ApplyReadabilityProfile()
         {
@@ -144,7 +151,12 @@ namespace Archive0317
             if (cctvTimestamp != null) cctvTimestamp.color = new Color(.92f, .95f, .9f, 1);
         }
 
-        public void SetDefinition(CaseDefinition definition) { ActiveDefinition = definition; }
+        public void SetDefinition(CaseDefinition definition)
+        {
+            ActiveDefinition = definition;
+            currentObjectiveId = null;
+            RefreshObjectiveUI(true);
+        }
         public void SetPrompt(bool visible, string text = "E 조사") { prompt.text = text; prompt.gameObject.SetActive(visible && !IsCaseOpen); }
         public void ShowCase(CaseFile file)
         {
@@ -266,14 +278,15 @@ namespace Archive0317
             var progress=CaseProgressStore.Get(ActiveDefinition);
             UpdateNotebookTabVisuals();
 
+            string objectivePrefix=BuildObjectiveNotebookHeader(progress);
             if(compareButton!=null)compareButton.gameObject.SetActive(false);
             switch(activeNotebookTab)
             {
                 case NotebookTab.Facts:
-                    body.text=BuildFactsNotebook(progress);
+                    body.text=objectivePrefix+BuildFactsNotebook(progress);
                     break;
                 case NotebookTab.Contradictions:
-                    body.text=BuildContradictionsNotebook(progress);
+                    body.text=objectivePrefix+BuildContradictionsNotebook(progress);
                     bool ready=true;
                     foreach(var flag in ActiveDefinition.ComparisonRequirements??System.Array.Empty<string>())
                         if(!progress.Has(flag))ready=false;
@@ -288,7 +301,7 @@ namespace Archive0317
                     }
                     break;
                 case NotebookTab.Evidence:
-                    body.text=BuildEvidenceNotebook(progress);
+                    body.text=objectivePrefix+BuildEvidenceNotebook(progress);
                     break;
             }
         }
@@ -446,6 +459,108 @@ namespace Archive0317
             if(closeHintLabel!=null)closeHintLabel.text=defaultCloseHint;
             if (compareButton != null) compareButton.gameObject.SetActive(false);
         }
+        private void CreateObjectiveUI()
+        {
+            if(objectiveRoot!=null)return;
+            var canvas=GetComponent<Canvas>();
+            if(canvas==null)return;
+
+            objectiveRoot=new GameObject("CurrentObjective",typeof(RectTransform),typeof(Image),typeof(CanvasGroup));
+            objectiveRoot.transform.SetParent(transform,false);
+            var rect=objectiveRoot.GetComponent<RectTransform>();
+            rect.anchorMin=rect.anchorMax=new Vector2(0,1);
+            rect.pivot=new Vector2(0,1);
+            rect.sizeDelta=new Vector2(520,86);
+            rect.anchoredPosition=new Vector2(28,-28);
+
+            var image=objectiveRoot.GetComponent<Image>();
+            image.color=new Color(.018f,.026f,.024f,.72f);
+            image.raycastTarget=false;
+
+            objectiveOverline=CreateObjectiveLabel("ObjectiveOverline","CURRENT OBJECTIVE",12,new Vector2(20,-13),new Vector2(470,22),
+                new Color(.48f,.58f,.53f,1),FontStyle.Bold);
+            objectiveLabel=CreateObjectiveLabel("ObjectiveText","",17,new Vector2(20,-37),new Vector2(470,38),
+                new Color(.92f,.94f,.89f,1),FontStyle.Normal);
+
+            var accent=new GameObject("ObjectiveAccent",typeof(RectTransform),typeof(Image));
+            accent.transform.SetParent(objectiveRoot.transform,false);
+            var accentRect=accent.GetComponent<RectTransform>();
+            accentRect.anchorMin=new Vector2(0,0);
+            accentRect.anchorMax=new Vector2(0,1);
+            accentRect.pivot=new Vector2(0,.5f);
+            accentRect.sizeDelta=new Vector2(3,0);
+            accentRect.anchoredPosition=Vector2.zero;
+            var accentImage=accent.GetComponent<Image>();
+            accentImage.color=new Color(.48f,.14f,.11f,.9f);
+            accentImage.raycastTarget=false;
+
+            objectiveRoot.SetActive(false);
+        }
+
+        private Text CreateObjectiveLabel(string name,string value,int size,Vector2 position,Vector2 dimensions,Color color,FontStyle style)
+        {
+            var go=new GameObject(name,typeof(RectTransform),typeof(Text),typeof(Shadow));
+            go.transform.SetParent(objectiveRoot.transform,false);
+            var rect=go.GetComponent<RectTransform>();
+            rect.anchorMin=rect.anchorMax=new Vector2(0,1);
+            rect.pivot=new Vector2(0,1);
+            rect.anchoredPosition=position;
+            rect.sizeDelta=dimensions;
+            var label=go.GetComponent<Text>();
+            label.font=body!=null?body.font:null;
+            label.fontSize=size;
+            label.fontStyle=style;
+            label.text=value;
+            label.color=color;
+            label.alignment=TextAnchor.UpperLeft;
+            label.horizontalOverflow=HorizontalWrapMode.Wrap;
+            label.verticalOverflow=VerticalWrapMode.Truncate;
+            label.raycastTarget=false;
+            var shadow=go.GetComponent<Shadow>();
+            shadow.effectColor=new Color(0,0,0,.88f);
+            shadow.effectDistance=new Vector2(1,-1);
+            return label;
+        }
+
+        private string BuildObjectiveNotebookHeader(CaseProgress progress)
+        {
+            if(ActiveDefinition==null)return "";
+            var objective=ActiveDefinition.CurrentObjective(progress);
+            if(objective==null)return "현재 조사 목표\n✓ 현장 조사 목표 완료\n\n";
+            return "현재 조사 목표\n→ "+objective.text+"\n\n";
+        }
+
+        private void RefreshObjectiveUI(bool force=false)
+        {
+            if(objectiveRoot==null)return;
+            if(ActiveDefinition==null)
+            {
+                objectiveRoot.SetActive(false);
+                return;
+            }
+
+            bool inField=SceneManager.GetActiveScene().name==ActiveDefinition.FieldScene;
+            if(!inField)
+            {
+                objectiveRoot.SetActive(false);
+                return;
+            }
+
+            var progress=CaseProgressStore.Get(ActiveDefinition);
+            var objective=ActiveDefinition.CurrentObjective(progress);
+            bool visible=objective!=null && !IsCaseOpen && player!=null && player.IsCaptured
+                && !PauseMenuController.IsOpen && !MainMenuController.IsMenuOpen && !SceneTransitionManager.IsTransitioning;
+            objectiveRoot.SetActive(visible);
+            if(objective==null)return;
+
+            if(force || currentObjectiveId!=objective.id)
+            {
+                currentObjectiveId=objective.id;
+                objectiveLabel.text=objective.text;
+                objectiveOverline.text="CURRENT OBJECTIVE";
+            }
+        }
+
         private void CreateCompletionPresentation()
         {
             if(reportCard==null || completionStampRoot!=null)return;
@@ -637,6 +752,11 @@ namespace Archive0317
         {
             crosshair.SetActive(!IsCaseOpen && player.IsCaptured);
             cursorHint.gameObject.SetActive(!IsCaseOpen && !player.IsCaptured);
+            if(Time.unscaledTime>=nextObjectiveRefresh)
+            {
+                nextObjectiveRefresh=Time.unscaledTime+.2f;
+                RefreshObjectiveUI();
+            }
             if (toast != null && Time.unscaledTime >= toastUntil) toast.gameObject.SetActive(false);
         }
     }
