@@ -347,6 +347,7 @@ namespace Archive0317
             Place(go.GetComponent<RectTransform>(), size, position);
             go.GetComponent<Image>().color = new Color(.1f, .13f, .125f, .98f);
             var button = go.GetComponent<Button>();
+            button.onClick.AddListener(InteractionSoundscape.PlayUIClick);
 
             var text = Label("Label", go.transform, caption, 20, new Color(.86f, .89f, .84f, 1), TextAnchor.MiddleCenter);
             Stretch(text.rectTransform, 10);
