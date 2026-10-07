@@ -43,6 +43,10 @@ namespace Archive0317
         private string defaultCloseHint;
         private GameObject notebookTabsRoot;
         private Button[] notebookTabButtons;
+        private GameObject completionStampRoot;
+        private CanvasGroup completionStampGroup;
+        private Text completionStampLabel;
+        private Vector3 completionStampBaseScale;
         private bool notebookOpen;
         private NotebookTab activeNotebookTab;
         public CaseDefinition ActiveDefinition { get; private set; }
@@ -86,6 +90,7 @@ namespace Archive0317
             if(continueButton!=null){continueButton.onClick.AddListener(InteractionSoundscape.PlayUIBack);continueButton.onClick.AddListener(()=>player.CloseCase());}
             CreateDocumentReader();
             CreateNotebookTabs();
+            CreateCompletionPresentation();
         }
         private void ApplyReadabilityProfile()
         {
@@ -357,14 +362,41 @@ namespace Archive0317
         {
             InteractionSoundscape.PlayDocumentOpen();
             ResetActions();activeReport=report;ActiveDefinition=report.Definition;selectedVerdict=-1;
-            title.text=report.Definition.Title+" / 사건 정리";body.text=report.Summary();body.fontSize=19;
+            bool completed=report.Completed;
+            title.text=report.Definition.Title+(completed?" / 보관 완료":" / 사건 정리");
+            body.text=report.Summary();body.fontSize=completed?21:19;
             reportCard.sizeDelta=new Vector2(850,880);title.rectTransform.anchoredPosition=new Vector2(0,280);
-            if(reportHeader!=null)reportHeader.anchoredPosition=new Vector2(0,350);if(reportCloseHint!=null)reportCloseHint.anchoredPosition=new Vector2(0,-395);
-            body.rectTransform.sizeDelta=new Vector2(730,report.Completed?510:440);body.rectTransform.anchoredPosition=new Vector2(0,report.Completed?-25:10);
-            for(int i=0;i<verdictButtons.Length;i++)verdictButtons[i].GetComponent<RectTransform>().anchoredPosition=new Vector2(i%2==0?-184:184,i<2?-238:-285);
+            if(reportHeader!=null)reportHeader.anchoredPosition=new Vector2(0,350);
+            if(reportCloseHint!=null)reportCloseHint.anchoredPosition=new Vector2(0,-395);
+            body.rectTransform.sizeDelta=new Vector2(730,completed?455:440);
+            body.rectTransform.anchoredPosition=new Vector2(0,completed?-35:10);
+
+            for(int i=0;i<verdictButtons.Length;i++)
+                verdictButtons[i].GetComponent<RectTransform>().anchoredPosition=new Vector2(i%2==0?-184:184,i<2?-238:-285);
             confirmVerdictButton.GetComponent<RectTransform>().anchoredPosition=new Vector2(0,-337);
-            reportActions.SetActive(!report.Completed);foreach(var button in verdictButtons){button.gameObject.SetActive(!report.Completed);button.image.color=new Color(.19f,.22f,.22f);}
-            confirmVerdictButton.gameObject.SetActive(false);returnButton.gameObject.SetActive(false);continueButton.gameObject.SetActive(false);
+
+            reportActions.SetActive(true);
+            foreach(var button in verdictButtons)
+            {
+                button.gameObject.SetActive(!completed);
+                button.image.color=new Color(.19f,.22f,.22f);
+            }
+            confirmVerdictButton.gameObject.SetActive(false);
+            returnButton.gameObject.SetActive(false);
+            continueButton.gameObject.SetActive(completed);
+            if(completed)
+            {
+                var continueLabel=continueButton.GetComponentInChildren<Text>();
+                if(continueLabel!=null)continueLabel.text="기록실로 돌아가기";
+                continueButton.GetComponent<RectTransform>().anchoredPosition=new Vector2(0,-337);
+                if(closeHintLabel!=null)closeHintLabel.text="ARCHIVE RECORD CLOSED";
+                if(completionStampRoot!=null)
+                {
+                    completionStampRoot.SetActive(true);
+                    StopCoroutine(nameof(AnimateCompletionStamp));
+                    StartCoroutine(AnimateCompletionStamp());
+                }
+            }
             casePanel.SetActive(true);SetPrompt(false);
         }
         public void ChooseVerdict(int index)
@@ -375,8 +407,11 @@ namespace Archive0317
         }
         public void ConfirmVerdict()
         {
-            if(activeReport==null || selectedVerdict<0 || !activeReport.Confirm((CaseVerdict)selectedVerdict))return;
-            string label=activeReport.Definition.Title.Split('—')[0].Trim();player.CloseCase();ShowToast(label+"\nARCHIVED",2.3f);
+            if(activeReport==null || selectedVerdict<0)return;
+            var report=activeReport;
+            if(!report.Confirm((CaseVerdict)selectedVerdict))return;
+            InteractionSoundscape.PlayUIClick();
+            ShowReport(report);
         }
         public void ShowExit(InspectableCaseExit exit)
         {
@@ -393,6 +428,7 @@ namespace Archive0317
             activeDocument = null;
             notebookOpen=false;
             if(notebookTabsRoot!=null)notebookTabsRoot.SetActive(false);
+            if(completionStampRoot!=null)completionStampRoot.SetActive(false);
             activeReport=null;activeExit=null;
             if(bodyFontSize>0){body.fontSize=bodyFontSize;body.rectTransform.sizeDelta=bodySize;body.rectTransform.anchoredPosition=bodyPosition;}
             if(reportCard!=null){reportCard.sizeDelta=cardSize;title.rectTransform.anchoredPosition=titlePosition;if(reportHeader!=null)reportHeader.anchoredPosition=headerPosition;if(reportCloseHint!=null)reportCloseHint.anchoredPosition=closeHintPosition;}
@@ -412,6 +448,52 @@ namespace Archive0317
             if(closeHintLabel!=null)closeHintLabel.text=defaultCloseHint;
             if (compareButton != null) compareButton.gameObject.SetActive(false);
         }
+        private void CreateCompletionPresentation()
+        {
+            if(reportCard==null || completionStampRoot!=null)return;
+            completionStampRoot=new GameObject("ArchivedStamp",typeof(RectTransform),typeof(Image),typeof(CanvasGroup));
+            completionStampRoot.transform.SetParent(reportCard,false);
+            var rect=completionStampRoot.GetComponent<RectTransform>();
+            rect.sizeDelta=new Vector2(210,72);
+            rect.anchoredPosition=new Vector2(245,208);
+            rect.localRotation=Quaternion.Euler(0,0,-7f);
+
+            var image=completionStampRoot.GetComponent<Image>();
+            image.color=new Color(.32f,.055f,.045f,.16f);
+            image.raycastTarget=false;
+
+            completionStampLabel=CreateDocumentLabel("StampLabel","ARCHIVED",29,Vector2.zero,new Vector2(200,64),
+                TextAnchor.MiddleCenter,new Color(.72f,.18f,.14f,1),completionStampRoot.transform);
+            completionStampLabel.fontStyle=FontStyle.Bold;
+
+            var outline=completionStampLabel.gameObject.AddComponent<Outline>();
+            outline.effectColor=new Color(.25f,.035f,.03f,.95f);
+            outline.effectDistance=new Vector2(2,-2);
+
+            completionStampGroup=completionStampRoot.GetComponent<CanvasGroup>();
+            completionStampBaseScale=Vector3.one;
+            completionStampRoot.SetActive(false);
+        }
+
+        private System.Collections.IEnumerator AnimateCompletionStamp()
+        {
+            if(completionStampRoot==null || completionStampGroup==null)yield break;
+            completionStampRoot.SetActive(true);
+            completionStampGroup.alpha=0f;
+            completionStampRoot.transform.localScale=completionStampBaseScale*1.55f;
+            float duration=.22f;
+            for(float elapsed=0;elapsed<duration;elapsed+=Time.unscaledDeltaTime)
+            {
+                float t=Mathf.Clamp01(elapsed/duration);
+                float eased=1f-Mathf.Pow(1f-t,3f);
+                completionStampGroup.alpha=eased;
+                completionStampRoot.transform.localScale=Vector3.Lerp(completionStampBaseScale*1.55f,completionStampBaseScale,eased);
+                yield return null;
+            }
+            completionStampGroup.alpha=1f;
+            completionStampRoot.transform.localScale=completionStampBaseScale;
+        }
+
         private void CreateNotebookTabs()
         {
             if(reportCard==null || notebookTabsRoot!=null)return;
