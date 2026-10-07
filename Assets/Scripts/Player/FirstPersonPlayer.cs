@@ -99,7 +99,7 @@ namespace Archive0317
             }
             Move(movement, sprint, Time.deltaTime);
             UpdateTarget();
-            if (keyboard != null && keyboard.eKey.wasPressedThisFrame) TryInteract();
+            if (keyboard != null && keyboard.eKey.wasPressedThisFrame) TryInteract(true);
         }
         public void ApplyLook(Vector2 delta)
         {
@@ -137,14 +137,15 @@ namespace Archive0317
                 CurrentTarget = hit.collider.GetComponentInParent<Inspectable>();
             hud.SetPrompt(CurrentTarget != null, CurrentTarget != null ? CurrentTarget.Prompt : "E 조사");
         }
-        public bool TryInteract()
+        public bool TryInteract(bool enforceCooldown = false)
         {
-            if (Time.unscaledTime < nextInteractionAt) return false;
+            if (enforceCooldown && Time.unscaledTime < nextInteractionAt) return false;
             UpdateTarget();
             if (CurrentTarget == null || hud.IsCaseOpen || !CurrentTarget.IsInteractionAvailable) return false;
 
             var target = CurrentTarget;
-            nextInteractionAt = Time.unscaledTime + Mathf.Max(.05f, target.InteractionCooldown);
+            if (enforceCooldown)
+                nextInteractionAt = Time.unscaledTime + Mathf.Max(.05f, target.InteractionCooldown);
             if (target.PlayInspectSound) InteractionSoundscape.PlayInspect(target.transform.position);
 
             target.Inspect(this);
