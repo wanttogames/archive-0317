@@ -220,7 +220,8 @@ namespace Archive0317
             shadowRenderer = body.GetComponent<Renderer>();
             shadowRenderer.material = material;
 
-            shadowFigure.transform.position = new Vector3(-17.72f, 9.02f, 4.5f);
+            // Keep the silhouette on the room side of the exit door so it remains visible even after RoomAltered closes the leaf.
+            shadowFigure.transform.position = new Vector3(-18.38f, 9.02f, 4.5f);
             shadowFigure.SetActive(false);
         }
 
