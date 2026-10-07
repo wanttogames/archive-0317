@@ -17,6 +17,7 @@ namespace Archive0317
         public const string SaveKey = "Archive0317.Case.case001";
         public const string VolumeKey = "Archive0317.Settings.MasterVolume";
         public const string SensitivityKey = "Archive0317.Settings.MouseSensitivity";
+        public const string VisualIntensityKey = "Archive0317.Settings.VHSIntensity";
 
         private static bool presentedThisSession;
         public static bool IsMenuOpen { get; private set; }
@@ -316,7 +317,7 @@ namespace Archive0317
         private void BuildSettings(Transform parent)
         {
             settingsPanel = Panel("SettingsPanel", parent, new Color(.025f, .032f, .031f, .985f));
-            Place(settingsPanel.GetComponent<RectTransform>(), new Vector2(520, 430), new Vector2(310, 0));
+            Place(settingsPanel.GetComponent<RectTransform>(), new Vector2(520, 500), new Vector2(310, 0));
 
             var heading = Label("SettingsTitle", settingsPanel.transform, "설정", 32, new Color(.92f, .94f, .89f, 1), TextAnchor.MiddleLeft);
             Place(heading.rectTransform, new Vector2(420, 50), new Vector2(0, 150));
@@ -342,12 +343,21 @@ namespace Archive0317
                 if (player != null) player.ApplyPreferences();
             });
 
-            var settingsHint = Label("SettingsHint", settingsPanel.transform,
-                "설정은 즉시 저장됩니다. 화면의 VHS 질감은 게임 연출에만 적용됩니다.",
-                15, new Color(.5f, .57f, .53f, 1), TextAnchor.UpperLeft);
-            Place(settingsHint.rectTransform, new Vector2(420, 58), new Vector2(0, -65));
+            var visualLabel = Label("VisualLabel", settingsPanel.transform, "VHS 강도", 19, new Color(.74f, .79f, .74f, 1), TextAnchor.MiddleLeft);
+            Place(visualLabel.rectTransform, new Vector2(180, 32), new Vector2(-120, -65));
+            var visual = CreateSlider(settingsPanel.transform, new Vector2(82, -65), 0f, 1f, PlayerPrefs.GetFloat(VisualIntensityKey, .65f));
+            visual.onValueChanged.AddListener(value =>
+            {
+                PlayerPrefs.SetFloat(VisualIntensityKey, value);
+                PlayerPrefs.Save();
+            });
 
-            var back = SmallButton(settingsPanel.transform, "돌아가기", new Vector2(0, -150), new Vector2(220, 48));
+            var settingsHint = Label("SettingsHint", settingsPanel.transform,
+                "VHS는 3D 월드에만 적용됩니다. 문서/UI 텍스트는 선명하게 유지됩니다.",
+                15, new Color(.5f, .57f, .53f, 1), TextAnchor.UpperLeft);
+            Place(settingsHint.rectTransform, new Vector2(420, 58), new Vector2(0, -125));
+
+            var back = SmallButton(settingsPanel.transform, "돌아가기", new Vector2(0, -195), new Vector2(220, 48));
             back.onClick.AddListener(() => ShowSettings(false));
             settingsPanel.SetActive(false);
         }
