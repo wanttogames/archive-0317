@@ -41,7 +41,7 @@ namespace Archive0317
         }
         private void Update()
         {
-            if (SceneTransitionManager.IsTransitioning) return;
+            if (SceneTransitionManager.IsTransitioning || PauseMenuController.IsOpen) return;
             var keyboard = Keyboard.current;
             var mouse = Mouse.current;
             if (keyboard != null && keyboard.tabKey.wasPressedThisFrame && !hud.IsCaseOpen && hud.ActiveDefinition != null)
@@ -49,7 +49,7 @@ namespace Archive0317
             if (keyboard != null && keyboard.escapeKey.wasPressedThisFrame)
             {
                 if (hud.IsCaseOpen) CloseCase();
-                else SetCapture(!IsCaptured);
+                else if (PauseMenuController.Open(this)) return;
             }
             if (hud.IsCaseOpen)
             {
