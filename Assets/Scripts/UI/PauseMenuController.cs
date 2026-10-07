@@ -15,6 +15,7 @@ namespace Archive0317
 
         private FirstPersonPlayer player;
         private CanvasGroup rootGroup;
+        private Canvas gameplayCanvas;
         private GameObject settingsPanel;
         private GameObject mainConfirmPanel;
         private Font font;
@@ -42,6 +43,8 @@ namespace Archive0317
         private void Build(FirstPersonPlayer controller)
         {
             player = controller;
+            gameplayCanvas = player.HUD != null ? player.HUD.GetComponent<Canvas>() : null;
+            if (gameplayCanvas != null) gameplayCanvas.enabled = false;
             previousTimeScale = Time.timeScale;
             Time.timeScale = 0f;
             player.SetCapture(false);
@@ -228,6 +231,7 @@ namespace Archive0317
         {
             yield return Fade(rootGroup.alpha, 0f, .1f);
             Time.timeScale = previousTimeScale <= 0f ? 1f : previousTimeScale;
+            if (gameplayCanvas != null) gameplayCanvas.enabled = true;
             if (player != null) player.SetCapture(true);
             Destroy(gameObject);
         }
@@ -388,6 +392,7 @@ namespace Archive0317
 
         private void OnDestroy()
         {
+            if (!busy && gameplayCanvas != null) gameplayCanvas.enabled = true;
             if (instance == this) instance = null;
         }
     }
