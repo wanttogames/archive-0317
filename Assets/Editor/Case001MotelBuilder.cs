@@ -295,6 +295,25 @@ public static class Case001MotelBuilder
             new CaseContradictionEntry{progressFlag="KeyEvidenceFound",text="객실 키 태그의 앞면은 403, 뒷면은 404로 표기되어 있다."},
             new CaseContradictionEntry{progressFlag="ReceiptChangedSeen",text="숙박 영수증의 객실 번호가 조사 도중 404에서 403으로 바뀌었다."},
             new CaseContradictionEntry{progressFlag="Room403Completed",text="403호에서 나온 뒤 객실 자체가 복도에서 사라졌다."}});
+        data.ConfigureObjectives(new[]{
+            new CaseObjectiveEntry{id="front_ledger",completionFlag="LedgerInspected",text="프런트의 숙박 장부에서 최민수의 객실 기록을 확인한다."},
+            new CaseObjectiveEntry{id="room404_key",requirements=new[]{"LedgerInspected"},completionFlag="Room404KeyTaken",text="프런트에서 404호 예비 열쇠를 찾는다."},
+            new CaseObjectiveEntry{id="enter_404",requirements=new[]{"Room404KeyTaken"},completionFlag="Room404Entered",text="4층 404호 객실에 들어간다."},
+            new CaseObjectiveEntry{id="room404_record",requirements=new[]{"Room404Entered"},completionFlag="Room404PaperInspected",text="404호에 남겨진 투숙객 기록을 확인한다."},
+            new CaseObjectiveEntry{id="corridor_numbers",requirements=new[]{"Room404PaperInspected"},completionFlag="MissingRoomNoticed",text="4층 복도의 객실 번호 배열을 확인한다."},
+            new CaseObjectiveEntry{id="corridor_change",requirements=new[]{"MissingRoomNoticed"},completionFlag="CorridorAltered",text="404호 조사 전후로 복도가 달라졌는지 확인한다."},
+            new CaseObjectiveEntry{id="cctv_compare",requirements=new[]{"CorridorAltered"},completionFlag="CCTVContradictionFound",text="프런트 CCTV의 4층 복도 기록을 현재와 대조한다."},
+            new CaseObjectiveEntry{id="return_floor4",requirements=new[]{"CCTVContradictionFound"},completionFlag="Room403Revealed",text="4층으로 돌아가 사라진 객실 자리를 다시 확인한다."},
+            new CaseObjectiveEntry{id="open_403",requirements=new[]{"Room403Revealed"},completionFlag="Room403Opened",text="나타난 403호의 문을 조사한다."},
+            new CaseObjectiveEntry{id="inspect_403",requirements=new[]{"Room403Entered"},completionFlag="PhoneEventTriggered",text="403호의 개인 물품과 전화기를 조사한다."},
+            new CaseObjectiveEntry{id="answer_phone",requirements=new[]{"PhoneEventTriggered"},completionFlag="PhoneEventAnswered",text="울리는 전화기의 수화기를 확인한다."},
+            new CaseObjectiveEntry{id="bathroom",requirements=new[]{"PhoneEventAnswered"},completionFlag="BathroomVisited",text="403호 안쪽 욕실을 조사한다."},
+            new CaseObjectiveEntry{id="bathroom_revisit",requirements=new[]{"BathroomVisited"},completionFlag="BathroomRevisited",text="욕실의 변화를 다시 확인한다."},
+            new CaseObjectiveEntry{id="television",requirements=new[]{"BathroomRevisited"},completionFlag="TelevisionInspected",text="방 안에 생긴 변화와 TV 화면을 확인한다."},
+            new CaseObjectiveEntry{id="key_tag",requirements=new[]{"TelevisionInspected"},completionFlag="KeyEvidenceFound",text="TV를 본 뒤 새로 나타난 물건을 찾는다."},
+            new CaseObjectiveEntry{id="receipt_recheck",requirements=new[]{"KeyEvidenceFound"},completionFlag="ReceiptChangedSeen",text="처음 확인했던 숙박 영수증을 다시 대조한다."},
+            new CaseObjectiveEntry{id="leave_403",requirements=new[]{"ReceiptChangedSeen"},completionFlag="Room403Completed",text="403호를 빠져나와 복도의 상태를 확인한다."},
+            new CaseObjectiveEntry{id="leave_motel",requirements=new[]{"Room403Completed"},completionFlag="ReturnedToArchive",text="1층 현관으로 돌아가 현장 조사를 종료한다."}});
         EditorUtility.SetDirty(data);
     }
     private static Material LoadMaterial(string name)=>AssetDatabase.LoadAssetAtPath<Material>("Assets/Materials/ArchiveRoom/Institutional/"+name+".mat");
